@@ -138,6 +138,14 @@
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('d-supervisi') }}" class="nav-link">
+                <i class="nav-icon fa fa-building"></i>
+                <p style="padding-left: 7px;">
+                  Daftar Supervisi
+                </p>
+              </a>
+            </li>
             {{-- <li class="nav-item">
               <a href="{{ route('d-seminar') }}" class="nav-link">
                 <i class="nav-icon fa fa-laptop"></i>

@@ -21,6 +21,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportExcelKolokium;
+use App\Models\tb_supervisi;
 use ZipArchive;
 
 class PanitiaController extends Controller
@@ -426,17 +427,77 @@ class PanitiaController extends Controller
         return Redirect::Back()->with('success', 'Sukses Simpan Link');
     }
 
+    public function list_sv_daftar()
+    {
+        $user       = Auth::user();
+        $prodiuser  = tb_panitia::where('id', $user->id_user)->first();
+        $datas      = tb_panitia::where('id', $user->id_user)->get();
+        $getlist    = tb_supervisi::where('set_verif', 0)->get();
+        $history    = tb_supervisi::where('set_verif', 1)->get();
 
+        if (count($getlist) == 0) {
+            $supervisi = [];
+        } else {
+            foreach ($getlist as $get) {
+                $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                if ($getmhs == null) {
+                    $supervisi = [];
+                } else {
+                    $supervisi[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->kelompok);
+                }
+            }
+        }
 
+        if (count($history) == 0) {
+            $supervisi2 = [];
+        } else {
+            foreach ($history as $hs) {
+                $getmhs      = tb_mahasiswa::where('id', $hs->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                if ($getmhs == null) {
+                    $supervisi2 = [];
+                } else {
+                    $supervisi2[] = array($hs->id, $getmhs->nama, $getmhs->nim, $hs->kelompok);
+                }
+            }
+        }
 
+        return view('panitia.list_sv_daftar', compact('datas', 'supervisi', 'supervisi2'));
+    }
 
+    public function supervisi_vd($id)
+    {
 
+        $user      = Auth::user();
+        $id_daftar = $id;
+        $datas     = tb_panitia::where('id', $user->id_user)->get();
+        $daftar    = tb_supervisi::where('id', $id_daftar)->first();
 
+        if ($daftar == null) {
+            $mahasiswa = [];
+            $allDosens = [];
+            $dosen     = [];
+        } else {
+            $mahasiswa = tb_mahasiswa::where('id', $daftar->id_mhs)->first();
+            $allDosens = tb_dosen::all();
+            $dosen     = $allDosens->where('id', $daftar->id_dosen)->first();
+        }
 
+        return view('panitia.verif_sv_daftar', compact('datas', 'daftar', 'allDosens', 'dosen', 'mahasiswa', 'id_daftar'));
+    }
 
-
-
-
+    public function supervisi_vd_s(Request $request, $id)
+    {
+        if ($request->input('status') == 1) {
+            $update = tb_supervisi::findOrFail($id);
+            $update->set_verif  = 1;
+            $update->id_dosen   = $request->input('dosen');
+            $update->save();
+            return redirect()->route('list-sv-daftar')->with('success', 'Verfikasi Supervisi Diterima');
+        } else {
+            $update = tb_supervisi::findOrFail($id)->delete();
+            return redirect()->route('list-sv-daftar')->with('success', 'Verfikasi Supervisi Ditolak');
+        }
+    }
 
 
 
@@ -816,9 +877,6 @@ class PanitiaController extends Controller
 
         return Redirect::Back()->with('success', 'Sukses Melakukan Sidang Ulang');
     }
-
-
-
 
     // DOWNLOAD BAP
 

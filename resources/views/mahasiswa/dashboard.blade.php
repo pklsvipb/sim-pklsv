@@ -67,6 +67,20 @@
                 </div>
                 @endif
 
+                @if($form_sv != null)
+                <span class="bar"></span>
+                <div class="circle done">
+                  <p class="label"><i class="fas fa-check"></i></p>
+                  <p class="title">Supervisi</p>
+                </div>
+                @else
+                <span class="bar"></span>
+                <div class="circle">
+                  <p class="label">2</p>
+                  <p class="title">Supervisi</p>
+                </div>
+                @endif
+
                 @if($bap_sm != null)
                 <span class="bar"></span>
                 <div class="circle done">
@@ -76,7 +90,7 @@
                 @else
                 <span class="bar"></span>
                 <div class="circle">
-                  <p class="label">2</p>
+                  <p class="label">3</p>
                   <p class="title">Seminar</p>
                 </div>
                 @endif
@@ -90,7 +104,7 @@
                 @else
                 <span class="bar"></span>
                 <div class="circle">
-                  <p class="label">3</p>
+                  <p class="label">4</p>
                   <p class="title">Sidang</p>
                 </div>
                 @endif

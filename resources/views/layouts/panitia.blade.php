@@ -107,6 +107,14 @@
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('list-sv-daftar')}}" class="nav-link">
+                <i class="nav-icon fa fa-building"></i>
+                <p style="padding-left: 7px;">
+                  Verifikasi Supervisi
+                </p>
+              </a>
+            </li>
             {{-- <li class="nav-item menu-open">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>

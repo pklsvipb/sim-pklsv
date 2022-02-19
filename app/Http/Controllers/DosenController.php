@@ -9,6 +9,9 @@ use App\Models\tb_panitia;
 use App\Models\tb_nilai_bap;
 use App\Models\tb_masterform;
 use App\Models\tb_form;
+use App\Models\tb_form_004;
+use App\Models\tb_form_015;
+use App\Models\tb_supervisi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1020,5 +1023,211 @@ class DosenController extends Controller
         $bap->save();
 
         return redirect()->route('sidang-j')->with('success', 'Sukses Edit Nilai BAP');
+    }
+
+    public function list_form_004()
+    {
+        $user    = Auth::user();
+        $datas   = tb_dosen::where('id', $user->id_user)->get();
+
+        $getlist  = tb_supervisi::where('set_verif', 1)->where('id_dosen', $user->id_user)->where('set_ulang', 0)->where('set_form004', 0)->get();
+        $history = tb_supervisi::where('set_form004', 1)->where('id_dosen', $user->id_user)->get();
+
+        if (count($getlist) == 0) {
+            $mhs = [];
+            $listmhs = [];
+        } else {
+            foreach ($getlist as $gt) {
+                $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
+                $getmhs= tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                    foreach ($getmhs as $data)
+                    {
+                        $listmhs[] = array($data->kelompok, $data->nama, $data->nim); 
+                    }
+                $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
+            }
+        }
+
+        if (count($history) == 0) {
+            $mhs2 = [];
+            $listmhs2 = [];
+        } else {
+            foreach ($history as $hs) {
+                $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
+                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
+                    foreach ($getmhs2 as $data)
+                    {
+                        $listmhs2[] = array($data->kelompok, $data->nama, $data->nim); 
+                    }
+                $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
+            }
+        }
+
+        return view('dosen.Form-004.supervisi_form_004', compact('datas', 'mhs', 'mhs2', 'listmhs', 'listmhs2'));
+    }
+
+    public function input_form_004($id){
+        $supervisi = tb_supervisi::where('id', $id)->first();
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $userData = tb_dosen::where('id', $user->id_user)->first();
+
+        return view('dosen.Form-004.input_form_004', compact('supervisi', 'userData', 'datas'));
+    }
+
+    public function submit_form_004(Request $request, $id)
+    {
+        $supervisi = tb_supervisi::where('id', $id)->first();
+        $user = Auth::user();
+        $userData = tb_dosen::where('id', $user->id_user)->first();
+
+        $save = new tb_form_004();
+        $save->kelompok = $supervisi->kelompok;
+        $save->dosen_penjajakan_id = $userData->id;
+        $save->bidang_usaha = $supervisi->bidang_usaha;
+        $save->tanggal_penjajakan = \Carbon\Carbon::now();
+        $save->penilaian_1 = $request->value1;
+
+        if ($request->value2 == 'Ada'){
+            $save->penilaian_2 = $request->isian_value2;
+        }else{
+            $save->penilaian_2 = $request->value2;
+        }
+        
+        $save->penilaian_3 = $request->value3;
+        $save->penilaian_4 = $request->value4;
+        $save->penilaian_5 = $request->value5;
+
+        if ($request->value6[0] != null){
+            $save->penilaian_6 = implode(',', $request->value6);
+        }else{
+            $save->penilaian_6 = 'Tidak ada';
+        }
+        
+        if ($request->value7[0] != null){
+            $save->penilaian_7 = implode(',', $request->value7);
+        }else{
+            $save->penilaian_7 = 'Tidak ada';
+        }
+
+        $save->save();
+
+        $update = tb_supervisi::findOrFail($id);
+        $update->set_form004 = 1;
+        $update->save();
+
+        return redirect()->route('list-form-004')->with('success', 'Sukses Input Nilai Supervisi');
+    }
+
+    public function list_form_015()
+    {
+        $user    = Auth::user();
+        $datas   = tb_dosen::where('id', $user->id_user)->get();
+
+        $getlist  = tb_supervisi::where('set_verif', 1)->where('id_dosen', $user->id_user)->where('set_ulang', 0)->where('set_form015', 0)->get();
+        $history = tb_supervisi::where('set_form015', 1)->where('id_dosen', $user->id_user)->get();
+
+        if (count($getlist) == 0) {
+            $mhs = [];
+            $listmhs = [];
+        } else {
+            foreach ($getlist as $gt) {
+                $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
+                $getmhs= tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                    foreach ($getmhs as $data)
+                    {
+                        $listmhs[] = array($data->kelompok, $data->nama, $data->nim); 
+                    }
+                $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
+            }
+        }
+
+        if (count($history) == 0) {
+            $mhs2 = [];
+            $listmhs2 = [];
+        } else {
+            foreach ($history as $hs) {
+                $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
+                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
+                    foreach ($getmhs2 as $data)
+                    {
+                        $listmhs2[] = array($data->kelompok, $data->nama, $data->nim); 
+                    }
+                $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
+            }
+        }
+
+        return view('dosen.Form-015.supervisi_form_015', compact('datas', 'mhs', 'mhs2', 'listmhs', 'listmhs2'));
+    }
+
+    public function input_form_015($id){
+        $supervisi = tb_supervisi::where('id', $id)->first();
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $userData = tb_dosen::where('id', $user->id_user)->first();
+
+        return view('dosen.Form-015.input_form_015', compact('supervisi', 'userData', 'datas'));
+    }
+
+    public function submit_form_015(Request $request, $id)
+    {
+        $supervisi = tb_supervisi::where('id', $id)->first();
+        $user = Auth::user();
+        $userData = tb_dosen::where('id', $user->id_user)->first();
+
+        $save = new tb_form_015();
+        $save->kelompok = $supervisi->kelompok;
+        $save->dosen_supervisi_id = $userData->id;
+        $save->bidang_usaha = $supervisi->bidang_usaha;
+        $save->tanggal_supervisi = \Carbon\Carbon::now();
+        $save->penilaian_1 = $request->value1;
+
+        if ($request->value2 == 'Ada'){
+            $save->penilaian_2 = $request->isian_value2;
+        }else{
+            $save->penilaian_2 = $request->value2;
+        }
+        
+        $save->penilaian_3 = $request->value3;
+        $save->penilaian_4 = $request->value4;
+        $save->penilaian_5 = $request->value5;
+
+        if ($request->value6[0] != null){
+            $save->penilaian_6 = implode(',', $request->value6);
+        }else{
+            $save->penilaian_6 = 'Tidak ada';
+        }
+        
+        if ($request->value7[0] != null){
+            $save->penilaian_7 = implode(',', $request->value7);
+        }else{
+            $save->penilaian_7 = 'Tidak ada';
+        }
+
+        if ($request->value8[0] != null){
+            $save->penilaian_8 = implode(',', $request->value8);
+        }else{
+            $save->penilaian_8 = 'Tidak ada';
+        }
+
+        if ($request->value9[0] != null){
+            $save->penilaian_9 = implode(',', $request->value9);
+        }else{
+            $save->penilaian_9 = 'Tidak ada';
+        }
+
+        if ($request->value10[0] != null){
+            $save->penilaian_10 = implode(',', $request->value10);
+        }else{
+            $save->penilaian_10 = 'Tidak ada';
+        }
+
+        $save->save();
+
+        $update = tb_supervisi::findOrFail($id);
+        $update->set_form015 = 1;
+        $update->save();
+
+        return redirect()->route('list-form-015')->with('success', 'Sukses Input Nilai Supervisi');
     }
 }

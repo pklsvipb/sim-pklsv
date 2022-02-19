@@ -14,6 +14,7 @@ use App\Models\tb_masterform;
 use App\Models\tb_panitia;
 use App\Models\tb_periodik;
 use App\Models\tb_nilai_bap;
+use App\Models\tb_supervisi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ class MahasiswaController extends Controller
 
         foreach ($datas as $data) {
             $info  = tb_info::where('id_prodi', $data->id_prodi)->first();
+            $suvi  = tb_supervisi::where('kelompok', $data->kelompok)->where('set_verif', 1)->first();
         }
 
         foreach ($datas as $data) {
@@ -58,6 +60,11 @@ class MahasiswaController extends Controller
             $bap_kl = [];
         }
 
+        if ($suvi != null) {
+          $form_sv = array($suvi->set_form004, $suvi->set_form015);
+        } else {
+            $form_sv = [];
+        }
 
         if ($semi != null) {
             $bap_sm = array($semi->set_bap_d, $semi->set_bap_m);
@@ -73,7 +80,7 @@ class MahasiswaController extends Controller
         }
 
 
-        return view('mahasiswa.dashboard', compact('datas', 'kolo', 'semi', 'sida', 'bap_kl', 'bap_sm', 'bap_sd', 'ds1', 'ds2', 'info'));
+        return view('mahasiswa.dashboard', compact('datas', 'kolo', 'semi', 'sida', 'bap_kl', 'bap_sm', 'bap_sd', 'ds1', 'ds2', 'info', 'suvi', 'form_sv'));
     }
 
     public function reset_m()
@@ -390,6 +397,47 @@ class MahasiswaController extends Controller
         return Redirect::Back()->with('success', 'Berhasil Upload');
     }
 
+    public function d_supervisi()
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        foreach ($datas as $data) {
+            $get    = tb_supervisi::where('kelompok', $data->kelompok)->first();
+        }
+
+        if (is_null($get)) {
+            $dosen = "";
+            $status = [];
+        } else {
+            $dosen   = tb_dosen::where('id', $get->id_dosen)->first();
+            $status = array($get->set_verif);
+        }
+
+        return view('mahasiswa.daftar_supervisi', compact('datas', 'get', 'status', 'dosen'));
+    }
+
+    public function s_supervisi(Request $request)
+    {
+
+        $user  = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $upload = new tb_supervisi;
+        $upload->id_mhs   = $user->id_user;
+        $upload->id_prodi = $mhs->id_prodi;
+        $upload->kelompok = $mhs->kelompok;
+        $upload->instansi = $mhs->instansi;
+        $upload->alamat_instansi = $mhs->alamat_instansi;
+        $upload->bidang_usaha = $request->input('bidang_usaha');
+        $upload->save();
+
+        return Redirect::Back()->with('success', 'Berhasil Upload');
+    }
+
+
+
+
+
     public function seminar()       // NOT USE
     {
         $user  = Auth::user();
@@ -684,7 +732,7 @@ class MahasiswaController extends Controller
         } elseif ($id == "8") {
             return view('mahasiswa.form_input.input_015_1', compact('datas', 'id', 'dosens'));
         } elseif ($id == "9") {
-            return view('mahasiswa.form_input.input_015_2', compact('datas', 'id'));
+            return view('mahasiswa.form_input.input_015_2', compact('datas', 'id', 'link'));
         } elseif ($id == "10") {
             return view('mahasiswa.form_input.input_008', compact('datas', 'id'));
         } elseif ($id == "11") {

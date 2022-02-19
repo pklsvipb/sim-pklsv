@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\tb_daftar;
 use App\Models\tb_dosen;
 use App\Models\tb_form;
+use App\Models\tb_form_004;
+use App\Models\tb_form_015;
 use App\Models\tb_mahasiswa;
 use App\Models\tb_masterform;
 use App\Models\tb_panitia;
 use App\Models\tb_nilai_bap;
+use App\Models\tb_supervisi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -652,5 +655,32 @@ class ExportController extends Controller
         }
 
         return redirect()->route('form-m')->with('success', 'Berhasil Upload');
+    }
+
+    public function form_004_pdf($id)
+    {
+
+        $supervisi   = tb_form_004::where('kelompok', $id)->first();
+        $daftar = tb_supervisi::where('kelompok', $id)->first();
+        $value6 = explode(',', $supervisi->penilaian_6);
+        $value7 = explode(',', $supervisi->penilaian_7);
+        $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0,0,595.276,841.8898], 'portrait');
+
+        return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
+    }
+
+    public function form_015_pdf($id)
+    {
+
+        $supervisi   = tb_form_015::where('kelompok', $id)->first();
+        $daftar = tb_supervisi::where('kelompok', $id)->first();
+        $value6 = explode(',', $supervisi->penilaian_6);
+        $value7 = explode(',', $supervisi->penilaian_7);
+        $value8 = explode(',', $supervisi->penilaian_8);
+        $value9 = explode(',', $supervisi->penilaian_9);
+        $value10 = explode(',', $supervisi->penilaian_10);
+        $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0,0,595.276,841.8898], 'portrait');
+
+        return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
     }
 }

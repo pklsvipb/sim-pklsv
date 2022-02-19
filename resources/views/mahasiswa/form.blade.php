@@ -184,7 +184,16 @@
                         </td>
                         <td>
                           <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Upload</a>
-                        </td>    
+                        </td> 
+                        
+                        @elseif ($form->id == 9)
+                        <td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>
+                        <td style="text-align: center;">
+                          <a type="button" class="btn btn-sm btn-info" style="font-size: 11px;" disabled>Upload</a>
+                        </td>
+                        <td>
+                          <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Upload</a>
+                        </td>   
                       
                         @else   
                         <td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>

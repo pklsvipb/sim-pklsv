@@ -132,6 +132,29 @@
                 </li>
               </ul>
             </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-building" style="border-radius: 4px;"></i>
+                <p style="padding-left: 7px;">
+                  Supervisi
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('list-form-004')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Form 004</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('list-form-015')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Form 015</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
             {{-- <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-laptop" style="border-radius: 4px;"></i>
