@@ -353,7 +353,7 @@
         <td width="100%" style="padding-top: 1px; margin-top: -.1rem;">
           <p style="margin-bottom: -.45em; margin-left: 23em; margin-right: 0px; font-size: 10pt;">Bogor, {{ Carbon\Carbon::parse($supervisi->tanggal)->translatedFormat('d F Y'); }}</p>
           <p style="margin-bottom: -.10em; margin-left: 23em; margin-right: 0px; font-size: 10pt;">Dosen Supervisi</p>
-          <img src="{{public_path($supervisi->getDosen->ttd)}}" style="margin-left: 18em; margin-top: 7px; width: auto; height: 1.5cm;">
+          <img src="{{public_path($supervisi->getDosen->ttd)}}" style="margin-left: 21em; margin-top: 7px; width: auto; height: 1.5cm;">
           <p style="margin-bottom: -.10em; margin-left: 23em; margin-right: 0px; font-size: 10pt;">{{$supervisi->getDosen->nama}}</p>
           <p style="margin-bottom: -.10em; margin-left: 23em; margin-right: 0px; font-size: 10pt;">NPI. {{$supervisi->getDosen->nip}}</p>
         </td>
