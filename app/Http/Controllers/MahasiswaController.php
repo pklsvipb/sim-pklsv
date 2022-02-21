@@ -429,6 +429,7 @@ class MahasiswaController extends Controller
         $upload->instansi = $mhs->instansi;
         $upload->alamat_instansi = $mhs->alamat_instansi;
         $upload->bidang_usaha = $request->input('bidang_usaha');
+        $upload->tanggal = $request->input('tgl');
         $upload->save();
 
         return Redirect::Back()->with('success', 'Berhasil Upload');

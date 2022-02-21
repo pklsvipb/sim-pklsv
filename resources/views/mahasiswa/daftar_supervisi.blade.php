@@ -100,6 +100,11 @@
                       </tr>
 
                       <tr>
+                        <td>Tanggal Supervisi</td>
+                        <td><input type="date" class="form-control" name="tgl" style="border: none; border-bottom: 1px solid black; border-radius: 0px;"></td>
+                      </tr>
+
+                      <tr>
                         <td>Dosen Penjajakan/Supervisi</td>
                         <td>(akan diisi oleh panitia)</td>
                       </tr>
@@ -153,6 +158,11 @@
                       <tr>
                         <td>Bidang Usaha</td>
                         <td><input type="text" class="form-control" name="bidang_usaha" value="{{$get->bidang_usaha}}" disabled></td>
+                      </tr>
+
+                      <tr>
+                        <td>Tanggal Supervisi</td>
+                        <td><input type="date" class="form-control" name="tgl" value="{{$get->tanggal}}" style="border: none; border-bottom: 1px solid black; border-radius: 0px;" disabled></td>
                       </tr>
 
                       <tr>

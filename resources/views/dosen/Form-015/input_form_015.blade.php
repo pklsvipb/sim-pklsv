@@ -39,7 +39,7 @@
                       <tr>
                         <td>Tanggal Supervisi</td>
                         <td>:</td>
-                        <td>{{Carbon\Carbon::now()->translatedFormat('d F Y')}}</td>
+                        <td>{{ Carbon\Carbon::parse($supervisi->tanggal)->translatedFormat('d F Y'); }}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -60,6 +60,11 @@
                       </tr>
 
                       <tr>
+                        <td>Tanggal Supervisi</td>
+                        <td><input type="date" class="form-control" name="tgl" value="{{$daftar->tanggal}}" style="border: none; border-bottom: 1px solid black; border-radius: 0px;" disabled></td>
+                      </tr>
+
+                      <tr>
                         <td>Dosen Penjajakan/Supervisi</td>
                         <td>
                             <select class="form-control select2 select2-hidden-accessible" name="dosen" style="width: 100%;">
