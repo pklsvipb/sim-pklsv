@@ -25,15 +25,15 @@
                     </tr>
                     <tr>
                       <td>
-                        <input type="file" name="upload" accept=".docx, .pdf" data-allowed-file-extensions='["pdf", "docx"]' id="input-file-now" class="dropify" data-max-file-size="50000K" />
-                        <p class="help-block" style="font-size: 12px;">Max Filesize 50 MB (PDF/DOCX)</p>        
+                        <input type="file" name="upload" accept=".docx, .pdf" data-allowed-file-extensions='["pdf", "docx"]' id="input-file-now" class="dropify" data-max-file-size="2000K" />
+                        <p class="help-block" style="font-size: 12px;">Max Filesize 2 MB (PDF/DOCX)</p>        
                       </td>
                     </tr>
                   </tbody>
                 </table>
              
                 <br>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: ;"><i class="fas fa-save fa-sm"></i>&nbsp; Kirim</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Kirim</button>
 
               </div>
             </div>
