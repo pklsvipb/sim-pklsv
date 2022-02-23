@@ -4,6 +4,7 @@
 /public/file_form
 /public/pdf
 /storage/*.key
+/vendor
 .env
 .env.backup
 .phpunit.result.cache
