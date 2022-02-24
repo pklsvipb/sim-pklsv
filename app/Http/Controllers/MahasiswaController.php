@@ -61,7 +61,7 @@ class MahasiswaController extends Controller
         }
 
         if ($suvi != null) {
-          $form_sv = array($suvi->set_form004, $suvi->set_form015);
+            $form_sv = array($suvi->set_form004, $suvi->set_form015);
         } else {
             $form_sv = [];
         }
@@ -91,7 +91,7 @@ class MahasiswaController extends Controller
 
         return view('mahasiswa.reset_pwd', compact('datas'));
     }
-    
+
     public function resetPwd(Request $request)
     {
         $this->validate($request, [
@@ -305,18 +305,18 @@ class MahasiswaController extends Controller
 
         $get_nilai_d  = tb_nilai_bap::where('id_mhs', $user->id_user)->where('ket', 'kl')->where('status', 'dosen')->first();
         $get_nilai_m  = tb_nilai_bap::where('id_mhs', $user->id_user)->where('ket', 'kl')->where('status', 'moderator')->first();
-        
-        if (empty($get_nilai_d)){
+
+        if (empty($get_nilai_d)) {
             $nilai_d_kelayakan = 'ya';
             $nilai_d_keputusan = 'proses';
-        }else{
+        } else {
             $nilai_d_kelayakan = $get_nilai_d->kelayakan;
             $nilai_d_keputusan = $get_nilai_d->keputusan;
         }
 
-        if (empty($get_nilai_m)){
+        if (empty($get_nilai_m)) {
             $nilai_m_kelayakan = 'ya';
-        }else{
+        } else {
             $nilai_m_kelayakan = $get_nilai_m->kelayakan;
         }
 
@@ -330,7 +330,6 @@ class MahasiswaController extends Controller
         if (is_null($get)) {
             $mode = "";
             $status = [];
-            
         } else {
 
             $mode   = tb_dosen::where('id', $get->id_moderator)->first();
@@ -339,15 +338,16 @@ class MahasiswaController extends Controller
 
         return view('mahasiswa.daftar_kolokium', compact('datas', 'dosens', 'get', 'set', 'mode', 'status', 'nilai_d_kelayakan', 'nilai_d_keputusan', 'nilai_m_kelayakan'));
     }
-    
-    public function perbaikan_kolokium(Request $request){
+
+    public function perbaikan_kolokium(Request $request)
+    {
         $user = Auth::user();
         $get = tb_daftar::where('id_mhs', $user->id_user)->where('ket', 'kl')->first();
-    
+
         $update = tb_daftar::findOrFail($get->id);
         $update->judul = $request->input('judul');
         $update->save();
-    
+
         return redirect()->route('d-kolokium')->with('success', 'Perbaikan Berhasil Disimpan');
     }
 
@@ -378,7 +378,7 @@ class MahasiswaController extends Controller
         $upload->ket      = 'kl';
 
         // for ($i = 0; $i < count($request->file); $i++) {
-            // Check File Exist
+        // Check File Exist
         //    $file  = Storage::disk('local')->exists('file_form/upload_persyaratan/' . $mhs->nim . '/' . $request->file[$i]->getClientOriginalName());
 
         //    if ($file) {
@@ -713,7 +713,7 @@ class MahasiswaController extends Controller
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
         $prodi  = tb_mahasiswa::where('id', $user->id_user)->first();
         $dosens = tb_dosen::all();
-        
+
         $link  = tb_panitia::where('id_prodi', $prodi->id_prodi)->first();
 
         if ($id == "1") {
@@ -729,7 +729,7 @@ class MahasiswaController extends Controller
         } elseif ($id == "6") {
             return view('mahasiswa.form_input.input_bimbingan_akademik', compact('datas', 'id', 'link'));
         } elseif ($id == "7") {
-            return view('mahasiswa.form_input.input_005', compact('datas', 'id'));
+            return view('mahasiswa.form_input.bayar_spp', compact('datas', 'id', 'link'));
         } elseif ($id == "8") {
             return view('mahasiswa.form_input.input_015_1', compact('datas', 'id', 'dosens'));
         } elseif ($id == "9") {

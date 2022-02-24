@@ -50,7 +50,7 @@ class PanitiaController extends Controller
 
         return view('panitia.reset_pwd', compact('datas'));
     }
-    
+
     public function resetPwd(Request $request)
     {
         $this->validate($request, [
@@ -77,8 +77,8 @@ class PanitiaController extends Controller
         $getkelompok = tb_mahasiswa::select('kelompok', 'id_dospem1', 'id_dospem2', 'id_prodi')->where('id_prodi', $prodiuser->id_prodi)->distinct()->get();
         $kelompok = [];
         $mhs      = [];
-        
-        
+
+
         foreach ($getkelompok as $klp) {
             if ($klp->kelompok != null) {
                 $dospem1 = tb_dosen::where('id', $klp->id_dospem1)->first();
@@ -132,7 +132,7 @@ class PanitiaController extends Controller
             'nama_kel' => 'required',
             'id'       => 'required',
         ]);
-        
+
         $nama_kel = $request->input('nama_kel');
         $id       = $request->input('id');
 
@@ -144,7 +144,7 @@ class PanitiaController extends Controller
 
         return redirect()->route('pembimbing-p')->with('success', 'Sukses Input Kelompok Mahasiswa');
     }
-    
+
     public function edit_kelompok($id)
     {
         $user      = Auth::user();
@@ -217,7 +217,7 @@ class PanitiaController extends Controller
         $getlist2   = tb_daftar::where('ket', 'kl')->where('id_moderator', 0)->get();
         $getlist3   = tb_daftar::where('ket', 'kl')->where('set_verif', 1)->get();
         // $setlist2   = tb_daftar::where('ket', 'kl')->where('set_verif', 0)->get();
-        
+
         $kolokium = [];
         if (count($setlist) == 0) {
             $kolokium = [];
@@ -231,7 +231,7 @@ class PanitiaController extends Controller
                 }
             }
         }
-        
+
         $kolokium2 = [];
         if (count($getlist2) == 0) {
             $kolokium2 = [];
@@ -243,7 +243,7 @@ class PanitiaController extends Controller
                 }
             }
         }
-        
+
         $kolokium3 = [];
         if (count($getlist3) == 0) {
             $kolokium3 = [];
@@ -255,7 +255,7 @@ class PanitiaController extends Controller
                 }
             }
         }
-        
+
         return view('panitia.list_kl_form', compact('datas', 'kolokium', 'kolokium2', 'kolokium3'));
     }
 
@@ -422,6 +422,7 @@ class PanitiaController extends Controller
         $panitia->link_nilai = $request->link_nilai;
         $panitia->link_bimbingan_aka = $request->link_bimbingan_aka;
         $panitia->link_form015 = $request->link_form015;
+        $panitia->bayar_spp = $request->bayar_spp;
         $panitia->save();
 
         return Redirect::Back()->with('success', 'Sukses Simpan Link');
@@ -1039,7 +1040,7 @@ class PanitiaController extends Controller
         foreach ($getmhs as $get) {
             $kegiatan = tb_jurnal::where('id_mhs', $get->id_mhs)->get();
             $list = [];
-            foreach ($kegiatan as $getKegiatan){
+            foreach ($kegiatan as $getKegiatan) {
                 $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->hari, $getKegiatan->tanggal, $getKegiatan->kegiatan);
             }
             $file[] = array($get->id_mhs, $list);
@@ -1062,7 +1063,7 @@ class PanitiaController extends Controller
         foreach ($getmhs as $get) {
             $kegiatan = tb_periodik::where('id_mhs', $get->id_mhs)->get();
             $list = [];
-            foreach ($kegiatan as $getKegiatan){
+            foreach ($kegiatan as $getKegiatan) {
                 $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->periode, $getKegiatan->tanggal, $getKegiatan->informasi, $getKegiatan->kendala, $getKegiatan->catatan);
             }
             $file[] = array($get->id_mhs, $list);
@@ -1072,7 +1073,7 @@ class PanitiaController extends Controller
 
         return view('panitia.laporan_periodik', compact('datas', 'getmhs', 'file'));
     }
-    
+
     public function export_kolokium()
     {
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');

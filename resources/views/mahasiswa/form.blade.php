@@ -177,7 +177,7 @@
                       <td>{{ $form->nama }}</td>
                       <!--<td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>-->
 
-                        @if ($form->id == 5 || $form->id == 6)
+                        @if ($form->id == 5 || $form->id == 6 || $form->id == 7)
                         <td style="text-align: center;"><i class="fas fa-file-word fa-lg"></i></td>
                         <td style="text-align: center;">
                           <a type="button" class="btn btn-sm btn-info" style="font-size: 11px;" disabled>Upload</a>

@@ -65,6 +65,14 @@
                             <input type="text" readonly id="linkForm015" class="form-control" name="link_form015" value="{{$panitia->link_form015}}" placeholder="Link untuk form 015">
                           </td>
                         </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>Bukti Pembayaran SPP</td>
+                          <td>{{$panitia->getProdi->nama}}</td>
+                          <td>
+                            <input type="text" readonly id="bayarSpp" class="form-control" name="bayar_spp" value="{{$panitia->bayar_spp}}" placeholder="Link untuk bukti pembayaran spp">
+                          </td>
+                        </tr>
                       </tbody>
                       <tfoot>
                         <tr>
@@ -131,6 +139,10 @@
   
   document.getElementById('linkBimbinganAka').onclick = function() {
     document.getElementById('linkBimbinganAka').removeAttribute('readonly');
+  };
+
+  document.getElementById('bayarSpp').onclick = function() {
+    document.getElementById('bayarSpp').removeAttribute('readonly');
   };
 </script>
 @endpush
