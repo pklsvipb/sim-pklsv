@@ -248,6 +248,50 @@ class ExportController extends Controller
         return Redirect::back();
     }
 
+    public function download_zip_supervisi(Request $request)
+    {
+
+        $dir = 'file_form/zip_form';
+        $zipFileName = 'Zipfile_Supervisi_' . $request->input('nama') . '.zip';
+
+        $zip = new ZipArchive;
+        if ($zip->open($dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE) {
+            // Add File in ZipArchive 
+                    $supervisi   = tb_form_004::where('kelompok', $request->input('kelompok'))->first();
+                    $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
+                    $value6 = explode(',', $supervisi->penilaian_6);
+                    $value7 = explode(',', $supervisi->penilaian_7);
+                    $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0,0,595.276,841.8898], 'portrait');
+                    Storage::disk('local')->put('file_form/form004_'.$request->input('nama').'.pdf',$pdf->output());
+                    $zip->addFile('file_form/form004_'.$request->input('nama').'.pdf',$request->input('nama').'_'.$request->input('nim').'_form004'.'.pdf');
+
+                    $supervisi   = tb_form_015::where('kelompok', $request->input('kelompok'))->first();
+                    $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
+                    $value6 = explode(',', $supervisi->penilaian_6);
+                    $value7 = explode(',', $supervisi->penilaian_7);
+                    $value8 = explode(',', $supervisi->penilaian_8);
+                    $value9 = explode(',', $supervisi->penilaian_9);
+                    $value10 = explode(',', $supervisi->penilaian_10);
+                    $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0,0,595.276,841.8898], 'portrait');
+                    Storage::disk('local')->put('file_form/form015_'.$request->input('nama').'.pdf',$pdf->output());
+                    $zip->addFile('file_form/form015_'.$request->input('nama').'.pdf',$request->input('nama').'_'.$request->input('nim').'_form015'.'.pdf');
+            $zip->close();
+        }
+        Storage::disk('local')->delete('file_form/form004_'.$request->input('nama').'.pdf');
+        Storage::disk('local')->delete('file_form/form015_'.$request->input('nama').'.pdf');
+        // Set Header 
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+        $filetopath = $dir . '/' . $zipFileName;
+        // Create Download Response 
+        if (file_exists($filetopath)) {
+            return response()->download($filetopath, $zipFileName, $headers);
+        }
+
+        return Redirect::back();
+    }
+
     public function form001_pdf(Request $request, $id)
     {
         $user   = Auth::user();

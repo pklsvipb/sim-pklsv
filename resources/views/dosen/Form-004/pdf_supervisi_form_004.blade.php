@@ -113,7 +113,7 @@
           <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -1.5em;">:</p>
         </td>
         <td style="padding-top: 1px; padding-bottom: 1px;">
-          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ $daftar->alamat_instansi }} Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi deleniti veniam quam, minima id ipsum velit </p>
+          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ $daftar->alamat_instansi }}</p>
         </td>
       </tr>
       <tr>
@@ -124,7 +124,7 @@
           <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -1.5em;">:</p>
         </td>
         <td style="padding-top: 1px; padding-bottom: 1px;">
-          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ $daftar->bidang_usaha }} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus nesciunt nisi ab </p>
+          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ $daftar->bidang_usaha }}</p>
         </td>
       </tr>
       <tr>
@@ -187,7 +187,7 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Perencanaaan Usaha di masa yang akan datang</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
         @if ($supervisi->penilaian_2 != "Tidak Ada")
-          <p style="font-size: 10pt; line-height: 90%;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus explicabo quisquam ea</p>
+          <p style="font-size: 10pt; line-height: 90%;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}}</p>
         @else
           <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha Sebutkan :</p>
         @endif

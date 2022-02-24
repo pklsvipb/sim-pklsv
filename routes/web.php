@@ -127,6 +127,7 @@ Route::middleware('role:panitia')->get('/panitia/download-sddu/{id}', [App\Http\
 Route::middleware('role:panitia')->get('/panitia/download-sdmu/{id}', [App\Http\Controllers\ExportController::class, 'download_bap_sdju'])->name('download-bap-sdju');
 
 Route::middleware('role:panitia')->get('download-zip', [App\Http\Controllers\ExportController::class, 'download_zip'])->name('download-zip');
+Route::middleware('role:panitia')->get('download-zip-supervisi', [App\Http\Controllers\ExportController::class, 'download_zip_supervisi'])->name('download-zip-supervisi');
 
 //Pengumuman
 Route::middleware('role:panitia')->post('/panitia/pengumuman', [App\Http\Controllers\PanitiaController::class, 'pengumuman'])->name('pengumuman');

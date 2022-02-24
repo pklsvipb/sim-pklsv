@@ -76,7 +76,13 @@
                           <a href="{{route('download-zip',['nama'=>$data[$i][0], 'nim'=>$data[$i][1], 'id'=>$data[$i][6]])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 10.5px;">FORM</a>
                           @else 
                           <span></span> 
-                          @endif 
+                          @endif
+                          
+                          @if ($data[$i][8] != 0 && $data[$i][9] != 0)
+                          <a href="{{route('download-zip-supervisi',['nama'=>$data[$i][0], 'nim'=>$data[$i][1], 'kelompok'=>$data[$i][10]])}}" type="button" class="btn btn-primary btn-sm mt-1" style="font-size: 10.5px;">SUPERVISI</a>
+                          @else 
+                          <span></span> 
+                          @endif
  
                           <!--<a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a>  -->
                         </td> 

@@ -21,6 +21,8 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportExcelKolokium;
+use App\Models\tb_form_004;
+use App\Models\tb_form_015;
 use App\Models\tb_supervisi;
 use ZipArchive;
 
@@ -946,6 +948,21 @@ class PanitiaController extends Controller
                 $dospem = tb_dosen::where('id', $list->id_dosen)->first();
                 $mode   = tb_dosen::where('id', $list->id_moderator)->first();
                 $exist_form = tb_form::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('set_verif', 1)->first();
+                $exist_form = tb_form::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('set_verif', 1)->first();
+                $exist_004 = tb_form_004::where('kelompok', $mhs->kelompok)->first();
+                $exist_015 = tb_form_015::where('kelompok', $mhs->kelompok)->first();
+
+                if ($exist_015 == null) {
+                    $get_015 = 0;
+                } else {
+                    $get_015 = 1;
+                }
+
+                if ($exist_004 == null) {
+                    $get_004 = 0;
+                } else {
+                    $get_004 = 1;
+                }
 
                 if ($exist_form == null) {
                     $get_form = 0;
@@ -977,7 +994,7 @@ class PanitiaController extends Controller
                     $nama_mode = $mode->nama;
                 }
 
-                $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $nama_dospem, $nama_mode, $mhs->id, $get_form);
+                $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $nama_dospem, $nama_mode, $mhs->id, $get_form, $get_004, $get_015, $mhs->kelompok);
             }
         }
 
