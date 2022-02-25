@@ -948,7 +948,6 @@ class PanitiaController extends Controller
                 $dospem = tb_dosen::where('id', $list->id_dosen)->first();
                 $mode   = tb_dosen::where('id', $list->id_moderator)->first();
                 $exist_form = tb_form::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('set_verif', 1)->first();
-                $exist_form = tb_form::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('set_verif', 1)->first();
                 $exist_004 = tb_form_004::where('kelompok', $mhs->kelompok)->first();
                 $exist_015 = tb_form_015::where('kelompok', $mhs->kelompok)->first();
 
