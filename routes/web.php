@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function(){
+    return 1;
+});
+
 Route::get('/', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
 
 Route::get('/n&l/down', function() {
