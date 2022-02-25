@@ -14,27 +14,21 @@
                   FORM 015 <br>
                   PENILAIAN PERUSAHAAN / INSTANSI TERHADAP MAHASISWA PKL
                 </div>
-                    
-                <table cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px;">
+                <table cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align:center" width="100%">
                   <tbody>
                     <tr>
-                      <td>
-                        Silakan unduh format FORM 015 bagian 2 (Penilaian Perusahaan/Instansi Terhadap Mahasiswa PKL) terlebih dahulu. Jika telah diisi dan ditanda tangani oleh narasumber, maka upload file form tersebut disini (format file pdf). 
-                        <br><small style="color: red;">Perhatikan no header dan hal footer</small>
+                      <td width="100%">
+                        Silakan unduh format FORM 015 (Penilaian Perusahaan / Instansi Terhadap Mahasiswa PKL) terlebih dahulu. Jika telah diisi dan ditanda tangani oleh instansi, maka upload file form tersebut di link berikut (format file pdf). 
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <input type="file" name="upload" accept=".docx, .pdf" data-allowed-file-extensions='["pdf", "docx"]' id="input-file-now" class="dropify" data-max-file-size="2000K" />
-                        <p class="help-block" style="font-size: 12px;">Max Filesize 2 MB (PDF/DOCX)</p>        
+                        <br>
+                        <a type="button" class="btn btn-info" href="{{$link->link_nilai}}" target="_blank">Link Drive</a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
-             
-                <br>
-                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Kirim</button>
-
               </div>
             </div>
           </div>

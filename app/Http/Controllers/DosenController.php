@@ -78,7 +78,7 @@ class DosenController extends Controller
                 $file = [];
             }
         }
-        
+
         if (count($mhs2) == 0) {
             $kolo[] = 0;
             $semi[] = 0;
@@ -134,7 +134,7 @@ class DosenController extends Controller
 
         return view('dosen.reset_pwd', compact('datas'));
     }
-    
+
     public function resetPwd(Request $request)
     {
         $this->validate($request, [
@@ -159,7 +159,8 @@ class DosenController extends Controller
         return view('dosen.biodata', compact('datas'));
     }
 
-    public function form_kesediaan(){
+    public function form_kesediaan()
+    {
         $user  = Auth::user();
         $datas = tb_dosen::where('id', $user->id_user)->get();
 
@@ -209,12 +210,12 @@ class DosenController extends Controller
         } else {
             foreach ($dospem as $dp) {
                 $get   = tb_mahasiswa::where('id', $dp->id_mhs)->first();
-                $tgl = $dp->tgl.' '.$dp->waktu;
+                $tgl = $dp->tgl . ' ' . $dp->waktu;
                 $date = Carbon::parse($tgl);
 
-                if ($date->isPast()){
+                if ($date->isPast()) {
                     $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah kolokium');
-                }else{
+                } else {
                     $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
                 }
             }
@@ -227,9 +228,9 @@ class DosenController extends Controller
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'dosen')->where('ket', 'kl')->first();
-                if ($get2->kelayakan == 'ya' && $get2->keputusan == 'proses'){
+                if ($get2->kelayakan == 'ya' && $get2->keputusan == 'proses') {
                     $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
-                }else{
+                } else {
                     $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
                 }
             }
@@ -251,12 +252,12 @@ class DosenController extends Controller
         } else {
             foreach ($moderator as $mode) {
                 $get   = tb_mahasiswa::where('id', $mode->id_mhs)->first();
-                $tgl = $mode->tgl.' '.$mode->waktu;
+                $tgl = $mode->tgl . ' ' . $mode->waktu;
                 $date = Carbon::parse($tgl);
 
-                if ($date->isPast()){
+                if ($date->isPast()) {
                     $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah kolokium');
-                }else{
+                } else {
                     $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
                 }
             }
@@ -269,10 +270,10 @@ class DosenController extends Controller
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'moderator')->where('ket', 'kl')->first();
- 
-                if ($get2->kelayakan == 'ya'){
+
+                if ($get2->kelayakan == 'ya') {
                     $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
-                }else{
+                } else {
                     $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
                 }
             }
@@ -1039,11 +1040,10 @@ class DosenController extends Controller
         } else {
             foreach ($getlist as $gt) {
                 $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
-                $getmhs= tb_mahasiswa::where('kelompok', $get->kelompok)->get();
-                    foreach ($getmhs as $data)
-                    {
-                        $listmhs[] = array($data->kelompok, $data->nama, $data->nim); 
-                    }
+                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                foreach ($getmhs as $data) {
+                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim);
+                }
                 $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
             }
         }
@@ -1055,10 +1055,9 @@ class DosenController extends Controller
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
-                    foreach ($getmhs2 as $data)
-                    {
-                        $listmhs2[] = array($data->kelompok, $data->nama, $data->nim); 
-                    }
+                foreach ($getmhs2 as $data) {
+                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim);
+                }
                 $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
             }
         }
@@ -1066,7 +1065,8 @@ class DosenController extends Controller
         return view('dosen.Form-004.supervisi_form_004', compact('datas', 'mhs', 'mhs2', 'listmhs', 'listmhs2'));
     }
 
-    public function input_form_004($id){
+    public function input_form_004($id)
+    {
         $supervisi = tb_supervisi::where('id', $id)->first();
         $user = Auth::user();
         $datas = tb_dosen::where('id', $user->id_user)->get();
@@ -1088,25 +1088,25 @@ class DosenController extends Controller
         $save->tanggal_penjajakan = \Carbon\Carbon::now();
         $save->penilaian_1 = $request->value1;
 
-        if ($request->value2 == 'Ada'){
+        if ($request->value2 == 'Ada') {
             $save->penilaian_2 = $request->isian_value2;
-        }else{
+        } else {
             $save->penilaian_2 = $request->value2;
         }
-        
+
         $save->penilaian_3 = $request->value3;
         $save->penilaian_4 = $request->value4;
         $save->penilaian_5 = $request->value5;
 
-        if ($request->value6[0] != null){
+        if ($request->value6[0] != null) {
             $save->penilaian_6 = implode(',', $request->value6);
-        }else{
+        } else {
             $save->penilaian_6 = 'Tidak ada';
         }
-        
-        if ($request->value7[0] != null){
+
+        if ($request->value7[0] != null) {
             $save->penilaian_7 = implode(',', $request->value7);
-        }else{
+        } else {
             $save->penilaian_7 = 'Tidak ada';
         }
 
@@ -1133,11 +1133,10 @@ class DosenController extends Controller
         } else {
             foreach ($getlist as $gt) {
                 $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
-                $getmhs= tb_mahasiswa::where('kelompok', $get->kelompok)->get();
-                    foreach ($getmhs as $data)
-                    {
-                        $listmhs[] = array($data->kelompok, $data->nama, $data->nim); 
-                    }
+                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                foreach ($getmhs as $data) {
+                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim);
+                }
                 $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
             }
         }
@@ -1149,10 +1148,9 @@ class DosenController extends Controller
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
-                    foreach ($getmhs2 as $data)
-                    {
-                        $listmhs2[] = array($data->kelompok, $data->nama, $data->nim); 
-                    }
+                foreach ($getmhs2 as $data) {
+                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim);
+                }
                 $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
             }
         }
@@ -1160,7 +1158,8 @@ class DosenController extends Controller
         return view('dosen.Form-015.supervisi_form_015', compact('datas', 'mhs', 'mhs2', 'listmhs', 'listmhs2'));
     }
 
-    public function input_form_015($id){
+    public function input_form_015($id)
+    {
         $supervisi = tb_supervisi::where('id', $id)->first();
         $user = Auth::user();
         $datas = tb_dosen::where('id', $user->id_user)->get();
@@ -1182,43 +1181,43 @@ class DosenController extends Controller
         $save->tanggal_supervisi = \Carbon\Carbon::now();
         $save->penilaian_1 = $request->value1;
 
-        if ($request->value2 == 'Ada'){
+        if ($request->value2 == 'Ada') {
             $save->penilaian_2 = $request->isian_value2;
-        }else{
+        } else {
             $save->penilaian_2 = $request->value2;
         }
-        
+
         $save->penilaian_3 = $request->value3;
         $save->penilaian_4 = $request->value4;
         $save->penilaian_5 = $request->value5;
 
-        if ($request->value6[0] != null){
+        if ($request->value6[0] != null) {
             $save->penilaian_6 = implode(',', $request->value6);
-        }else{
+        } else {
             $save->penilaian_6 = 'Tidak ada';
         }
-        
-        if ($request->value7[0] != null){
+
+        if ($request->value7[0] != null) {
             $save->penilaian_7 = implode(',', $request->value7);
-        }else{
+        } else {
             $save->penilaian_7 = 'Tidak ada';
         }
 
-        if ($request->value8[0] != null){
+        if ($request->value8[0] != null) {
             $save->penilaian_8 = implode(',', $request->value8);
-        }else{
+        } else {
             $save->penilaian_8 = 'Tidak ada';
         }
 
-        if ($request->value9[0] != null){
+        if ($request->value9[0] != null) {
             $save->penilaian_9 = implode(',', $request->value9);
-        }else{
+        } else {
             $save->penilaian_9 = 'Tidak ada';
         }
 
-        if ($request->value10[0] != null){
+        if ($request->value10[0] != null) {
             $save->penilaian_10 = implode(',', $request->value10);
-        }else{
+        } else {
             $save->penilaian_10 = 'Tidak ada';
         }
 
