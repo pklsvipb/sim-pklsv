@@ -146,7 +146,7 @@
           <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -1.5em;">:</p>
         </td>
         <td style="padding-top: 1px; padding-bottom: 1px;">
-          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ Carbon\Carbon::parse($supervisi->tanggal)->translatedFormat('d F Y'); }}</p>
+          <p style="margin-bottom: 0em; font-size: 10pt; margin-left: -2.5em;">{{ Carbon\Carbon::parse($daftar->tanggal)->translatedFormat('d F Y'); }}</p>
         </td>
       </tr>
     </tbody>

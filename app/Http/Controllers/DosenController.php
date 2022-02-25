@@ -1085,7 +1085,7 @@ class DosenController extends Controller
         $save->kelompok = $supervisi->kelompok;
         $save->dosen_penjajakan_id = $userData->id;
         $save->bidang_usaha = $supervisi->bidang_usaha;
-        $save->tanggal_penjajakan = \Carbon\Carbon::now();
+        $save->tanggal_penjajakan = $request->input('tgl');
         $save->penilaian_1 = $request->value1;
 
         if ($request->value2 == 'Ada') {
@@ -1178,7 +1178,7 @@ class DosenController extends Controller
         $save->kelompok = $supervisi->kelompok;
         $save->dosen_supervisi_id = $userData->id;
         $save->bidang_usaha = $supervisi->bidang_usaha;
-        $save->tanggal_supervisi = \Carbon\Carbon::now();
+        $save->tanggal_supervisi = $request->input('tgl');
         $save->penilaian_1 = $request->value1;
 
         if ($request->value2 == 'Ada') {

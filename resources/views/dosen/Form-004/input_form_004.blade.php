@@ -180,19 +180,26 @@
                       </tbody>                      
                     </table>
 
-                    <table class="table table-borderless">
-                      <tbody>
-                        <tr>
-                        <td width="100%">
-                          <p style="margin-bottom: 0em; margin-left: 40em; margin-right: 0px; font-size: 11pt;">Bogor, {{ Carbon\Carbon::now()->translatedFormat('d F Y'); }}</p>
-                          <p style="margin-bottom: 0em; margin-left: 40em; margin-right: 0px; font-size: 11pt;">Dosen Penjajakan Lokasi PKL</p>
-                          <img src="{{asset($userData->ttd)}}" style="margin-left: 40em; margin-top: 7px; width: auto; height: 1.5cm;">
-                          <p style="margin-bottom: 0em; margin-left: 40em; margin-right: 0px; font-size: 11pt;">{{$userData->nama}}</p>
-                          <br><br><br>
-                        </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="row">
+                      <div class="col-md-9"></div>
+                      <div class="col-md-3 mt-5">
+                        <label style="font-size: 14px;">Tanggal Berita Acara</label>
+                        <input type="date" class="form-control" name="tgl" style="border: none; border-bottom: 1px solid black; border-radius: 0px;">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-9 mt-5"></div>
+                      <div class="col-md-3" style="text-align: center;">
+                      <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px; text-align: left;">Dosen Penjajakan Lokasi PKL</p>
+                        <br>
+                        <img src="{{asset($userData->ttd)}}" style="width: auto; height: 2.5cm;">
+                        <div>
+                          <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px; text-align: left;">{{$userData->nama}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <br><br>
 
                     <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Simpan</button>
                   </form>
