@@ -229,7 +229,7 @@
                       <div class="col-md-9"></div>
                       <div class="col-md-3 mt-5">
                         <label style="font-size: 14px;">Tanggal Berita Acara</label>
-                        <input type="date" class="form-control" name="tgl" style="border: none; border-bottom: 1px solid black; border-radius: 0px;">
+                        <input type="date" class="form-control" name="tgl" value="{{$supervisi->tanggal}}" style="border: none; border-bottom: 1px solid black; border-radius: 0px;">
                       </div>
                     </div>
 

@@ -64,18 +64,18 @@
                     }
                   </style>
 
-                  <div class="col-md-3" id="menu-pertama">
+                  <div class="col-md-6" id="menu-pertama">
                     <a href="{{ route('jurnal') }}" style="text-decoration: none; padding: 17px 50px;">JURNAL HARIAN</a>
                   </div>
-                  <div class="col-md-3" id="menu-kedua">
+                  <div class="col-md-6" id="menu-kedua">
                     <a href="{{ route('periodik') }}" style="text-decoration: none; padding: 17px 50px;">LAPORAN PERIODIK</a>
                   </div>
-                  <div class="col-md-3" id="menu-kedua">
+                  {{--<div class="col-md-3" id="menu-kedua">
                     <a href="{{ route('k-bimbingan') }}" style="text-decoration: none; padding: 17px 50px;">KARTU BIMBINGAN TA</a>
                   </div>
                   <div class="col-md-3" id="menu-kedua">
                     <a href="{{ route('k-seminar') }}" style="text-decoration: none; padding: 17px 50px;">KARTU SEMINAR</a>
-                  </div>
+                  </div>--}}
 
                 </div>
                 <hr style="margin-top: -9px;">

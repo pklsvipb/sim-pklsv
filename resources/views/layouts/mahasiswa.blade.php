@@ -122,12 +122,12 @@
                     <p>Daftar Form</p>
                   </a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                   <a href="{{ route('jurnal')}}" class="nav-link">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Form Daily</p>
                   </a>
-                </li> --}}
+                </li>
               </ul>
             </li>
             <li class="nav-item">
