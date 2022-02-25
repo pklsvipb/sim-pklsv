@@ -24,7 +24,7 @@
                     <tr>
                       <td>
                         <br>
-                        <a type="button" class="btn btn-info" href="{{$link->link_nilai}}" target="_blank">Link Drive</a>
+                        <a type="button" class="btn btn-info" href="{{$link->link_form015}}" target="_blank">Link Drive</a>
                       </td>
                     </tr>
                   </tbody>
