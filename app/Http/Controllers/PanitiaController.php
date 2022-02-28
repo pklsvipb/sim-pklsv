@@ -1094,4 +1094,23 @@ class PanitiaController extends Controller
     {
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
     }
+
+    public function set_mahasiswa(){
+        $user = Auth::user();
+        $datas     = tb_panitia::where('id', $user->id_user)->get();
+        $panitia = tb_panitia::where('id', $user->id_user)->first();
+        $all = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
+
+        return view('panitia.set_mahasiswa', compact('datas', 'all'));
+    }
+
+    public function mahasiswa_reset($id)
+    {
+        $user         = user::where('username', $id)->first();
+        $db           = user::find($user->id);
+        $db->password = bcrypt($user->username);
+        $db->save();
+
+        return redirect()->route('set-mahasiswa')->with('success-reset', 'Berhasil mereset password mahasiswa');
+    }
 }

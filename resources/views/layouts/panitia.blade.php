@@ -100,6 +100,14 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{ route('set-mahasiswa') }}" class="nav-link">
+                <i class="nav-icon fa fa-users-cog"></i>
+                <p style="padding-left: 7px;">
+                  Setting Mahasiswa
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{ route('list-kl-form')}}" class="nav-link">
                 <i class="nav-icon fa fa-calendar"></i>
                 <p style="padding-left: 7px;">

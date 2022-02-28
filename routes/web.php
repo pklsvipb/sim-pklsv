@@ -143,6 +143,8 @@ Route::middleware('role:panitia')->get('/panitia/laporan_periodik', [App\Http\Co
 Route::middleware('role:panitia')->get('/panitia/link_form', [App\Http\Controllers\PanitiaController::class, 'link_form'])->name('link-form');
 Route::middleware('role:panitia')->post('/panitia/link_form/save', [App\Http\Controllers\PanitiaController::class, 'link_form_save'])->name('link-form-save');
 
+Route::middleware('role:panitia')->get('/panitia/setting/mahasiswa', [App\Http\Controllers\PanitiaController::class, 'set_mahasiswa'])->name('set-mahasiswa');
+Route::middleware('role:panitia')->get('/panitia/setting/mahasiswa/reset/{id}', [App\Http\Controllers\PanitiaController::class, 'mahasiswa_reset'])->name('mahasiswa-reset');
 
 
 
