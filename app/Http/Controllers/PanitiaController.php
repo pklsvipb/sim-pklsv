@@ -437,7 +437,7 @@ class PanitiaController extends Controller
         $datas      = tb_panitia::where('id', $user->id_user)->get();
         $getlist    = tb_supervisi::where('set_verif', 0)->get();
         $history    = tb_supervisi::where('set_verif', 1)->get();
-dd($getlist);
+
         if (count($getlist) == 0) {
             $supervisi = [];
         } else {
@@ -445,7 +445,7 @@ dd($getlist);
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
                 
                 if ($getmhs == null) {
-                    $supervisi = [];
+                    $supervisi[] = [];
                 } else {
                     $supervisi[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->kelompok);
                 }
@@ -458,7 +458,7 @@ dd($getlist);
             foreach ($history as $hs) {
                 $getmhs      = tb_mahasiswa::where('id', $hs->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
                 if ($getmhs == null) {
-                    $supervisi2 = [];
+                    $supervisi2[] = [];
                 } else {
                     $supervisi2[] = array($hs->id, $getmhs->nama, $getmhs->nim, $hs->kelompok);
                 }
