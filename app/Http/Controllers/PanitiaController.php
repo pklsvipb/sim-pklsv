@@ -437,13 +437,13 @@ class PanitiaController extends Controller
         $datas      = tb_panitia::where('id', $user->id_user)->get();
         $getlist    = tb_supervisi::where('set_verif', 0)->get();
         $history    = tb_supervisi::where('set_verif', 1)->get();
-
+dd($getlist);
         if (count($getlist) == 0) {
             $supervisi = [];
         } else {
             foreach ($getlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                dd($getmhs);
+                
                 if ($getmhs == null) {
                     $supervisi = [];
                 } else {
