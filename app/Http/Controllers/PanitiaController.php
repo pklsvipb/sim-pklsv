@@ -443,6 +443,7 @@ class PanitiaController extends Controller
         } else {
             foreach ($getlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                dd($getmhs);
                 if ($getmhs == null) {
                     $supervisi = [];
                 } else {
