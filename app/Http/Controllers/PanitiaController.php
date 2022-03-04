@@ -437,6 +437,8 @@ class PanitiaController extends Controller
         $datas      = tb_panitia::where('id', $user->id_user)->get();
         $getlist    = tb_supervisi::where('set_verif', 0)->get();
         $history    = tb_supervisi::where('set_verif', 1)->get();
+        $supervisi = [];
+        $supervisi2= [];
 
         if (count($getlist) == 0) {
             $supervisi = [];
@@ -444,9 +446,7 @@ class PanitiaController extends Controller
             foreach ($getlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
                 
-                if ($getmhs == null) {
-                    $supervisi[] = [];
-                } else {
+                if ($getmhs != null) {
                     $supervisi[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->kelompok);
                 }
             }
@@ -457,9 +457,7 @@ class PanitiaController extends Controller
         } else {
             foreach ($history as $hs) {
                 $getmhs      = tb_mahasiswa::where('id', $hs->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                if ($getmhs == null) {
-                    $supervisi2[] = [];
-                } else {
+                if ($getmhs != null) {
                     $supervisi2[] = array($hs->id, $getmhs->nama, $getmhs->nim, $hs->kelompok);
                 }
             }
