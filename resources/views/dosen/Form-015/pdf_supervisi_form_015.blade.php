@@ -189,7 +189,7 @@
         @if ($supervisi->penilaian_2 != "Tidak Ada")
           <p style="font-size: 10pt; line-height: 90%;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}}</p>
         @else
-          <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha Sebutkan : </p>
+          <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha</p>
         @endif
         @if ($supervisi->penilaian_2 == "Tidak Ada")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Tidak Ada</p>

@@ -92,7 +92,7 @@
     </tbody>
   </table>
 
-  <table class="table table-borderless" style="margin-top: -1em; height: 14%;">
+  <table class="table table-borderless" style="margin-top: -1em; height: 12%;">
     <tbody>
       <tr>
         <td width="34%" style="padding-top: 1px; padding-bottom: 1px;">
@@ -187,9 +187,9 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Perencanaaan Usaha di masa yang akan datang</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
         @if ($supervisi->penilaian_2 != "Tidak Ada")
-          <p style="font-size: 10pt; line-height: 90%;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}}</p>
+          <p style="font-size: 10pt; line-height: 90%;letter-spacing: 0.1px;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}}</p>
         @else
-          <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha Sebutkan :</p>
+          <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha</p>
         @endif
         @if ($supervisi->penilaian_2 == "Tidak Ada")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Tidak Ada</p>

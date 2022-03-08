@@ -80,7 +80,7 @@
                           <td>
                             <div class="form-check" id="2">
                               <input class="form-check-input" type="radio" name="value2" id="isian" value="Ada">
-                              <label class="form-check-label">Ada rencana pengembangan usaha</label>
+                              <label class="form-check-label">Ada rencana pengembangan usaha (max: 100 character)</label>
                             </div>
 
                             <div class="form-check">
