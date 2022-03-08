@@ -93,7 +93,7 @@
                       <div class="col-md-8 mt-5"></div>
                       <div class="col-md-4" style="text-align: center;">
                         <br>
-                        <img src="{{asset($data->ttd)}}" style="width: auto; height: 2.5cm;">
+                        <img src="{{asset($data->ttd)}}" style="width: 3cm; height: 2cm;">
                         <div>
                           <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px; text-align: left;">{{$data->nama}}</p>
                           <p style="font-weight: 600; font-size: 14px; text-align: left;">NIP. {{$data->nip}}</p>

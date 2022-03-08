@@ -238,7 +238,7 @@
                       <div class="col-md-3" style="text-align: center;">
                       <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px; text-align: left;">Dosen Supervisi</p>
                         <br>
-                        <img src="{{asset($userData->ttd)}}" style="width: auto; height: 2.5cm;">
+                        <img src="{{asset($userData->ttd)}}" style="width: 3cm; height: 2cm;">
                         <div>
                           <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px; text-align: left;">{{$userData->nama}}</p>
                         </div>
