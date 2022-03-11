@@ -37,8 +37,8 @@
                     @foreach($datas as $data)
                     <tr>
                       <td colspan="2" style="border-top: none; text-align: center; font-size:18px;">
+                        <a href="{{route('download-biodata')}}" type="button" class="btn btn-info" style="font-size: 12px; float:left; margin-top: -10px;">DOWNLOAD</a><br>
                         ISI DATA MAHASISWA <br>
-                        <a href="{{route('download-biodata')}}" type="button" class="btn btn-info" style="font-size: 12px; float: right; margin-top: -30px;">DOWNLOAD</a> 
                       </td>
                     </tr>
                     
