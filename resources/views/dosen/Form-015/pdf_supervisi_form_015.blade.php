@@ -60,11 +60,16 @@
   <table class="table table-borderless">
     <tbody>
       <tr>
-        <td style="padding-bottom: 0px; padding-top: 1px;" width="20%">
+        <td colspan="3">
+          <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/015</p>
+        </td>   
+      </tr>
+      <tr>
+        <td style="padding-bottom: 0px; padding-top: 1px;" width="15%">
           <p>&nbsp;</p>
-          <img src="{{public_path('images/logo-form2.jpg')}}" style="width: 2.06cm; height: 2.06cm; margin-top: 2px;">
+          <img src="{{public_path('images/logo-form2.jpg')}}" style="width: 2.06cm; height: 2.06cm; margin-top: -2%;">
         </td>
-        <td style="padding-bottom: 0px; padding-top: 1px; text-align:center;" width="60%">
+        <td style="padding-bottom: 0px; padding-top: 1px; text-align:center;" width="80%">
           <p>&nbsp;</p>
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt; margin-top: -7;"> KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI </p>
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt;"> INSTITUT PERTANIAN BOGOR </p>
@@ -72,8 +77,8 @@
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Kampus IPB Cilibende, Jl. Kumbang No.14 Bogor 16151 </p>
           <p style="margin-bottom: -3rem; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
         </td>
-        <td style="padding-bottom: 0px; padding-top: 1px;" width="20%">
-          <p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/015</p>
+        <td style="padding-bottom: 0px; padding-top: 1px;" width="5%">
+          <!-- <p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/015</p> -->
         </td>
       </tr>
       <tr>
