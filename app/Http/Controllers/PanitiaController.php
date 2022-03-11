@@ -438,14 +438,14 @@ class PanitiaController extends Controller
         $getlist    = tb_supervisi::where('set_verif', 0)->get();
         $history    = tb_supervisi::where('set_verif', 1)->get();
         $supervisi = [];
-        $supervisi2= [];
+        $supervisi2 = [];
 
         if (count($getlist) == 0) {
             $supervisi = [];
         } else {
             foreach ($getlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                
+
                 if ($getmhs != null) {
                     $supervisi[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->kelompok);
                 }
@@ -1094,13 +1094,15 @@ class PanitiaController extends Controller
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
     }
 
-    public function set_mahasiswa(){
+    public function set_mahasiswa()
+    {
         $user = Auth::user();
-        $datas     = tb_panitia::where('id', $user->id_user)->get();
+        $datas  = tb_panitia::where('id', $user->id_user)->get();
         $panitia = tb_panitia::where('id', $user->id_user)->first();
-        $all = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
+        $all    = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
+        $dosens = tb_dosen::all();
 
-        return view('panitia.set_mahasiswa', compact('datas', 'all'));
+        return view('panitia.set_mahasiswa', compact('datas', 'all', 'dosens'));
     }
 
     public function mahasiswa_reset($id)

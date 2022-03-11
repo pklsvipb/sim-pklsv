@@ -20,9 +20,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class MahasiswaController extends Controller
 {
+
+    public function __construct()
+    {
+        set_time_limit(10000000);
+    }
+
     public function dashboard_m()
     {
         $user  = Auth::user();
@@ -171,6 +179,17 @@ class MahasiswaController extends Controller
         $bio->save();
 
         return Redirect::Back()->with('success', 'Berhasil Menyimpan Data');
+    }
+
+    public function biodata_download()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $data  = tb_mahasiswa::where('id', $user->id_user)->first();
+        $tgl   = Carbon::now();
+        $pdf   = PDF::loadview('form_pdf.biodata', compact('data'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Biodata ' . $data->nim . '.pdf', compact('data'));
     }
 
     public function form_m()

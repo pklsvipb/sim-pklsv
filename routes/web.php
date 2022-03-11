@@ -14,18 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function(){
+Route::get('/test', function () {
     return 1;
 });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
 
-Route::get('/n&l/down', function() {
+Route::get('/n&l/down', function () {
     Artisan::call('down');
     return 'Application is now in maintenance mode.';
 });
 
-Route::get('/n&l/up', function() {
+Route::get('/n&l/up', function () {
     Artisan::call('up');
     return 'Application is now live.';
 });
@@ -235,6 +235,7 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/reset-password/submit', [A
 
 Route::middleware('role:mahasiswa')->get('/mahasiswa/biodata', [App\Http\Controllers\MahasiswaController::class, 'biodata_m'])->name('biodata-m');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/biodata-submit', [App\Http\Controllers\MahasiswaController::class, 'biodata_ms'])->name('biodata-ms');
+Route::middleware('role:mahasiswa')->get('/mahasiswa/download-biodata', [App\Http\Controllers\MahasiswaController::class, 'biodata_download'])->name('download-biodata');
 
 Route::middleware('role:mahasiswa')->get('/mahasiswa/form', [App\Http\Controllers\MahasiswaController::class, 'form_m'])->name('form-m');
 
