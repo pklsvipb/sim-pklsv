@@ -12,19 +12,18 @@
               <div class="col-md-12 mb-5">
 
                 <div class="title text-center" style="font-weight: 600;">
-                  FORM 011 <br>
-                  FORM PRESENTASI HASIL PKL
+                  FORMULIR PENGGUNAAN PRODUK TUGAS AKHIR
                 </div>
                 @foreach ($datas as $data)
 
-                @if (File::exists(public_path('pdf/'.$data->nim.'/pdf_form_011.pdf')))
-                <form action="{{ url('/mahasiswa/form011/delete') }}" method="POST" class="form-horizontal">
+                @if (File::exists(public_path('pdf/'.$data->nim.'/pdf_penggunaan_produk.pdf')))
+                <form action="{{ url('/mahasiswa/penggunaan_produk/delete') }}" method="POST" class="form-horizontal">
                   @csrf
-                  <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_011.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 011 Presentasi Hasil PKL</a>
-                  <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 011?')"><i class="fa fa-trash"></i></button>
+                  <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_penggunaan_produk.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form Penggunaan Produk</a>
+                  <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form penggunaan produk?')"><i class="fa fa-trash"></i></button>
                 </form>  
 
-                <form action="{{ route('form011-pdf', $id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                <form action="{{ route('penggunaan-produk-pdf', $id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                   {{ csrf_field() }}
                   <table cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;" width="100%">
                     <tbody>
@@ -45,14 +44,15 @@
                 </form>
 
                 @else
-                <form action="{{ route('form011-pdf-save', $id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                <form action="{{ route('penggunaan-produk-pdf-save', $id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                   {{ csrf_field() }}
+
                   <table cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px;">
                     <tbody>
                       <tr>
                         <td width="20%">Nama Perusahaan/ Instansi</td>
                         <td>:</td>
-                        <td width="80%;"><input type="text" name="instansi" value="{{$data->instansi}}" class="form-control" disabled></td>
+                        <td width="80%;"><input type="text" name="instansi" class="form-control" value="{{$data->instansi}}" disabled></td>
                       </tr>
                       <tr>
                         <td>Alamat</td>
@@ -64,14 +64,14 @@
                         <td>:</td>
                         <td><input type="text" name="pemlap" class="form-control"></td>
                       </tr>
-                        <tr>
-                          <td colspan="3">
-                            <br><br>
-                          </td>
-                        </tr>
                       <tr>
                         <td colspan="3">
-                          Dengan ini Pembimbing Lapangan PKL menyatakan bahwa mahasiswa berikut :
+                          <br><br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          Dengan ini Pembimbing Lapangan PKL menyatakan bahwa karya mahasiswa berikut :
                         </td>
                       </tr>
                       <tr>
@@ -90,11 +90,6 @@
                         <td><input type="text" value="{{$data->getProdi->nama}}" class="form-control" disabled></td>
                       </tr>
                       <tr>
-                        <td>&nbsp;&nbsp;&nbsp; Tanggal Presentasi</td>
-                        <td>:</td>
-                        <td><input type="date" name="tanggal" class="form-control"></td>
-                      </tr>
-                      <tr>
                         <td>&nbsp;&nbsp;&nbsp; Judul Laporan Akhir</td>
                         <td>:</td>
                         <td><textarea name="judul" rows="2" class="form-control"></textarea></td>
@@ -102,11 +97,12 @@
                     </tbody>
                   </table>
                   <br>
-                  <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: ;"><i class="fas fa-save fa-sm"></i>&nbsp; Kirim</button>
-                
+                  <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Kirim</button>
+
                 </form>
                 @endif
                 @endforeach
+
               </div>
             </div>
           </div>

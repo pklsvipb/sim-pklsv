@@ -71,12 +71,12 @@
         <td width="80%" style="text-align:center;">
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt;"> KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI </p>
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt;"> INSTITUT PERTANIAN BOGOR </p>
-          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 12pt;"> <b> SEKOLAH VOKASI </b></p>
+          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 12pt;"> <b> SEKOLAH VOKASI </b> </p>
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Kampus IPB Cilibende, Jl. Kumbang No.14 Bogor 16151 </p>
           <p style="margin-bottom: -10%; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
         </td>
         <td width="5%">
-          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/019</p>-->
+          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/029</p>-->
         </td>
       </tr>
       <tr>
@@ -187,7 +187,7 @@
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Moderator</p>
           <img src="{{url($dosen->ttd)}}" style="margin-left: 21em; margin-top: 7px; width: auto; height: 1.5cm;">
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">{{$dosen->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">NPI. {{$dosen->nip}}</p>
+          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">NPI {{$dosen->nip}}</p>
           <br><br><br>
         </td>
         <td></td>

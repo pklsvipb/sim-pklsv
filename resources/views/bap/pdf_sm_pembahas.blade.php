@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{asset('css_pdf/bootstrap.min.css')}}">
 
 
-  <title>Dosen Pembimbing Seminar PDF</title>
+  <title>Form Penilaian Pembahas Seminar PDF</title>
   <style>
     body {
       font-family: "Times New Roman", Times, serif;
@@ -61,7 +61,7 @@
     <tbody>
       <tr>
         <td colspan="3">
-          <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/019</p>
+          <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/020</p>
         </td>   
       </tr>
       <tr>
@@ -76,7 +76,6 @@
           <p style="margin-bottom: -10%; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
         </td>
         <td width="5%">
-          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/029</p>-->
         </td>
       </tr>
       <tr>
@@ -84,7 +83,7 @@
           <hr style="height:1px; margin-bottom:-15px; margin-top: 8px; border-width:0; background-color:black">
           <hr style="height:3px; border-width:0; background-color:black; margin-bottom: 2px;">
 
-          <p style="margin-bottom: -7px;"><b>BERITA ACARA SEMINAR TUGAS AKHIR</b></p>
+          <p style="margin-bottom: -7px;"><b>PENILAIAN PEMBAHAS SEMINAR</b></p>
           <p style="margin-bottom: -7px;"><b>PROGRAM STUDI {{strtoupper($mhs->getProdi->nama)}}</b></p>
           <p style="margin-bottom: -7px;"><b>TAHUN AKADEMIK 2021/2022</b></p>
 
@@ -99,11 +98,13 @@
     <tbody>
       <tr>
         <td width="23%">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Nama Pembahas</p>
+          <p style="margin-bottom: 0em; font-size: 11pt;">NIM</p>
+          <P style="margin-bottom: 0em; font-size: 11pt;">Hari / Tanggal</P>
           <p style="margin-bottom: 0em; font-size: 11pt;">Nama Penyaji</p>
           <p style="margin-bottom: 0em; font-size: 11pt;">NIM</p>
-          <P style="margin-bottom: 0em; font-size: 11pt;">Hari/tanggal</P>
-          <p style="margin-bottom: 0em; font-size: 11pt;">Waktu</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">Judul Laporan Akhir</p>
+          <p style="margin-bottom: 0em; font-size: 11pt;">Judul Makalah</p>
+          <p style="margin-bottom: 0em; font-size: 11pt;">Nilai *)</p>
         </td>
         <td width="1%">
           <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
@@ -111,82 +112,30 @@
           <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
           <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
           <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
         </td>
         <td width="76%">
+          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->getMhs->nama}}</p>
+          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->getMhs->nim}}</p>
+          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{ Carbon\Carbon::parse($sm->tgl)->translatedFormat('l/ d F Y'); }}</p>
           <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$mhs->nama}}</p>
           <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$mhs->nim}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{ Carbon\Carbon::parse($data->tgl)->translatedFormat('l/ d F Y'); }}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{date('H:i', strtotime($data->waktu))}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt; text-align: justify;">{{$data->judul}}</p>
+          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt; text-align: justify;">{{$sm->judul}}</p>
+          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->nilai_pembahas}}</p>
         </td>
       </tr>
     </tbody>
   </table>
 
-
-  <table class="table table-borderless" style="margin-top: -1em;">
-    <tbody>
-      <tr>
-        <td style="font-size: 11pt;">Penilaian : </td>
-      </tr>
-      <tr>
-        <td width="78%">
-          <table class="table table-bordered" id="nilai" style="margin-top: -1em;">
-            <thead>
-              <tr>
-                <th rowspan="2" style="font-size: 11pt; font-weight: 600; text-align: center; vertical-align: middle;" width="7%">No.</th>
-                <th rowspan="2" style="font-size: 11pt; font-weight: 600; text-align: center; vertical-align: middle;" width="31%">Aspek</th>
-                <th rowspan="2" style="font-size: 11pt; font-weight: 600; text-align: center; vertical-align: middle;" width="15%">Bobot</th>
-                <th colspan="2" style="font-size: 11pt; font-weight: 600; text-align: center;" width="25%">Dosen Pembimbing</th>
-              </tr>
-              <tr>
-                <th style="font-size: 11pt; text-align: center;">Nilai</th>
-                <th style="font-size: 11pt; text-align: center;">Bobot x Nilai</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-size: 11pt; text-align: center;">1. </td>
-                <td style="font-size: 11pt; text-align: left;">Format dan substansi makalah</td>
-                <td style="font-size: 11pt; text-align: center;">30%</td>
-                <td style="font-size: 11pt; text-align: center;">{{$bap->nilai1}}</td>
-                <td style="font-size: 11pt; text-align: center;"><?= $bap->nilai1 * 0.3; ?></td>
-              </tr>
-              <tr>
-                <td style="font-size: 11pt; text-align: center;">2. </td>
-                <td style="font-size: 11pt; text-align: left;">Penyajian makalah</td>
-                <td style="font-size: 11pt; text-align: center;">30%</td>
-                <td style="font-size: 11pt; text-align: center;">{{$bap->nilai2}}</td>
-                <td style="font-size: 11pt; text-align: center;"><?= $bap->nilai2 * 0.3; ?></td>
-              </tr>
-              <tr>
-                <td style="font-size: 11pt; text-align: center;">3. </td>
-                <td style="font-size: 11pt; text-align: left;">Argumentasi dalam forum diskusi</td>
-                <td style="font-size: 11pt; text-align: center;">40%</td>
-                <td style="font-size: 11pt; text-align: center;">{{$bap->nilai3}}</td>
-                <td style="font-size: 11pt; text-align: center;"><?= $bap->nilai3 * 0.4; ?></td>
-              </tr>
-              <tr>
-                <td style="font-size: 11pt; text-align: center;" colspan="2">Total</td>
-                <td style="font-size: 11pt; text-align: center;">100%</td>
-                <td colspan="2" style="font-size: 11pt; text-align: center;"><?= ($bap->nilai1 * 0.3) + ($bap->nilai2 * 0.3) + ($bap->nilai3 * 0.4); ?></td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-        <td width="22%"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <table class="table table-borderless" style="margin-top: -1em;">
+  <table class="table table-borderless" style="margin-top: 17em;">
     <tbody>
       <tr>
         <td width="100%">
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Bogor, {{ Carbon\Carbon::parse($bap->tgl)->translatedFormat('d F Y'); }}</p>
-          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Dosen Pembimbing</p>
+          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Moderator</p>
           <img src="{{url($dosen->ttd)}}" style="margin-left: 21em; margin-top: 7px; width: auto; height: 1.5cm;">
-          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">{{$dosen->nama}}</p>
+          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">({{$dosen->nama}})</p>
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">NPI {{$dosen->nip}}</p>
           <br><br><br>
         </td>
@@ -199,7 +148,7 @@
             <tbody>
               <tr>
                 <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="40%">No. Revisi : 00</td>
-                <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="10%">Hal: 1/2</td>
+                <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="10%">Hal: 2/2</td>
                 <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="50%">Tanggal Berlaku: 09 Oktober 2021</td>
               </tr>
             </tbody>

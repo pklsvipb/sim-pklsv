@@ -30,7 +30,7 @@
                       <tr>
                         <td>Hari/Tanggal</td>
                         <td>:</td>
-                        <td>{{date('d-m-Y', strtotime($kode->tgl))}}</td>
+                        <td>{{ Carbon\Carbon::parse($kode->tgl)->translatedFormat('l/ d F Y'); }}</td>
                       </tr>
                       <tr>
                         <td>Waktu</td>
@@ -97,7 +97,7 @@
                       <div class="col-md-8"></div>
                       <div class="col-md-4 mt-5">
                         <label style="font-size: 14px;">Tanggal Berita Acara</label>
-                        <input type="date" class="form-control" name="tgl" style="border: none; border-bottom: 1px solid black; border-radius: 0px;">
+                        <input type="date" class="form-control" name="tgl" value="{{$kode->tgl}}" style="border: none; border-bottom: 1px solid black; border-radius: 0px;">
                       </div>
                     </div>
 
@@ -108,7 +108,7 @@
                         <img src="{{asset($data->ttd)}}" style="width: 3cm; height: 2cm;">
                         <div>
                           <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px;">{{$data->nama}}</p>
-                          <p style="font-weight: 600; font-size: 14px;">NIP. {{$data->nip}}</p>
+                          <p style="font-weight: 600; font-size: 14px;">NPI {{$data->nip}}</p>
                         </div>
                       </div>
                     </div>

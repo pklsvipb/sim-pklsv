@@ -105,14 +105,14 @@
                         <img src="{{asset($dosen->ttd)}}" style="width: 3cm; height: 2cm;">
                         <div>
                           <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px;">{{$dosen->nama}}</p>
-                          <p style="font-weight: 600; font-size: 14px;">NIP. {{$dosen->nip}}</p>
+                          <p style="font-weight: 600; font-size: 14px;">NPI {{$dosen->nip}}</p>
                         </div>
 
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp; Update</button>
                   </form>
-                </div>
+                </div>  
               </div>
             </div>
           </div>

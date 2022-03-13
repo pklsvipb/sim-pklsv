@@ -146,7 +146,7 @@
                 </p>
               </a>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a href="{{ route('d-seminar') }}" class="nav-link">
                 <i class="nav-icon fa fa-laptop"></i>
                 <p style="padding-left: 7px;">
@@ -155,6 +155,14 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{ route('jadwal-seminar') }}" class="nav-link">
+                <i class="nav-icon fa fa-calendar-check"></i>
+                <p style="padding-left: 7px;">
+                  Jadwal Seminar
+                </p>
+              </a>
+            </li>
+            {{-- <li class="nav-item">
               <a href="{{ route('d-sidang') }}" class="nav-link">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">

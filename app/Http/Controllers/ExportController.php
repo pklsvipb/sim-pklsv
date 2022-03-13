@@ -20,9 +20,16 @@ use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use ZipArchive;
+use App\Models\tb_nilai_forum;
+use App\Models\tb_nilai_pembahas;
 
 class ExportController extends Controller
 {
+
+    public function __construct()
+    {
+        set_time_limit(10000000);
+    }
 
     // BAP -- USER DOSEN
     public function kl_bap_vd($id)
@@ -68,6 +75,31 @@ class ExportController extends Controller
 
         return $pdf->stream('BAP Seminar Moderator.pdf', compact('bap', 'data', 'dosen', 'mhs'));
     }
+
+    public function sm_forum($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $sm    = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sm')->first();
+        $datas = tb_nilai_forum::where('id_seminar', $sm->id)->get();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sm_forum', compact('bap', 'sm', 'datas', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Form Penilaian Forum Seminar.pdf', compact('bap', 'sm', 'datas', 'dosen', 'mhs'));
+    }
+
+    public function sm_pembahas($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $sm    = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sm')->first();
+        $data  = tb_nilai_pembahas::where('id_seminar', $sm->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sm_pembahas', compact('bap', 'sm', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Form Penilaian Pembahas Seminar.pdf', compact('bap', 'sm', 'data', 'dosen', 'mhs'));
+    }
+
 
     public function sd_bap_vd($id)
     {
@@ -227,10 +259,10 @@ class ExportController extends Controller
         if ($zip->open($dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE) {
             // Add File in ZipArchive 
             foreach ($form as $get) {
-                if ($get->id_form == 1){
-                    $zip->addFile($get->file, $request->input('nama').'_'.$request->input('nim').'_form001'.'.pdf');
-                }elseif ($get->id_form == 4){
-                    $zip->addFile($get->file, $request->input('nama').'_'.$request->input('nim').'_form012'.'.pdf');
+                if ($get->id_form == 1) {
+                    $zip->addFile($get->file, $request->input('nama') . '_' . $request->input('nim') . '_form001' . '.pdf');
+                } elseif ($get->id_form == 4) {
+                    $zip->addFile($get->file, $request->input('nama') . '_' . $request->input('nim') . '_form012' . '.pdf');
                 }
             }
             $zip->close();
@@ -257,28 +289,28 @@ class ExportController extends Controller
         $zip = new ZipArchive;
         if ($zip->open($dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE) {
             // Add File in ZipArchive 
-                    $supervisi   = tb_form_004::where('kelompok', $request->input('kelompok'))->first();
-                    $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
-                    $value6 = explode(',', $supervisi->penilaian_6);
-                    $value7 = explode(',', $supervisi->penilaian_7);
-                    $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0,0,595.276,841.8898], 'portrait');
-                    Storage::disk('local')->put('file_form/form004_'.$request->input('nama').'.pdf',$pdf->output());
-                    $zip->addFile('file_form/form004_'.$request->input('nama').'.pdf',$request->input('nama').'_'.$request->input('nim').'_form004'.'.pdf');
+            $supervisi   = tb_form_004::where('kelompok', $request->input('kelompok'))->first();
+            $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
+            $value6 = explode(',', $supervisi->penilaian_6);
+            $value7 = explode(',', $supervisi->penilaian_7);
+            $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+            Storage::disk('local')->put('file_form/form004_' . $request->input('nama') . '.pdf', $pdf->output());
+            $zip->addFile('file_form/form004_' . $request->input('nama') . '.pdf', $request->input('nama') . '_' . $request->input('nim') . '_form004' . '.pdf');
 
-                    $supervisi   = tb_form_015::where('kelompok', $request->input('kelompok'))->first();
-                    $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
-                    $value6 = explode(',', $supervisi->penilaian_6);
-                    $value7 = explode(',', $supervisi->penilaian_7);
-                    $value8 = explode(',', $supervisi->penilaian_8);
-                    $value9 = explode(',', $supervisi->penilaian_9);
-                    $value10 = explode(',', $supervisi->penilaian_10);
-                    $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0,0,595.276,841.8898], 'portrait');
-                    Storage::disk('local')->put('file_form/form015_'.$request->input('nama').'.pdf',$pdf->output());
-                    $zip->addFile('file_form/form015_'.$request->input('nama').'.pdf',$request->input('nama').'_'.$request->input('nim').'_form015'.'.pdf');
+            $supervisi   = tb_form_015::where('kelompok', $request->input('kelompok'))->first();
+            $daftar = tb_supervisi::where('kelompok', $request->input('kelompok'))->first();
+            $value6 = explode(',', $supervisi->penilaian_6);
+            $value7 = explode(',', $supervisi->penilaian_7);
+            $value8 = explode(',', $supervisi->penilaian_8);
+            $value9 = explode(',', $supervisi->penilaian_9);
+            $value10 = explode(',', $supervisi->penilaian_10);
+            $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+            Storage::disk('local')->put('file_form/form015_' . $request->input('nama') . '.pdf', $pdf->output());
+            $zip->addFile('file_form/form015_' . $request->input('nama') . '.pdf', $request->input('nama') . '_' . $request->input('nim') . '_form015' . '.pdf');
             $zip->close();
         }
-        Storage::disk('local')->delete('file_form/form004_'.$request->input('nama').'.pdf');
-        Storage::disk('local')->delete('file_form/form015_'.$request->input('nama').'.pdf');
+        Storage::disk('local')->delete('file_form/form004_' . $request->input('nama') . '.pdf');
+        Storage::disk('local')->delete('file_form/form015_' . $request->input('nama') . '.pdf');
         // Set Header 
         $headers = array(
             'Content-Type' => 'application/octet-stream',
@@ -325,7 +357,7 @@ class ExportController extends Controller
             if ($file) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_001.pdf');
             }
-            
+
             // Delete File
             if ($lampiran) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/lampiran.pdf');
@@ -351,7 +383,7 @@ class ExportController extends Controller
             if ($file) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_001.pdf');
             }
-            
+
             // Delete File
             if ($lampiran) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/lampiran.pdf');
@@ -437,7 +469,7 @@ class ExportController extends Controller
         $prodi = $request->input('prodi');
         $pdf   = PDF::loadview('form_pdf.pdf_form_003', compact('getDosen', 'peminatan1', 'peminatan2', 'usulan', 'tanggal', 'prodi'))->setPaper('A4', 'portrait');
 
-    
+
         foreach ($mahasiswa as $mhs) {
             $cek = tb_form::where('id_form', 3)->where('id_mhs', $mhs->id)->where('ket', 'kl')->first();
 
@@ -446,46 +478,46 @@ class ExportController extends Controller
                 $form->id_mhs     = $mhs->id;
                 $form->id_form    = 3;
                 $form->ket        = 'kl';
-    
+
                 // Check File Exist
                 $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_003.pdf');
-    
+
                 // Delete File
                 if ($file) {
                     Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_003.pdf');
                 }
-    
+
                 $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_003.pdf';
                 $form->file   = $namadir;
-    
+
                 //save to directory
                 Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_003.pdf', $pdf->output());
 
                 //save to directory dosen
-                Storage::disk('local')->put('file_form/kesediaan_dosen/' . $getDosen->id. '/pdf_form_003.pdf', $pdf->output());
-    
+                Storage::disk('local')->put('file_form/kesediaan_dosen/' . $getDosen->id . '/pdf_form_003.pdf', $pdf->output());
+
                 $form->save();
             } else {
                 $update = tb_form::findOrFail($cek->id);
                 $update->set_failed = 0;
-    
+
                 // Check File Exist
                 $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_003.pdf');
-    
+
                 // Delete File
                 if ($file) {
                     Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_003.pdf');
                 }
-    
+
                 $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_003.pdf';
                 $update->file   = $namadir;
-    
+
                 //save to directory
                 Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_003.pdf', $pdf->output());
 
                 //save to directory dosen
-                Storage::disk('local')->put('file_form/kesediaan_dosen/' . $getDosen->id. '/pdf_form_003.pdf', $pdf->output());
-    
+                Storage::disk('local')->put('file_form/kesediaan_dosen/' . $getDosen->id . '/pdf_form_003.pdf', $pdf->output());
+
                 $update->save();
             }
         }
@@ -564,7 +596,7 @@ class ExportController extends Controller
 
         return redirect()->route('form-m')->with('success', 'Berhasil Upload');
     }
-    
+
     public function form012_pdf_delete()
     {
         $user = Auth::user();
@@ -708,7 +740,7 @@ class ExportController extends Controller
         $daftar = tb_supervisi::where('kelompok', $id)->first();
         $value6 = explode(',', $supervisi->penilaian_6);
         $value7 = explode(',', $supervisi->penilaian_7);
-        $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
         return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
     }
@@ -723,8 +755,468 @@ class ExportController extends Controller
         $value8 = explode(',', $supervisi->penilaian_8);
         $value9 = explode(',', $supervisi->penilaian_9);
         $value10 = explode(',', $supervisi->penilaian_10);
-        $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
         return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
+    }
+
+    public function form014_pdf_download()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $data  = tb_mahasiswa::where('id', $user->id_user)->first();
+        $pdf   = PDF::loadview('form_pdf.pdf_form_014', compact('data', 'datas'))->setPaper('A4', 'portrait');
+
+        // return $pdf->download('Form014 ' . $data->nim . '.pdf');
+        return $pdf->stream('Form014 ' . $data->nim . '.pdf', compact('data'));
+    }
+
+    public function form014_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_014.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_014.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_014.pdf';
+            $form->file     = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_014.pdf');
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_014.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_014.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_014.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_014.pdf');
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
+    }
+
+    public function form008_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_008.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_008.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_008.pdf';
+            $form->file     = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_008.pdf');
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_008.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_008.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_008.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_008.pdf');
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
+    }
+
+    public function form011_pdf_save(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+        $cek    = 1;
+
+        $instansi   = $mhs->instansi;
+        $alamat     = $mhs->alamat_instansi;
+        $pemlap     = $request->input('pemlap');
+        $tanggal    = $request->input('tanggal');
+        $judul      = $request->input('judul');
+        $pdf        = PDF::loadview('form_pdf.pdf_form_011', compact('datas', 'instansi', 'alamat', 'pemlap', 'judul', 'tanggal'))->setPaper('A4', 'portrait');
+
+        //save to directory
+        Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_011.pdf', $pdf->output());
+
+        return redirect()->back();
+    }
+
+    public function form011_pdf_delete()
+    {
+        $user = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form 011');
+    }
+
+    public function form011_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_011.pdf';
+            $form->file     = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_011.pdf');
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_011.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_011.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_011.pdf');
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
+    }
+
+    public function form013_pdf_save(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+        $cek    = 1;
+
+        $instansi   = $mhs->instansi;
+        $alamat     = $mhs->alamat_instansi;
+        $pemlap     = $request->input('pemlap');
+        $pdf        = PDF::loadview('form_pdf.pdf_form_013', compact('datas', 'instansi', 'alamat', 'pemlap'))->setPaper('A4', 'portrait');
+
+        //save to directory
+        Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_013.pdf', $pdf->output());
+
+        return redirect()->back();
+    }
+
+    public function form013_pdf_delete()
+    {
+        $user = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form 013');
+    }
+
+    public function form013_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_013.pdf';
+            $form->file     = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_013.pdf');
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_013.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_013.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_form_013.pdf');
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
+    }
+
+    public function form018_pdf_delete($id)
+    {
+        $user = Auth::user();
+        $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        // Delete File
+        if ($file) {
+            $update = tb_form::findOrFail($cek->id);
+            $update->delete();
+
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form 018');
+    }
+
+    public function form018_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $judul   = $request->input('judul');
+        $tanggal = $request->input('tanggal');
+        $pdf   = PDF::loadview('form_pdf.pdf_form_018', compact('datas', 'judul', 'tanggal'))->setPaper('A4', 'portrait');
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+            $form->set_verif  = 2;
+            $form->ttd_dospem = 1;
+            $form->judul      = $request->input('judul');
+            $form->tanggal    = $request->input('tanggal');
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_018.pdf';
+            $form->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_018.pdf', $pdf->output());
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_verif  = 2;
+            $update->ttd_dospem = 1;
+            $update->judul      = $request->input('judul');
+            $update->tanggal    = $request->input('tanggal');
+
+            // Check File Exist
+            $file            = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_018.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_018.pdf', $pdf->output());
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload dan Request Tanda Tangan Kepada Dosen Pembimbing');
+    }
+
+    public function penggunaan_produk_pdf_save(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+        $cek    = 1;
+
+        $instansi   = $mhs->instansi;
+        $alamat     = $mhs->alamat_instansi;
+        $pemlap     = $request->input('pemlap');
+        $judul      = $request->input('judul');
+        $pdf        = PDF::loadview('form_pdf.pdf_penggunaan_produk', compact('datas', 'instansi', 'alamat', 'pemlap', 'judul'))->setPaper('A4', 'portrait');
+
+        //save to directory
+        Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf', $pdf->output());
+
+        return redirect()->back();
+    }
+
+    public function penggunaan_produk_pdf_delete()
+    {
+        $user = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form Penggunaan Produk');
+    }
+
+    public function penggunaan_produk_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sm';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf';
+            $form->file     = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_penggunaan_produk.pdf');
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_penggunaan_produk.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_penggunaan_produk.pdf');
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
     }
 }

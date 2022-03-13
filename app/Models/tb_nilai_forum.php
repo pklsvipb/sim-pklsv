@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class tb_kartu_seminar extends Model
+class tb_nilai_forum extends Model
 {
     use HasFactory;
     public $timestamps = false;
 
-    public function getDosen()
+    public function getSeminar()
     {
-        return $this->belongsTo('App\Models\tb_dosen', 'id_dosen', 'id');
+        return $this->belongsTo('App\Models\tb_daftar', 'id_seminar', 'id');
     }
 
     public function getMhs()

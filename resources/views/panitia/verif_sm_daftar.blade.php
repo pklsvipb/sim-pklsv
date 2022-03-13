@@ -84,6 +84,16 @@
                       </tr>
 
                       <tr>
+                        <td>Nama Pembahas</td>
+                        <td><input type="text" name="pembahas" class="form-control" value="{{$pembahas->nama}}" disabled></td>
+                      </tr>
+
+                      <tr>
+                        <td>NIM Pembahas</td>
+                        <td><input type="text" name="nim_pembahas" class="form-control" value="{{$pembahas->nim}}" disabled></td>
+                      </tr>
+
+                      <tr>
                         <td>Dosen Pembimbing</td>
                         <td><input type="text" name="dosen" class="form-control" value="{{$dosbim->nama}}" disabled></td>
                       </tr>
@@ -103,15 +113,6 @@
                       <tr>
                         <td>Waktu Seminar</td>
                         <td><input type="time" class="form-control" style="font-weight: 700;" value="{{date('H:i', strtotime($daftar->waktu)) }}" name="waktu" disabled></td>
-                      </tr>
-
-                      <tr>
-                        <td>Upload Persyaratan</td>
-                        <td>
-                          <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                            <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                          <?php } ?>
-                        </td>
                       </tr>
 
                       <tr>

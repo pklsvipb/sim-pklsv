@@ -146,15 +146,15 @@
                 </li>
               </ul>
             </li> --}}
-            {{-- <li class="nav-item">
-              <a href="{{ route('list-sm-form')}}" class="nav-link">
-            <i class="nav-icon fa fa-laptop"></i>
-            <p style="padding-left: 7px;">
-              Verifikasi Seminar
-            </p>
-            </a>
-            </li>
             <li class="nav-item">
+              <a href="{{ route('list-sm-form')}}" class="nav-link">
+                <i class="nav-icon fa fa-laptop"></i>
+                <p style="padding-left: 7px;">
+                  Verifikasi Seminar
+                </p>
+              </a>
+            </li>
+            {{-- <li class="nav-item">
               <a href="{{ route('list-sd-form')}}" class="nav-link">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">

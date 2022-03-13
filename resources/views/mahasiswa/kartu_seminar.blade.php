@@ -8,7 +8,7 @@
     &nbsp;
     @endforeach
 
-    <p style="font-size: 11px; ">Mahasiswa</p>
+    <p style="font-size: 11px;">Mahasiswa</p>
   </a>
 </div>
 @endsection
@@ -29,134 +29,45 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                <div class="row text-center">
-
-                  <style>
-                    #menu-pertama {
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                      border-bottom: 2px solid black;
-                    }
-
-                    #menu-pertama a {
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-pertama:hover {
-                      background: #f8f9f9;
-                    }
-
-                    #menu-kedua {
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                    }
-
-                    #menu-kedua a {
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-kedua:hover {
-                      background: #f8f9f9;
-                    }
-                  </style>
-
-                  <div class="col-md-3" id="menu-kedua">
-                    <a href="{{ route('jurnal') }}" style="text-decoration: none; padding: 17px 50px;">JURNAL HARIAN</a>
-                  </div>
-                  <div class="col-md-3" id="menu-kedua">
-                    <a href="{{ route('periodik') }}" style="text-decoration: none; padding: 17px 50px;">LAPORAN PERIODIK</a>
-                  </div>
-                  <div class="col-md-3" id="menu-kedua">
-                    <a href="{{ route('k-bimbingan') }}" style="text-decoration: none; padding: 17px 50px;">KARTU BIMBINGAN TA</a>
-                  </div>
-                  <div class="col-md-3" id="menu-pertama">
-                    <a href="{{ route('k-seminar') }}" style="text-decoration: none; padding: 17px 50px;">KARTU SEMINAR</a>
-                  </div>
-                </div>
-                <hr style="margin-top: -9px;">
-
-                <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
-                  FORM 017 <br>
-                  KARTU SEMINAR
-                </div>
-
-                <form action="{{ route('k-seminar-submit') }}" method="POST" enctype="multipart/form-data">
-                  @csrf
-
-                  <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px;">
-                    <thead>
-                      <tr>
-                        <th width="10%" style="text-align: center">Hari/Tanggal</th>
-                        <th width="5%" style="text-align: center">Waktu</th>
-                        <th width="20%" style="text-align: center">Nama Pemrasaran</th>
-                        <th width="20%" style="text-align: center">NIM</th>
-                        <th width="30%" style="text-align: center">Moderator</th>
-                        <th width="10%" style="text-align: center">Paraf</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="date" name="tanggal" class="form-control"></td>
-                        <td><input type="time" name="waktu" class="form-control"></td>
-                        <td><input type="text" name="nama_pem" class="form-control"></td>
-                        <td><input type="text" name="nim_pem" class="form-control"></td>
-                        <td>
-                          <select name="dosen" class="form-control">
-                            <option value="" disabled>Pilih Dosen Supervisi</option>
-                            @foreach ($dosens as $dosen)
-                            <option value="{{$dosen->id}}">{{$dosen->nama}}</option>
-                            @endforeach
-                          </select>
-                        </td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
+                <div style="font-size: 18px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
+                  @if ($jumlah < 30)
+                    <a onclick="alert('Selesaikan minimal 30 list pada kartu seminar yang sudah di tanda tangani moderator')" type="button" class="btn btn-secondary" style="font-size: 12px; float: right; margin-top: -20px;"><i class="fa fa-download fa-sm"></i>&nbsp;Download Kartu Seminar</a> 
+                  @else
+                    <a href="{{route('download-kartu-sm')}}" type="button" class="btn btn-info" style="font-size: 12px; float: right; margin-top: -20px;"><i class="fa fa-download fa-sm"></i>&nbsp;Download Kartu Seminar</a> 
+                  @endif
                   <br>
-                  <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Simpan</button>
 
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- ./card-body -->
-        </div>
-        <!-- /.card -->
-
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
-                  LIST KARTU SEMINAR
+                  FORM 017 <br>
+                  KARTU SEMINAR      
                 </div>
-
-                <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+                
+                <table id="datatable1" class="table" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
                   <thead>
-                  <tr>
-                        <th width="20%" style="text-align: center">Hari/Tanggal</th>
-                        <th width="5%" style="text-align: center">Waktu</th>
-                        <th width="20%" style="text-align: center">Nama Pemrasaran</th>
-                        <th width="10%" style="text-align: center">NIM</th>
-                        <th width="30%" style="text-align: center">Moderator</th>
-                        <th width="10%" style="text-align: center">Paraf</th>
-                      </tr>
+                    <tr>
+                      <th width="20%" style="text-align: center">Hari/Tanggal</th>
+                      <th width="5%" style="text-align: center">Waktu</th>
+                      <th width="20%" style="text-align: center">Nama Pemrasaran</th>
+                      <th width="10%" style="text-align: center">NIM</th>
+                      <th width="30%" style="text-align: center">Moderator</th>
+                      <th width="10%" style="text-align: center">Paraf</th>
+                    </tr>
                   </thead>
                   <tbody>
                     <?php $i = 1; ?>
-                    @foreach ($seminars as $seminar)
+                    @foreach ($seminars as $sm)
                     <tr>
-                      <td>{{ Carbon\Carbon::parse($seminar->tanggal)->translatedFormat('l/d F Y'); }}</td>
-                      <td>{{ $seminar->waktu }}</td>
-                      <td>{{ $seminar->nama_pemrasaran }}</td>
-                      <td>{{ $seminar->nim_pemrasaran }}</td>
-                      <td>{{ $seminar->getDosen->nama }}</td>
-                      <td></td>
+                      <td>{{ Carbon\Carbon::parse($sm->tanggal)->translatedFormat('l/ d F Y'); }}</td>
+                      <td>{{ date('H:i', strtotime($sm->waktu)) }}</td>
+                      <td>{{ $sm->nama_pemrasaran }}</td>
+                      <td>{{ $sm->nim_pemrasaran }}</td>
+                      <td>{{ $sm->getDosen->nama }}</td>
+                      <td>
+                        @if ($sm->paraf == 0)
+                          <span class='badge badge-danger'>Belum diverif</span>
+                        @else
+                          <span class='badge badge-success'>Sudah ditanda tangan</span>
+                        @endif
+                      </td>
                     </tr>
                     <?php $i += 1; ?>
                     @endforeach
@@ -179,3 +90,20 @@
 <!-- /.content -->
 
 @endsection
+
+@push('scripts')
+<script>
+  $(function() {
+    $("#datatable1").DataTable({
+      "responsive": true,
+      "lengthChange": true,
+      "aLengthMenu": [
+        [5, 25, 50, 75, -1],
+        [5, 25, 50, 75, "All"]
+      ],
+      "pageLength": 5,
+      "autoWidth": false
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+@endpush

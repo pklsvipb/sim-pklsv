@@ -37,16 +37,23 @@
             </div>
             @else
             <?php for ($i = 0; $i < count($mhs); $i++) { ?>
-              <div class="row pt-4" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
-                <div class="col-md-1"></div>
-                <div class="col-md-2 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
-                <div class="col-md-5 mb-4">
+              <div class="row" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
+                <div class="col-md-1 pt-4"></div>
+                <div class="col-md-2 pt-4 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
+                <div class="col-md-5 pt-4 mb-4">
                   <h1 style="font-size: 16px; font-weight: 600;">{{$mhs[$i][1]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs[$i][2]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs[$i][3]}}</h1>
                 </div>
-                <div class="col-md-4 mt-3">
-                  <a href="{{route('sm-bap-d',$mhs[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT NILAI BAP</a>
+                <div class="col-md-2 pt-4 mt-3">
+                  <a href="{{route('sm-bap-d',$mhs[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT BAP</a>
+                </div>
+                <div class="col-md-2" style="padding: 0px; text-align: right;">
+                  @if ($mhs[$i][4] == '')
+                  <span class="badge badge-danger badge-lg p-1" style="font-size: 9px;">BELUM SEMINAR</span>
+                  @else
+                    <span class="badge badge-success badge-lg p-1" style="font-size: 9px;">SUDAH SEMINAR</span>
+                  @endif
                 </div>
               </div>
             <?php } ?>
@@ -67,10 +74,10 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-5">
-                <div class="title text-center" style="font-weight: 600;"> HISTORY PENGISIAN BAP PEMBIMBING SEMINAR</div>
+                <div class="title text-center" style="font-weight: 600;"> HISTORY BAP PEMBIMBING SEMINAR</div>
               </div>
             </div>
-            <table class="table text-center" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
+            <table class="table" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
               <thead>
                 <tr>
                   <td>#</td>
@@ -92,6 +99,53 @@
                   <td>
                     <a type="button" href="{{url('dosen/dospem/bap-sm/view-pdf', $mhs2[$i][5])}}" class="btn btn-success btn-sm">Download</a>
                     <a type="button" href="{{url('dosen/dospem/bap-sm/edit', $mhs2[$i][5])}}" class="btn btn-primary btn-sm">Edit</a>
+                  </td>
+                </tr>
+              <?php  
+              $no += 1; } ?>
+              </tbody>
+            </table>
+
+          </div>
+          <!-- ./card-body -->
+
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-md-12 mb-5">
+                <div class="title text-center" style="font-weight: 600;"> LIST BAP DITOLAK</div>
+              </div>
+            </div>
+            <table class="table" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
+              <thead>
+                <tr>
+                  <td>#</td>
+                  <td width="400px"><i class="fas fa-user fa-md"></i>&nbsp; Nama Mahasiswa</td>
+                  <td><i class="fas fa-school fa-md"></i>&nbsp; Program Studi</td>
+                  <td><i class="fas fa-clock fa-md"></i>&nbsp; Tanggal dan Waktu</td>
+                  <td><i class="fas fa-info-circle fa-md"></i>&nbsp; Status</td>
+                </tr>
+              </thead>
+              <tbody>
+              <?php 
+              $no = 1;
+              for ($i=0; $i < count($mhs3);$i++) { ?>
+                <tr>
+                  <td>{{$no}}</td>
+                  <td>{{$mhs3[$i][2]}}</td>
+                  <td>{{$mhs3[$i][3]}}</td>
+                  <td>{{date('d-m-Y', strtotime($mhs3[$i][4]))}}</td>
+                  <td>
+                    <a type="button" href="{{url('dosen/dospem/bap-sm/edit', $mhs3[$i][5])}}" class="btn btn-primary btn-sm">Update</a>
                   </td>
                 </tr>
               <?php  

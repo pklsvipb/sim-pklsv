@@ -94,7 +94,6 @@ Route::middleware('role:panitia')->get('/panitia/supervisi/list-mahasiswa-daftar
 Route::middleware('role:panitia')->get('/panitia/supervisi/verif-daftar/{id}', [App\Http\Controllers\PanitiaController::class, 'supervisi_vd'])->name('supervisi-vd');
 Route::middleware('role:panitia')->post('/panitia/supervisi/verif-daftar/submit/{id}', [App\Http\Controllers\PanitiaController::class, 'supervisi_vd_s'])->name('supervisi-vds');
 
-
 Route::middleware('role:panitia')->get('/panitia/seminar/list-mahasiswa-form', [App\Http\Controllers\PanitiaController::class, 'list_sm_form'])->name('list-sm-form');
 Route::middleware('role:panitia')->get('/panitia/seminar/verif-form/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vf'])->name('seminar-vf');
 Route::middleware('role:panitia')->post('/panitia/seminar/verif-form/submit/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vf_s'])->name('seminar-vfs');
@@ -102,6 +101,9 @@ Route::middleware('role:panitia')->post('/panitia/seminar/verif-form/submit/{id}
 // Route::middleware('role:panitia')->get('/panitia/seminar/list-mahasiswa-daftar', [App\Http\Controllers\PanitiaController::class, 'list_sm_daftar'])->name('list-sm-daftar');
 Route::middleware('role:panitia')->get('/panitia/serminar/verif-daftar/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vd'])->name('seminar-vd');
 Route::middleware('role:panitia')->post('/panitia/seminar/verif-daftar/submit/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vd_s'])->name('seminar-vds');
+
+
+
 
 Route::middleware('role:panitia')->get('/panitia/sidang/list-mahasiswa-form', [App\Http\Controllers\PanitiaController::class, 'list_sd_form'])->name('list-sd-form');
 Route::middleware('role:panitia')->get('/panitia/sidang/verif-form/{id}', [App\Http\Controllers\PanitiaController::class, 'sidang_vf'])->name('sidang-vf');
@@ -159,6 +161,9 @@ Route::middleware('role:dosen')->post('/dosen/biodata-submit', [App\Http\Control
 Route::middleware('role:dosen')->get('/dosen/form/kesediaan', [App\Http\Controllers\DosenController::class, 'form_kesediaan'])->name('form-kesediaan');
 Route::middleware('role:dosen')->post('/mahasiswa/form003', [App\Http\Controllers\ExportController::class, 'form003_pdf'])->name('form003-pdf');
 
+Route::middleware('role:dosen')->get('/dosen/form/tanda-tangan', [App\Http\Controllers\DosenController::class, 'form_ttd'])->name('form-ttd');
+Route::middleware('role:dosen')->post('/dosen/form/tanda-tangan/submit/{id}', [App\Http\Controllers\DosenController::class, 'form_ttd_submit'])->name('form-ttd-submit');
+
 Route::middleware('role:dosen')->get('/dosen/kolokium/dosen-pembimbing', [App\Http\Controllers\DosenController::class, 'kolokium_d'])->name('kolokium-d');
 Route::middleware('role:dosen')->get('/dosen/kolokium/moderator', [App\Http\Controllers\DosenController::class, 'kolokium_m'])->name('kolokium-m');
 Route::middleware('role:dosen')->get('/dosen/seminar/dosen-pembimbing', [App\Http\Controllers\DosenController::class, 'seminar_d'])->name('seminar-d');
@@ -197,6 +202,9 @@ Route::middleware('role:dosen')->get('/dosen/dospem/bap-kl/view-pdf/{id}', [App\
 Route::middleware('role:dosen')->get('/dosen/moderator/bap-kl/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'kl_bap_vm'])->name('kl-bap-vm');
 Route::middleware('role:dosen')->get('/dosen/dospem/bap-sm/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sm_bap_vd'])->name('sm-bap-vd');
 Route::middleware('role:dosen')->get('/dosen/moderator/bap-sm/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sm_bap_vm'])->name('sm-bap-vm');
+
+Route::middleware('role:dosen')->get('/dosen/sm-forum/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sm_forum'])->name('sm-forum');
+Route::middleware('role:dosen')->get('/dosen/sm-pembahas/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sm_pembahas'])->name('sm-pembahas');
 
 Route::middleware('role:dosen')->get('/dosen/dospem/bap-sd/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sd_bap_vd'])->name('sd-bap-vd');
 Route::middleware('role:dosen')->get('/dosen/penguji/bap-sd/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sd_bap_vj'])->name('sd-bap-vj');
@@ -263,6 +271,12 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/daftar-supervisi-submit', 
 Route::middleware('role:mahasiswa')->get('/mahasiswa/daftar-seminar', [App\Http\Controllers\MahasiswaController::class, 'd_seminar'])->name('d-seminar');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/daftar-seminar-submit', [App\Http\Controllers\MahasiswaController::class, 's_seminar'])->name('s-seminar');
 
+Route::middleware('role:mahasiswa')->get('/mahasiswa/jadwal-seminar', [App\Http\Controllers\MahasiswaController::class, 'jadwal_seminar'])->name('jadwal-seminar');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/jadwal-seminar/hadir/{id}', [App\Http\Controllers\MahasiswaController::class, 'hadir_seminar'])->name('hadir-seminar');
+
+Route::middleware('role:mahasiswa')->get('/mahasiswa/kartu-seminar', [App\Http\Controllers\MahasiswaController::class, 'kartu_sm'])->name('kartu-sm');
+Route::middleware('role:mahasiswa')->get('/mahasiswa/download-kartu-seminar', [App\Http\Controllers\MahasiswaController::class, 'download_kartu_sm'])->name('download-kartu-sm');
+
 Route::middleware('role:mahasiswa')->get('/mahasiswa/daftar-sidang', [App\Http\Controllers\MahasiswaController::class, 'd_sidang'])->name('d-sidang');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/daftar-sidang-submit', [App\Http\Controllers\MahasiswaController::class, 's_sidang'])->name('s-sidang');
 
@@ -280,3 +294,22 @@ Route::middleware('role:mahasiswa')->get('/mahasiswa/form012/delete', [App\Http\
 
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form029/pembimbing/{id}', [App\Http\Controllers\ExportController::class, 'form029_pembimbing_pdf'])->name('form029-pembimbing-pdf');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form029/moderator/{id}', [App\Http\Controllers\ExportController::class, 'form029_moderator_pdf'])->name('form029-moderator-pdf');
+
+Route::middleware('role:mahasiswa')->get('/mahasiswa/form014/download', [App\Http\Controllers\ExportController::class, 'form014_pdf_download'])->name('form014-pdf-download');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form014/{id}', [App\Http\Controllers\ExportController::class, 'form014_pdf'])->name('form014-pdf');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form008/{id}', [App\Http\Controllers\ExportController::class, 'form008_pdf'])->name('form008-pdf');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form011/save/{id}', [App\Http\Controllers\ExportController::class, 'form011_pdf_save'])->name('form011-pdf-save');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form011/delete', [App\Http\Controllers\ExportController::class, 'form011_pdf_delete'])->name('form011-pdf-delete');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form011/{id}', [App\Http\Controllers\ExportController::class, 'form011_pdf'])->name('form011-pdf');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form013/save/{id}', [App\Http\Controllers\ExportController::class, 'form013_pdf_save'])->name('form013-pdf-save');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form013/delete', [App\Http\Controllers\ExportController::class, 'form013_pdf_delete'])->name('form013-pdf-delete');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form013/{id}', [App\Http\Controllers\ExportController::class, 'form013_pdf'])->name('form013-pdf');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/delete/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf_delete'])->name('form018-pdf-delete');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf'])->name('form018-pdf');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/save/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_save'])->name('penggunaan-produk-pdf-save');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/delete', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_delete'])->name('penggunaan-produk-pdf-delete');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf'])->name('penggunaan-produk-pdf');
