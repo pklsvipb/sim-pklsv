@@ -195,9 +195,7 @@ class DosenController extends Controller
                     }
                 }
             }
-            dd($form);
         }
-
 
         return view('dosen.form_ttd', compact('datas', 'user', 'mahas', 'form'));
     }
