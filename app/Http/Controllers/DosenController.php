@@ -194,8 +194,8 @@ class DosenController extends Controller
                         $form[] = array($fr->id, $fr->id_mhs, $fr->id_form, $fr->file, $fr->ket, $mhs->getProdi->nama, $mhs->nama, $mhs->nim);
                     }
                 }
-                dd($form);
             }
+            dd($form);
         }
 
 
