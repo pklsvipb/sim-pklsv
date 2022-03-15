@@ -107,7 +107,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                @if ($set == 0)
+                {{-- @if ($set == 0) --}}
                   @if (is_null($get))
                   <form action="{{ url('/mahasiswa/daftar-seminar-submit') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -270,11 +270,11 @@
                     </table>
                   </form>
                   @endif
-                @else
+                {{-- @else
                   <br>
                   <div style="text-align: center; margin: 20px 0px;"><span style="font-size: 16px; color:red;">Belum bisa mendaftar seminar, unggah semua form persyaratan seminar terlebih dahulu.</span></div>
                   <br>
-                @endif
+                @endif --}}
               </div>
             </div>
           </div>
