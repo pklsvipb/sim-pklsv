@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\tb_bimbingan;
 use App\Models\tb_dosen;
 use App\Models\tb_mahasiswa;
 use App\Models\tb_daftar;
@@ -11,6 +12,8 @@ use App\Models\tb_masterform;
 use App\Models\tb_form;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
+use App\Models\tb_jurnal;
+use App\Models\tb_prodi;
 use App\Models\tb_supervisi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -1228,5 +1231,143 @@ class DosenController extends Controller
         $update->save();
 
         return redirect()->route('list-form-015')->with('success', 'Sukses Input Nilai Supervisi');
+    }
+
+    public function jurnal_harian()
+    {
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $dosen = tb_dosen::where('id', $user->id_user)->first();
+        $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+        $mhs = [];
+        $file = [];
+   
+        if(count($mhs1) != 0){
+            foreach($mhs1 as $mahasiswa1){
+                $getmhs[] = array(1, $mahasiswa1->id, $mahasiswa1->nama, $mahasiswa1->nim);
+            }
+        }
+
+        $mhs2 = tb_mahasiswa::where('id_dospem2', $user->id_user)->get();
+        if(count($mhs2) != 0){
+            foreach($mhs2 as $mahasiswa2){
+                $getmhs[] = array(2, $mahasiswa2->id, $mahasiswa2->nama, $mahasiswa2->nim);
+            }
+        }
+
+        for($i=0; $i < count($getmhs); $i++) {
+            $kegiatan = tb_jurnal::where('id_mhs', $getmhs[$i][1])->get();
+            $list = [];
+            foreach ($kegiatan as $getKegiatan) {
+                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->hari, $getKegiatan->tanggal, $getKegiatan->waktu_mulai, $getKegiatan->waktu_selesai, $getKegiatan->kegiatan, $getmhs[$i][0]);
+            }
+            $file[] = array($getmhs[$i][1], $list);
+        }
+
+        // dd($file);
+
+        return view('dosen.jurnal_harian', compact('datas', 'getmhs', 'file'));
+    }
+
+    public function kartu_bimbingan()
+    {
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $dosen = tb_dosen::where('id', $user->id_user)->first();
+        $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+        $mhs = [];
+        $file = [];
+   
+        if(count($mhs1) != 0){
+            foreach($mhs1 as $mahasiswa){
+                $cek = tb_bimbingan::where('id_mhs', $mahasiswa->id)->first();
+                if($cek == null){
+                    $paraf = "";
+                }else{
+                    $cek2 = tb_bimbingan::where('id_mhs', $mahasiswa->id)->get();
+                    if(count($cek2) == 8){
+                        $paraf = $cek->paraf;
+                    }else{
+                        $paraf = "";
+                    }
+                }
+                $getmhs[] = array($mahasiswa->id, $mahasiswa->nama, $mahasiswa->nim, $mahasiswa->getProdi->nama,$paraf);
+            }
+        }
+
+        for($i=0; $i < count($getmhs); $i++) {
+            $kegiatan = tb_bimbingan::where('id_mhs', $getmhs[$i][0])->get();
+            $list = [];
+            foreach ($kegiatan as $getKegiatan) {
+                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+            }
+            $file[] = array($getmhs[$i][0], $list);
+        }
+
+        // dd($file);
+
+        return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
+    }
+
+    public function paraf_bimbingan($id){
+        $paraf = tb_bimbingan::where('id_mhs', $id)->get();
+        foreach($paraf as $get){
+            $update = tb_bimbingan::findOrFail($get->id);
+            $update->paraf = 1;
+            $update->save();
+        } 
+        return redirect()->route('d-kartu-bimbingan')->with('success', 'Sukses Menandatangani');
+    }
+
+    public function ttd_kaprodi(){
+        $user = Auth::user();
+        $datas = tb_panitia::where('id', $user->id_user)->get();
+        $panitia = tb_panitia::where('id', $user->id_user)->first();
+        $getlist = tb_bimbingan::select('id_mhs', 'paraf')->distinct()->get();
+        $getmhs = $getlist->where('paraf', 1);
+        $file = [];
+
+        foreach ($getmhs as $get) {
+            $kegiatan = tb_bimbingan::where('id_mhs', $get->id_mhs)->get();
+            $list = [];
+            foreach ($kegiatan as $getKegiatan) {
+                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+            }
+            $file[] = array($get->id_mhs, $list);
+        }
+
+        // dd($file);
+        return view('dosen.ttd_kaprodi', compact('datas', 'getmhs', 'file'));
+    }
+
+    public function ttd_kaprodi_submit($id)
+    {
+        $datas = tb_mahasiswa::where('id', $id)->first();
+        $lists = tb_bimbingan::where('id_mhs', $id)->get();
+        $dosen = tb_dosen::where('id', $datas->id_dospem1)->first();
+        $prodi = tb_prodi::where('id', $datas->id_prodi)->first();
+        $kaprodi = tb_dosen::where('id', $prodi->id_kaprodi)->first();
+        
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file2.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file2.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file2.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        //save pdf
+        Storage::disk('local')->put('pdf/'.$datas->nim.'/pdf_kartu_bimbingan.pdf', $pdf->output());
+        // return $pdf->stream('Kartu Bimbingan.pdf');
+        return redirect()->route('d-ttd-kaprodi')->with('success', 'Sukses Menandatangani Kartu Bimbingan');
     }
 }

@@ -16,6 +16,7 @@ use App\Models\tb_periodik;
 use App\Models\tb_nilai_bap;
 use App\Models\tb_supervisi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -134,9 +135,10 @@ class MahasiswaController extends Controller
         $bio->jalur             = $request->input('jalur');
         $bio->ipk1              = $request->input('ipk1');
         $bio->ipk2              = $request->input('ipk2');
-        $bio->instansi          = $request->input('instansi');
+        $bio->instansi          = $request->input('instansi'); 
         $bio->alamat_instansi   = $request->input('alamat_instansi');
         $bio->kajian            = $request->input('kajian');
+        $bio->pembimbing_lapang = $request->input('pemlap');
 
         if ($request->hasFile('foto')) {
             // Cek Foto
@@ -234,11 +236,12 @@ class MahasiswaController extends Controller
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
         $forms = tb_masterform::all();
         $jurnals = tb_jurnal::where('id_mhs', $user->id_user)->get();
 
 
-        return view('mahasiswa.jurnal_harian', compact('datas', 'forms', 'jurnals'));
+        return view('mahasiswa.jurnal_harian', compact('datas', 'forms', 'jurnals', 'mhs'));
     }
 
     public function periodik()
@@ -255,10 +258,12 @@ class MahasiswaController extends Controller
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
         $forms = tb_masterform::all();
         $bimbingans = tb_bimbingan::where('id_mhs', $user->id_user)->get();
+        $cek = tb_bimbingan::where('id_mhs', $user->id_user)->first();
 
-        return view('mahasiswa.kartu_bimbingan', compact('datas', 'forms', 'bimbingans'));
+        return view('mahasiswa.kartu_bimbingan', compact('datas', 'forms', 'bimbingans', 'mhs', 'cek'));
     }
 
     public function k_seminar()
@@ -778,15 +783,44 @@ class MahasiswaController extends Controller
 
         $input = new tb_jurnal;
         $input->id_mhs = $user->id_user;
-        // $input->hari = $request->input('hari');
+        $input->hari = Carbon::parse($request->input('tanggal'))->translatedFormat('l');
         $input->tanggal = $request->input('tanggal');
-        $input->waktu = $request->input('waktu');
+        $input->waktu_mulai = $request->input('waktu_mulai');
+        $input->waktu_selesai = $request->input('waktu_selesai');
         $input->kegiatan = $request->input('kegiatan');
         $input->id_prodi = $mhs->id_prodi;
 
         $input->save();
 
         return Redirect::Back()->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function upload_jurnal(Request $request)
+    {
+        $usr = Auth::user();
+        $mhs = tb_mahasiswa::where('id',$usr->id_user)->first();
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_jurnal_harian.pdf');
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_jurnal_harian.pdf');
+        }
+        //save to directory
+        Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_jurnal_harian.pdf');
+
+        return redirect()->route('jurnal')->with('success', 'Berhasil Upload');
+    }
+
+    public function edit_jurnal(Request $request)
+    {
+        $mhs = tb_jurnal::findOrFail($request->input('id'));
+        $mhs->tanggal = $request->input('tanggal');
+        $mhs->waktu_mulai = $request->input('waktu_mulai');
+        $mhs->waktu_selesai = $request->input('waktu_selesai');
+        $mhs->kegiatan = $request->input('kegiatan');
+        $mhs->save();
+
+        return redirect()->route('jurnal')->with('success', 'Berhasil Edit Jurnal');
     }
 
     public function periodik_submit(Request $request)
@@ -815,7 +849,6 @@ class MahasiswaController extends Controller
 
         $input = new tb_bimbingan;
         $input->id_mhs = $user->id_user;
-        $input->pertemuan = $request->input('pertemuan');
         $input->tanggal = $request->input('tanggal');
         $input->kegiatan = $request->input('kegiatan');
         $input->id_prodi = $mhs->id_prodi;
@@ -823,6 +856,16 @@ class MahasiswaController extends Controller
         $input->save();
 
         return Redirect::Back()->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function edit_bimbingan(Request $request)
+    {
+        $mhs = tb_bimbingan::findOrFail($request->input('id'));
+        $mhs->tanggal = $request->input('tanggal');
+        $mhs->kegiatan = $request->input('kegiatan');
+        $mhs->save();
+
+        return redirect()->route('k-bimbingan')->with('success', 'Berhasil Edit Kartu Bimbingan');
     }
 
     public function k_seminar_submit(Request $request)

@@ -1,4 +1,4 @@
-@extends('layouts.panitia')
+@extends('layouts.dosen')
 
 @section('content')
 <!-- Main content -->
@@ -20,40 +20,44 @@
                   <div class="row text-center">
                   </div>
                   <div class="text-center">
-                    <p class="badge badge-primary p-2" style="font-size: 13px;">JURNAL HARIAN MAHASISWA</p>
+                    <p class="badge badge-primary p-2" style="font-size: 13px;">REQUEST TANDA TANGAN KARTU PEMBIMBINGAN LAPORAN AKHIR</p>
                   </div>
-                  <div class="table-responsive">
-                    <table id="datatable1" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline collapsed" style="font-size: 12px; font-weight: 400; color: black; width: 100%;" width="100%" role="grid" aria-describedby="data-table_info">
-                      <thead>
-                        <th width="5%">No</th>
-                        <th width="30%">Nama</th>
-                        <th width="10%">NIM</th>
-                        <th width="10%" style="text-align: center;">Aksi</th>
-                        <th width="10%" style="text-align: center;">File Upload</th>
-                      </thead>
-                      <tbody>
-                        <?php $no = 1;?>
-                        @foreach ($getmhs as $data)
+                  <table id="datatable1" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline collapsed" style="font-size: 12px; font-weight: 400; color: black; width: 100%;" width="100%" role="grid" aria-describedby="data-table_info">
+                    <thead>
+                      <th width="5%" style="text-align: center;">No</th>
+                      <th width="40%">Nama</th>
+                      <th width="10%">NIM</th>
+                      <th width="10%">Program Studi</th>
+                      <th width="10%" style="text-align: center;">Detail</th>
+                      <th width="10%" style="text-align: center;">TTD Form</th>
+                    </thead>
+                    <tbody>
+                      <?php $no = 1; ?>
+                      @foreach ($getmhs as $data)
                         <tr>
-                          <td>{{ $no }}</td>
+                          <td style="text-align: center;">{{ $no }}</td>
                           <td>{{ $data->getMahasiswa->nama }}</td>
                           <td>{{ $data->getMahasiswa->nim }}</td>
+                          <td>{{ $data->getMahasiswa->getProdi->nama }}</td>
                           <td style="text-align: center;">
                             <a data-toggle="modal" class="btn btn-success btn-sm" data-target="#Status-{{$data->id_mhs}}" title="Status Mahasiswa" type="button"><i class="fas fa-search"></i> Detail</a>
                           </td>
                           <td style="text-align: center;">
-                            @if (File::exists(public_path('pdf/'.$data->getMahasiswa->nim.'/pdf_jurnal_harian.pdf')))
-                            <a href="{{ asset('pdf/'.$data->getMahasiswa->nim.'/pdf_jurnal_harian.pdf') }}" class="btn btn-danger btn-sm" download="Jurnal_Harian_{{$data->getMahasiswa->nama}}_{{$data->getMahasiswa->nim}}.pdf" style="text-decoration: none; text-align:center;"><i class="fas fa-file-pdf fa-sm"></i> PDF</a>
+                            @if (File::exists(public_path('pdf/'.$data->getMahasiswa->nim.'/pdf_kartu_bimbingan.pdf')))
+                            <span class="badge badge-warning">disetujui</span>
                             @else
-                            (empty)
+                            <form action="{{route('d-ttd-kaprodi-submit', $data->getMahasiswa->id)}}" method="GET" class="form-horizontal" enctype="multipart/form-data">
+                              {{ csrf_field() }}
+                              <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-check fa-sm"></i></button>
+                            </form>
                             @endif
-                          </td>
+                        </td>
                         </tr>
-                        <?php $no += 1;?>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
+                        <?php $no += 1; ?>
+                      @endforeach
+                    </tbody>
+                  </table>
+                  </form>
                 </div>
               </div>
             </div>
@@ -72,7 +76,7 @@
 <!-- /.content -->
 @if(is_null($getmhs) == 0)
 @foreach($getmhs as $data)
-@include('modal.jurnal-status')
+@include('modal.kartu-bimbingan')
 @endforeach
 @endif
 
@@ -88,9 +92,16 @@
         [5, 25, 50, 75, -1],
         [5, 25, 50, 75, "All"]
       ],
-      "pageLength": 5,
+      "pageLength": 10,
       "autoWidth": false
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
+<script>
+  $(function() {
+    //Initialize Select2 Elements
+    $('.select2').select2()
   });
 </script>
 @endpush

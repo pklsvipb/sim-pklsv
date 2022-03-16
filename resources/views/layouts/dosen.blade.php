@@ -111,6 +111,42 @@
             </li> --}}
             <li class="nav-item menu-open">
               <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
+                <p style="padding-left: 7px;">
+                  Form Daily
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('d-jurnal-harian')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Jurnal Harian</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('d-kartu-bimbingan')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Kartu Bimbingan</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('d-ttd-kaprodi')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>TTD Kaprodi</p>
+                  </a>
+                </li>
+                @yield('kaprodi')
+                {{--<li class="nav-item">
+                  <a href="{{ route('laporan-periodik')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Laporan Periodik</p>
+                  </a>
+                </li>--}}
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
                   Kolokium

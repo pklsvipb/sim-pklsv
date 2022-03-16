@@ -9,4 +9,9 @@ class tb_bimbingan extends Model
 {
     use HasFactory;
     public $timestamps = false;
+
+    public function getMahasiswa()
+    {
+        return $this->belongsTo('App\Models\tb_mahasiswa', 'id_mhs', 'id');
+    }
 }

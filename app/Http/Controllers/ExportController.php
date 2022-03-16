@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\tb_bimbingan;
 use App\Models\tb_daftar;
 use App\Models\tb_dosen;
 use App\Models\tb_form;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
+use App\Models\tb_jurnal;
 use App\Models\tb_mahasiswa;
 use App\Models\tb_masterform;
 use App\Models\tb_panitia;
@@ -726,5 +728,31 @@ class ExportController extends Controller
         $pdf   = PDF::loadview('dosen.Form-015.pdf_supervisi_form_015', compact('supervisi', 'daftar', 'value6', 'value7', 'value8', 'value9', 'value10'))->setPaper([0,0,595.276,841.8898], 'portrait');
 
         return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
+    }
+
+    public function download_jurnal()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->first();
+        $lists = tb_jurnal::where('id_mhs', $user->id_user)->get();
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0,0,595.276,841.8898], 'portrait');
+
+        return $pdf->stream('Jurnal Harian.pdf');
     }
 }

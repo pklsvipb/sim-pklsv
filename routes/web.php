@@ -65,6 +65,7 @@ Route::middleware('role:akademik')->get('download-zip-a', [App\Http\Controllers\
 
 
 
+
 // Route Panitia
 Route::middleware('role:panitia')->get('/panitia/dashboard', [App\Http\Controllers\PanitiaController::class, 'dashboard_p'])->name('dashboard-p');
 Route::middleware('role:panitia')->get('/panitia/reset-password', [App\Http\Controllers\PanitiaController::class, 'reset_p'])->name('reset-p');
@@ -138,7 +139,9 @@ Route::middleware('role:panitia')->post('/panitia/pengumuman', [App\Http\Control
 Route::middleware('role:panitia')->post('/panitia/pengumuman/delete', [App\Http\Controllers\PanitiaController::class, 'pengumuman_delete'])->name('pengumuman-delete');
 
 Route::middleware('role:panitia')->get('/panitia/jurnal_harian', [App\Http\Controllers\PanitiaController::class, 'jurnal_harian'])->name('jurnal-harian');
+Route::middleware('role:panitia')->get('/panitia/kartu-bimbingan', [App\Http\Controllers\PanitiaController::class, 'kartu_bimbingan'])->name('kartu-bimbingan');
 Route::middleware('role:panitia')->get('/panitia/laporan_periodik', [App\Http\Controllers\PanitiaController::class, 'laporan_periodik'])->name('laporan-periodik');
+Route::middleware('role:panitia')->post('/panitia/set-kaprodi/submit', [App\Http\Controllers\PanitiaController::class, 'set_kaprodi'])->name('set-kaprodi');
 
 Route::middleware('role:panitia')->get('/panitia/link_form', [App\Http\Controllers\PanitiaController::class, 'link_form'])->name('link-form');
 Route::middleware('role:panitia')->post('/panitia/link_form/save', [App\Http\Controllers\PanitiaController::class, 'link_form_save'])->name('link-form-save');
@@ -223,6 +226,13 @@ Route::middleware('role:dosen')->post('/dosen/update/sidang-bap-penguji/{id}', [
 Route::middleware('role:dosen')->post('/dosen/update/sidang2-bap-dospem/{id}', [App\Http\Controllers\DosenController::class, 'sd_bap_udu'])->name('sd-bap-udu');
 Route::middleware('role:dosen')->post('/dosen/update/sidang2-bap-penguji/{id}', [App\Http\Controllers\DosenController::class, 'sd_bap_uju'])->name('sd-bap-uju');
 
+Route::middleware('role:dosen')->get('/dosen/jurnal_harian', [App\Http\Controllers\DosenController::class, 'jurnal_harian'])->name('d-jurnal-harian');
+Route::middleware('role:dosen')->get('/dosen/kartu-bimbingan', [App\Http\Controllers\DosenController::class, 'kartu_bimbingan'])->name('d-kartu-bimbingan');
+Route::middleware('role:dosen')->get('/dosen/laporan_periodik', [App\Http\Controllers\DosenController::class, 'laporan_periodik'])->name('d-laporan-periodik');
+Route::middleware('role:dosen')->get('/dosen/paraf-bimbingan/{id}', [App\Http\Controllers\DosenController::class, 'paraf_bimbingan'])->name('d-paraf-bimbingan');
+Route::middleware('role:dosen')->get('/dosen/ttd-kaprodi', [App\Http\Controllers\DosenController::class, 'ttd_kaprodi'])->name('d-ttd-kaprodi');
+Route::middleware('role:dosen')->get('/dosen/ttd-kaprodi/submit/{id}', [App\Http\Controllers\DosenController::class, 'ttd_kaprodi_submit'])->name('d-ttd-kaprodi-submit');
+
 
 
 
@@ -279,3 +289,9 @@ Route::middleware('role:mahasiswa')->get('/mahasiswa/form012/delete', [App\Http\
 
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form029/pembimbing/{id}', [App\Http\Controllers\ExportController::class, 'form029_pembimbing_pdf'])->name('form029-pembimbing-pdf');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form029/moderator/{id}', [App\Http\Controllers\ExportController::class, 'form029_moderator_pdf'])->name('form029-moderator-pdf');
+
+Route::middleware('role:mahasiswa')->get('/mahasiswa/download/jurnal-harian', [App\Http\Controllers\ExportController::class, 'download_jurnal'])->name('download-jurnal');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/upload/jurnal-harian', [App\Http\Controllers\MahasiswaController::class, 'upload_jurnal'])->name('upload-jurnal');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/jurnal-harian', [App\Http\Controllers\MahasiswaController::class, 'edit_jurnal'])->name('edit-jurnal');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/kartu-bimbingan', [App\Http\Controllers\MahasiswaController::class, 'edit_bimbingan'])->name('edit-bimbingan');

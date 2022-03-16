@@ -24,7 +24,8 @@
 
     #nilai th,
     #nilai td {
-      padding: 5px; padding-left: 10px;
+      padding: 5px;
+      padding-left: 10px;
     }
 
     #footer th,
@@ -62,10 +63,10 @@
       <tr>
         <td colspan="3">
           <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/004</p>
-        </td>   
+        </td>
       </tr>
       <tr>
-        <td style="padding-bottom: 0px; padding-top: 1px;" width="15%">
+        <td style="padding-bottom: 0px; padding-top: 1px; padding:1px;" width="5%">
           <p>&nbsp;</p>
           <img src="{{public_path('images/logo-form2.jpg')}}" style="width: 2.06cm; height: 2.06cm; margin-top: -2%;">
         </td>
@@ -77,7 +78,7 @@
           <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Kampus IPB Cilibende, Jl. Kumbang No.14 Bogor 16151 </p>
           <p style="margin-bottom: -3rem; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
         </td>
-        <td style="padding-bottom: 0px; padding-top: 1px;" width="5%">
+        <td style="padding-bottom: 0px; padding-top: 1px;">
           <!-- <p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/004</p> -->
         </td>
       </tr>
@@ -169,21 +170,21 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">1</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Perkembangan Usaha 3 tahun terakhir</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        @if ($supervisi->penilaian_1 == "Meningkat")
+          @if ($supervisi->penilaian_1 == "Meningkat")
           <p style="font-size: 10pt;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Meningkat</p>
-        @else
+          @else
           <p style="font-size: 10pt;">a. Meningkat</p>
-        @endif
-        @if ($supervisi->penilaian_1 == "Statis")
+          @endif
+          @if ($supervisi->penilaian_1 == "Statis")
           <p style="font-size: 10pt; margin-top: -1.3rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Statis</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem;">b. Statis</p>
-        @endif
-        @if ($supervisi->penilaian_1 == "Menurun")
+          @endif
+          @if ($supervisi->penilaian_1 == "Menurun")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Menurun</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c. Menurun</p>
-        @endif
+          @endif
         </td>
       </tr>
 
@@ -191,16 +192,16 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">2</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Perencanaaan Usaha di masa yang akan datang</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        @if ($supervisi->penilaian_2 != "Tidak Ada")
+          @if ($supervisi->penilaian_2 != "Tidak Ada")
           <p style="font-size: 10pt; line-height: 90%;letter-spacing: 0.1px;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> {{$supervisi->penilaian_2}}</p>
-        @else
+          @else
           <p style="font-size: 10pt;">a. Ada rencana pengembangan usaha</p>
-        @endif
-        @if ($supervisi->penilaian_2 == "Tidak Ada")
+          @endif
+          @if ($supervisi->penilaian_2 == "Tidak Ada")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Tidak Ada</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.2rem; margin-bottom: -.10rem;">b. Tidak Ada</p>
-        @endif
+          @endif
         </td>
       </tr>
 
@@ -208,21 +209,21 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">3</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Kegiatan Usaha</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        @if ($supervisi->penilaian_3 == "Sangat Aktif")
+          @if ($supervisi->penilaian_3 == "Sangat Aktif")
           <p style="font-size: 10pt;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Sangat Aktif</p>
-        @else
+          @else
           <p style="font-size: 10pt;">a. Sangat Aktif</p>
-        @endif
-        @if ($supervisi->penilaian_3 == "Cukup Aktif")
+          @endif
+          @if ($supervisi->penilaian_3 == "Cukup Aktif")
           <p style="font-size: 10pt; margin-top: -1.3rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Cukup Aktif</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem;">b. Cukup Aktif</p>
-        @endif
-        @if ($supervisi->penilaian_3 == "Kurang Aktif")
+          @endif
+          @if ($supervisi->penilaian_3 == "Kurang Aktif")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Kurang Aktif</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c. Kurang Aktif</p>
-        @endif
+          @endif
         </td>
       </tr>
 
@@ -230,21 +231,21 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">4</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Penerimaan Perusahaan/ Instansi</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        @if ($supervisi->penilaian_4 == "Sangat Mendukung")
+          @if ($supervisi->penilaian_4 == "Sangat Mendukung")
           <p style="font-size: 10pt;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Sangat Mendukung</p>
-        @else
+          @else
           <p style="font-size: 10pt;">a. Sangat Mendukung</p>
-        @endif
-        @if ($supervisi->penilaian_4 == "Cukup Mendukung")
+          @endif
+          @if ($supervisi->penilaian_4 == "Cukup Mendukung")
           <p style="font-size: 10pt; margin-top: -1.3rem;">b.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Cukup Mendukung</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem;">b. Cukup Mendukung</p>
-        @endif
-        @if ($supervisi->penilaian_4 == "Kurang Mendukung")
+          @endif
+          @if ($supervisi->penilaian_4 == "Kurang Mendukung")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Kurang Mendukung</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c. Kurang Mendukung</p>
-        @endif
+          @endif
         </td>
       </tr>
 
@@ -252,50 +253,50 @@
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">5</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">Kelayakan sebagai lokasi PKL</td>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        @if ($supervisi->penilaian_5 == "Layak")
+          @if ($supervisi->penilaian_5 == "Layak")
           <p style="font-size: 10pt;">a.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Layak</p>
-        @else
+          @else
           <p style="font-size: 10pt;">a. Layak</p>
-        @endif
-        @if ($supervisi->penilaian_5 == "Tidak Layak")
+          @endif
+          @if ($supervisi->penilaian_5 == "Tidak Layak")
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c.<i class="far fa-circle" style="margin-top: .33rem; margin-left: -4.3%;"></i> Tidak Layak</p>
-        @else
+          @else
           <p style="font-size: 10pt; margin-top: -1.3rem; margin-bottom: -.10rem;">c. Tidak Layak</p>
-        @endif
+          @endif
         </td>
       </tr>
 
       <tr>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">6</td>
         <td colspan="2" style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        Harapan Perusahaan/Instansi untuk kegiatan PKL :
-        @if ($value6[0] == "Tidak ada")
+          Harapan Perusahaan/Instansi untuk kegiatan PKL :
+          @if ($value6[0] == "Tidak ada")
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value6[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. -------------------------------------------------------- </p>
-        @elseif ($value6[0] != "Tidak ada" && empty($value6[1]) )
+          @elseif ($value6[0] != "Tidak ada" && empty($value6[1]) )
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value6[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. -------------------------------------------------------- </p>
-        @elseif ($value6[0] != "Tidak ada" && !empty($value6[1]) )
+          @elseif ($value6[0] != "Tidak ada" && !empty($value6[1]) )
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value6[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. {{$value6[1]}} </p>
-        @endif
+          @endif
         </td>
       </tr>
 
       <tr>
         <td style="padding: 5px; padding-left: 10px; font-size: 10pt; text-align: center;">7</td>
         <td colspan="2" style="padding: 5px; padding-left: 10px; font-size: 10pt;">
-        Lain-lain :
-        @if ($value7[0] == "Tidak ada")
+          Lain-lain :
+          @if ($value7[0] == "Tidak ada")
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value7[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. -------------------------------------------------------- </p>
-        @elseif ($value7[0] != "Tidak ada" && empty($value7[1]) )
+          @elseif ($value7[0] != "Tidak ada" && empty($value7[1]) )
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value7[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. -------------------------------------------------------- </p>
-        @elseif ($value7[0] != "Tidak ada" && !empty($value7[1]) )
+          @elseif ($value7[0] != "Tidak ada" && !empty($value7[1]) )
           <p style="font-size: 10pt; margin-bottom: -.10rem;">a. {{$value7[0]}}</p>
           <p style="font-size: 10pt; margin-bottom: -.10rem;">b. {{$value7[1]}} </p>
-        @endif
+          @endif
         </td>
       </tr>
     </tbody>

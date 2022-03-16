@@ -106,6 +106,16 @@
                     </tr>
 
                     <tr>
+                      <td>Nama Pembimbing Lapang <i style="color: red;">*</i></td>
+                      <td colspan="2"><input type="text" name="pemlap" class="form-control" value="{{$data->pembimbing_lapang}}" placeholder="Tuliskan nama pembimbing lapangan beserta gelar lengkap" required></td>
+                    </tr>
+
+                    <tr>
+                        <td width="400px">Nama Dosen Pembimbing</td>
+                        <td colspan="2"><input type="text" name="dosbim" class="form-control" value="{{$data->getDospem1->nama}}" disabled></td>
+                    </tr>
+                    
+                    <tr>
                         <td width="400px">Nama</td>
                         <td colspan="2"><input type="text" name="nama" class="form-control" value="{{$data->nama}}" disabled></td>
                     </tr>

@@ -123,7 +123,7 @@
                 </p>
               </a>
             </li>
-            {{-- <li class="nav-item menu-open">
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -139,13 +139,19 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="{{ route('kartu-bimbingan')}}" class="nav-link">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Kartu Bimbingan</p>
+                  </a>
+                </li>
+                {{--<li class="nav-item">
                   <a href="{{ route('laporan-periodik')}}" class="nav-link">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Laporan Periodik</p>
                   </a>
-                </li>
+                </li>--}}
               </ul>
-            </li> --}}
+            </li>
             {{-- <li class="nav-item">
               <a href="{{ route('list-sm-form')}}" class="nav-link">
             <i class="nav-icon fa fa-laptop"></i>

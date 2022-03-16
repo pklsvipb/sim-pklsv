@@ -21,8 +21,10 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportExcelKolokium;
+use App\Models\tb_bimbingan;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
+use App\Models\tb_prodi;
 use App\Models\tb_supervisi;
 use ZipArchive;
 
@@ -1056,7 +1058,7 @@ class PanitiaController extends Controller
             $kegiatan = tb_jurnal::where('id_mhs', $get->id_mhs)->get();
             $list = [];
             foreach ($kegiatan as $getKegiatan) {
-                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->hari, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->hari, $getKegiatan->tanggal, $getKegiatan->waktu_mulai, $getKegiatan->waktu_selesai, $getKegiatan->kegiatan);
             }
             $file[] = array($get->id_mhs, $list);
         }
@@ -1064,6 +1066,31 @@ class PanitiaController extends Controller
         // dd($file);
 
         return view('panitia.jurnal_harian', compact('datas', 'getmhs', 'file'));
+    }
+
+    public function kartu_bimbingan()
+    {
+        $user = Auth::user();
+        $dosen = tb_dosen::all();
+        $datas = tb_panitia::where('id', $user->id_user)->get();
+        $panitia = tb_panitia::where('id', $user->id_user)->first();
+        $kaprodi = tb_prodi::where('id', $panitia->id_prodi)->first();
+        $getlist = tb_bimbingan::select('id_mhs', 'id_prodi')->distinct()->get();
+        $getmhs = $getlist->where('id_prodi', $panitia->id_prodi);
+        $file = [];
+
+        foreach ($getmhs as $get) {
+            $kegiatan = tb_bimbingan::where('id_mhs', $get->id_mhs)->get();
+            $list = [];
+            foreach ($kegiatan as $getKegiatan) {
+                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+            }
+            $file[] = array($get->id_mhs, $list);
+        }
+
+        // dd($file);
+
+        return view('panitia.kartu_bimbingan', compact('datas', 'getmhs', 'file', 'kaprodi', 'dosen'));
     }
 
     public function laporan_periodik()
@@ -1111,5 +1138,15 @@ class PanitiaController extends Controller
         $db->save();
 
         return redirect()->route('set-mahasiswa')->with('success-reset', 'Berhasil mereset password mahasiswa');
+    }
+
+    public function set_kaprodi(Request $request){
+        $user = Auth::user();
+        $panitia = tb_panitia::where('id', $user->id_user)->first();
+        $kaprodi = tb_prodi::findOrFail($panitia->id_prodi);
+        $kaprodi->id_kaprodi = $request->input('kaprodi');
+        $kaprodi->save();
+
+        return Redirect::Back()->with('success', 'Sukses Set Kaprodi');        
     }
 }

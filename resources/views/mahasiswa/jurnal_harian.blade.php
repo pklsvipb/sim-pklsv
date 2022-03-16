@@ -17,12 +17,12 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-    @if ($message = Session::get('success'))
-    <div id="messageAlert" class="alert alert-success alert-dismissible">
-      <i class="fa fa-check"></i> &nbsp; {{ $message }}
-    </div>
-    @endif
-
+  @if ($message = Session::get('success'))
+  <div id="messageAlert" class="alert alert-success alert-dismissible">
+    <i class="fa fa-check"></i> &nbsp; {{ $message }}
+  </div>
+  @endif
+  
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -67,13 +67,13 @@
                   <div class="col-md-6" id="menu-pertama">
                     <a href="{{ route('jurnal') }}" style="text-decoration: none; padding: 17px 50px;">JURNAL HARIAN</a>
                   </div>
-                  <div class="col-md-6" id="menu-kedua">
+                  {{--<div class="col-md-6" id="menu-kedua">
                     <a href="{{ route('periodik') }}" style="text-decoration: none; padding: 17px 50px;">LAPORAN PERIODIK</a>
-                  </div>
-                  {{--<div class="col-md-3" id="menu-kedua">
+                  </div>--}}
+                  <div class="col-md-6" id="menu-kedua">
                     <a href="{{ route('k-bimbingan') }}" style="text-decoration: none; padding: 17px 50px;">KARTU BIMBINGAN TA</a>
                   </div>
-                  <div class="col-md-3" id="menu-kedua">
+                  {{--<div class="col-md-3" id="menu-kedua">
                     <a href="{{ route('k-seminar') }}" style="text-decoration: none; padding: 17px 50px;">KARTU SEMINAR</a>
                   </div>--}}
 
@@ -93,9 +93,10 @@
                       <tr>
                         <!--<th width="10%" style="text-align: center">Hari</th>-->
                         <th width="20%" style="text-align: center">Tanggal</th>
-                        <th width="10%" style="text-align: center">Waktu</th>
-                        <th width="50%" style="text-align: center">Kegiatan</th>
-                        <th width="10%" style="text-align: center">Paraf Pembimbing Lapangan</th>
+                        <th width="10%" style="text-align: center">Jam Mulai</th>
+                        <th width="10%" style="text-align: center">Jam Selesai</th>
+                        <th width="60%" style="text-align: center">Kegiatan</th>
+                        <!-- <th width="10%" style="text-align: center">Paraf Pembimbing Lapangan</th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -112,9 +113,10 @@
                           </select>
                         </td> --}}
                         <td><input type="date" name="tanggal" class="form-control"></td>
-                        <td><input type="time" name="waktu" class="form-control"></td>
+                        <td><input type="time" name="waktu_mulai" class="form-control"></td>
+                        <td><input type="time" name="waktu_selesai" class="form-control"></td>
                         <td><textarea name="kegiatan" rows="3" cols="50" class="form-control"></textarea></td>
-                        <td></td>
+                        <!-- <td></td> -->
                       </tr>
                     </tbody>
                   </table>
@@ -134,30 +136,46 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-
+                @if (File::exists(public_path('pdf/'.$mhs->nim.'/pdf_jurnal_harian.pdf')))
+                  <a href="{{ asset('pdf/'.$mhs->nim.'/pdf_jurnal_harian.pdf') }}" class="btn btn-danger btn-sm" download="pdf_jurnal_harian.pdf" style="text-decoration: none; float: right;"><i class="fas fa-file-pdf fa-lg" style="color: white;"></i> <span style="font-size: 12px; color: white;">File Upload</span></a>
+                @endif
+              </div>
+              <div class="col-md-12">
                 <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
-                  LIST JURNAL HARIAN PKL
+                  LIST JURNAL HARIAN PKL<br><br>
+                  @if(count($jurnals) != 0)
+                  <span>
+                    <a href="{{route('download-jurnal')}}" class="btn btn-danger btn-sm" style="width: 15%; margin-right: auto; padding: 2px;">Unduh PDF</a>
+                    <a data-toggle="modal" data-target="#Upload-Jurnal" title="Upload pdf yang sudh diparaf dan ditandatangani" class="btn btn-primary btn-sm" style="width: 15%; margin-right: auto; padding: 2px;">Upload PDF</a>
+                  </span>
+                  @endif
                 </div>
 
-                <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+                <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
                   <thead>
                     <tr>
-                      <!--<th width="10%" style="text-align: center">Hari</th>-->
-                      <th width="20%" style="text-align: center">Tanggal</th>
-                      <th width="10%" style="text-align: center">Waktu</th>
-                      <th width="50%" style="text-align: center">Kegiatan</th>
-                      <th width="10%" style="text-align: center">Paraf Pembimbing Lapangan</th>
+                      <th>No</th>
+                      <th width="10%" style="text-align: center">Hari</th>
+                      <th width="20%" style="text-align: center; padding:2px;">Tanggal</th>
+                      <th width="20%" style="text-align: center; padding:2px;">Waktu</th>
+                      <th width="50%" style="text-align: center; padding:2px;">Kegiatan</th>
+                      <th width="10%" style="text-align: center; padding:2px;">Edit</th>
+                      <!-- <th width="10%" style="text-align: center">Paraf Pembimbing Lapangan</th> -->
                     </tr>
                   </thead>
                   <tbody>
+                  <?php $no = 1; ?>
                     @foreach($jurnals as $jurnal)
                     <tr>
-                      <!--<td>{{ $jurnal->hari }}</td>-->
+                      <td>{{ $no }}</td>
+                      <td>{{ Carbon\Carbon::parse($jurnal->tanggal)->translatedFormat('l'); }}</td>
                       <td>{{ Carbon\Carbon::parse($jurnal->tanggal)->translatedFormat('d F Y'); }}</td>
-                      <td>{{ $jurnal->waktu }}</td>
-                      <td><textarea name="kegiatan" rows="2" cols="50" class="form-control">{{ $jurnal->kegiatan }}</textarea></td>
-                      <td></td>
+                      <td>{{ $jurnal->waktu_mulai }} - {{ $jurnal->waktu_selesai }}</td>
+                      <td style="text-align: left;">{{ $jurnal->kegiatan }}</td>
+                      <td><a data-toggle="modal" data-target="#Edit-Jurnal-{{$jurnal->id}}" title="edit kegiatan" style="cursor: pointer; color: #005b8f;"><i class="fas fa-edit fa-lg"></i></a></td>
+                      <!-- <td></td> -->
                     </tr>
+                    <?php $no += 1; ?>
                     @endforeach
                   </tbody>
                 </table>
@@ -176,5 +194,14 @@
   <!--/. container-fluid -->
 </section>
 <!-- /.content -->
+
+@if(is_null($jurnals) == 0) 
+@foreach ($jurnals as $jurnal) 
+@include('modal.edit-jurnal') 
+@endforeach 
+@endif 
+
+
+@include('modal.upload-jurnal') 
 
 @endsection

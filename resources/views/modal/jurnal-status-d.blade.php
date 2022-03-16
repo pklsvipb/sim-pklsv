@@ -1,8 +1,8 @@
-<div class="modal fade" id="Status-{{$data->id_mhs}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1"> 
+<div class="modal fade" id="Status-{{$getmhs[$i][1]}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1"> 
   <div class="modal-dialog modal-lg" role="document"> 
     <div class="modal-content"> 
       <div class="modal-header"> 
-        <a type="button" class="btn btn-dark btn-icon btn-sm" style="cursor: default; font-size: 12px;">#Detail Jurnal Harian {{$data->getMahasiswa->nama}}</a> 
+        <a type="button" class="btn btn-dark btn-icon btn-sm" style="cursor: default; font-size: 12px;">#Detail Jurnal Harian {{$getmhs[$i][2]}}</a> 
       </div> 
       <div class="modal-body text-justify"> 
        
@@ -14,7 +14,7 @@
               </thead> 
               <tbody> 
                 @for ($j = 0; $j < count($file); $j++)
-                  @if ($file[$j][0] == $data->id_mhs) 
+                  @if ($file[$j][0] == $getmhs[$i][1]) 
 
                   @for ($i = 0; $i < count($file[$j][1]); $i++) 
                     <tr> 
