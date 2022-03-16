@@ -134,10 +134,7 @@
                           <td>Dosen Pembimbing</td>
                           <td>
                             <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;">
-                              <option selected="selected" disabled>...</option>
-                              @foreach($dosens as $dosen)
-                              <option value="{{$dosen->id}}">{{$dosen->nama}}</option>
-                              @endforeach
+                              <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                             </select>
                           </td>
                         </tr>

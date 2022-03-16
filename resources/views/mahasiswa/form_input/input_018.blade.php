@@ -35,8 +35,24 @@
                     </tbody>
                   </table>   
 
+                  @elseif ($form018->set_failed == 1)
+                  <form action="{{ url('/mahasiswa/form018/delete', $id) }}" method="POST" class="form-horizontal">
+                    @csrf
+                      <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_018.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 018 Persetujuan Seminar Hasil PKL</a>
+                      <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 018?')"><i class="fa fa-trash"></i></button>
+                    </form>
+  
+                    <table cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;" width="100%">
+                      <tbody>
+                        <tr>
+                          <td width="100%">
+                            Verifikasi form 018 ditolak oleh panitia, silakan hapus dan isi kembali
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>   
+
                   @else
-                  
                   <table cellspacing="0" cellpadding="0" style="margin-top: 3rem; text-align: center; font-size: .875rem; font-weight: 600;" width="100%">
                     <tbody>
                       <tr>
