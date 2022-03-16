@@ -16,14 +16,22 @@ use App\Models\tb_periodik;
 use App\Models\tb_nilai_bap;
 use App\Models\tb_supervisi;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
+use Facade\FlareClient\Stacktrace\File;
 
 class MahasiswaController extends Controller
 {
+
+    public function __construct()
+    {
+        set_time_limit(10000000);
+    }
+
     public function dashboard_m()
     {
         $user  = Auth::user();
@@ -175,11 +183,22 @@ class MahasiswaController extends Controller
         return Redirect::Back()->with('success', 'Berhasil Menyimpan Data');
     }
 
+    public function biodata_download()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $data  = tb_mahasiswa::where('id', $user->id_user)->first();
+        $tgl   = Carbon::now();
+        $pdf   = PDF::loadview('form_pdf.biodata', compact('data'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Biodata ' . $data->nim . '.pdf', compact('data'));
+    }
+
     public function form_m()
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
-        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->get();
+        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->orWhere('ket', 'sm')->orWhere('ket', 'sm2')->get();
         $kolos = tb_masterform::where('ket', 'kl')->get();
         $semis = tb_masterform::where('ket', 'sm')->get();
         $sidas = tb_masterform::where('ket', 'sd')->get();
@@ -470,9 +489,11 @@ class MahasiswaController extends Controller
         $user   = Auth::user();
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
         $dosens = tb_dosen::all();
+        $mahasiswas = tb_mahasiswa::where('id', '!=', $user->id_user)->get();
         $get    = tb_daftar::where('id_mhs', $user->id_user)->where('ket', 'sm')->first();
         $forms  = tb_masterform::where('ket', 'sm')->get();
         $set    = 0;
+        $semis = tb_masterform::where('ket', 'sm')->get();
 
         foreach ($forms as $form) {
             $files   = tb_form::where('id_form', $form->id)->where('id_mhs', $user->id_user)->get();
@@ -482,22 +503,29 @@ class MahasiswaController extends Controller
         }
 
         if (is_null($get)) {
-            $getname = "";
             $filename = "";
             $mode = "";
             $status = [];
         } else {
             $filename = explode(';', $get->file);
-
-            for ($i = 0; $i < count($filename) - 1; $i++) {
-                $getname[] = explode('/', $filename[$i]);
-            }
-
             $mode   = tb_dosen::where('id', $get->id_moderator)->first();
             $status = array($get->set_verif);
         }
 
-        return view('mahasiswa.daftar_seminar', compact('datas', 'dosens', 'get', 'set', 'filename', 'getname', 'mode', 'status'));
+
+        foreach ($semis as $sm) {
+            $files   = tb_form::where('id_form', $sm->id)->where('id_mhs', $user->id_user)->get();
+            if (count($files) == 0) {
+                $file_sm[]  = array(count($files));
+            } else {
+                foreach ($files as $get2) {
+                    $file_sm[]  = array(count($files), $get2->set_verif, $get2->set_failed, $get2->komen);
+                }
+            }
+        }
+
+
+        return view('mahasiswa.daftar_seminar', compact('datas', 'dosens', 'mahasiswas', 'get', 'set', 'filename', 'mode', 'status', 'semis', 'file_sm'));
     }
 
     public function s_seminar(Request $request)
@@ -512,36 +540,76 @@ class MahasiswaController extends Controller
         $user  = Auth::user();
         $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
 
-        $namaDir = "";
-
         $upload = new tb_daftar;
         $upload->id_dosen = $request->input('dospem');
+        $upload->id_pembahas = $request->input('pembahas');
         $upload->id_mhs   = $user->id_user;
         $upload->id_prodi = $mhs->id_prodi;
         $upload->judul    = $request->input('judul');
         $upload->tgl      = $request->input('tgl');
         $upload->waktu    = $request->input('waktu');
         $upload->ket      = 'sm';
-
-        for ($i = 0; $i < count($request->file); $i++) {
-            // Check File Exist
-            $file  = Storage::disk('local')->exists('file_form/upload_persyaratan/' . $mhs->nim . '/' . $request->file[$i]->getClientOriginalName());
-
-            if ($file) {
-                Storage::disk('local')->delete('file_form/upload_persyaratan/' . $mhs->nim . '/' . $request->file[$i]->getClientOriginalName());
-            }
-
-            $dir      = Storage::disk('local')->putFileAs('file_form/upload_persyaratan/' . $mhs->nim, $request->file[$i], $request->file[$i]->getClientOriginalName());
-
-            $namaDir  = $namaDir . $dir . ';';
-        }
-
-        $upload->file   = $namaDir;
-
         $upload->save();
 
         return Redirect::Back()->with('success', 'Berhasil Upload');
     }
+
+    public function jadwal_seminar()
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $dosens = tb_dosen::all();
+        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_mhs', '!=', $user->id_user)->get();
+
+        return view('mahasiswa.jadwal_seminar', compact('datas', 'dosens', 'seminars'));
+    }
+
+    public function hadir_seminar($id)
+    {
+
+        $user = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+        $sm = tb_daftar::where('id', $id)->where('ket', 'sm')->first();
+
+        $cek = tb_kartu_seminar::where('id_mhs', $mhs->id)->where('tanggal', $sm->tgl)->where('waktu', $sm->waktu)->first();
+
+        if ($cek != null) {
+            return Redirect::Back()->with('error', 'Tidak diperbolehkan menghadiri dua seminar di waktu yang bersamaan.');
+        }
+
+        $hadir = new tb_kartu_seminar;
+        $hadir->id_mhs      = $user->id_user;
+        $hadir->id_prodi    = $mhs->id_prodi;
+        $hadir->id_seminar  = $id;
+        $hadir->tanggal     = $sm->tgl;
+        $hadir->waktu       = $sm->waktu;
+        $hadir->nama_pemrasaran = $sm->getMahasiswa->nama;
+        $hadir->nim_pemrasaran  = $sm->getMahasiswa->nim;
+        $hadir->id_dosen    = $sm->id_moderator;
+        $hadir->paraf       = 0;
+        $hadir->hadir       = 1;
+
+        $hadir->save();
+
+        return Redirect::Back()->with('success', 'Berhasil menghadiri seminar');
+    }
+
+    public function kartu_sm()
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $forms  = tb_masterform::all();
+        $dosens = tb_dosen::all();
+        $seminars = tb_kartu_seminar::where('id_mhs', $user->id_user)->where('hadir', 1)->get();
+        $jumlah = tb_kartu_seminar::where('id_mhs', $user->id_user)->where('paraf', 1)->count();
+
+        return view('mahasiswa.kartu_seminar', compact('datas', 'forms', 'dosens', 'seminars', 'jumlah'));
+    }
+
+
+
 
     public function sidang()        // NOT USE
     {
@@ -720,6 +788,10 @@ class MahasiswaController extends Controller
         $dosens = tb_dosen::all();
 
         $link  = tb_panitia::where('id_prodi', $prodi->id_prodi)->first();
+        $forms = tb_masterform::where('ket', 'laporan_pkl')->get();
+
+        $form018  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 16)->where('ket', 'sm')->first();
+
 
         if ($id == "1") {
             return view('mahasiswa.form_input.input_001', compact('datas', 'id'));
@@ -752,13 +824,13 @@ class MahasiswaController extends Controller
         } elseif ($id == "15") {
             return view('mahasiswa.form_input.input_014', compact('datas', 'id'));
         } elseif ($id == "16") {
-            return view('mahasiswa.form_input.input_018', compact('datas', 'id'));
+            return view('mahasiswa.form_input.input_018', compact('datas', 'id', 'form018'));
         } elseif ($id == "17") {
-            return view('mahasiswa.form_input.input_laporan_pkl', compact('datas', 'id'));
+            return view('mahasiswa.form_input.laporan_pkl', compact('datas', 'id', 'forms'));
         } elseif ($id == "18") {
-            return view('mahasiswa.form_input.input_019_d', compact('datas', 'id'));
+            return view('mahasiswa.form_input.penggunaan_produk', compact('datas', 'id'));
         } elseif ($id == "19") {
-            return view('mahasiswa.form_input.input_019_m', compact('datas', 'id'));
+            return view('mahasiswa.form_input.syarat_seminar', compact('datas', 'id', 'link'));
         } elseif ($id == "20") {
             return view('mahasiswa.form_input.input_020', compact('datas', 'id'));
         } elseif ($id == "21") {

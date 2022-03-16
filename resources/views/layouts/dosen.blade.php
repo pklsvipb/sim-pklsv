@@ -109,7 +109,15 @@
                 </p>
               </a>
             </li> --}}
-            <li class="nav-item menu-open">
+            <li class="nav-item">
+              <a href="{{ route('form-ttd') }}" class="nav-link">
+                <i class="nav-icon fa fa-pen"></i>
+                <p style="padding-left: 7px;">
+                  Tanda Tangan Form
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -168,7 +176,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item menu-open">
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-building" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -191,7 +199,7 @@
                 </li>
               </ul>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-laptop" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -214,7 +222,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-book-open" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">

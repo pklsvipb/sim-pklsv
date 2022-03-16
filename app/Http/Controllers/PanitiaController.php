@@ -28,6 +28,7 @@ use App\Models\tb_prodi;
 use App\Models\tb_supervisi;
 use ZipArchive;
 
+
 class PanitiaController extends Controller
 {
     public function dashboard_p()
@@ -427,6 +428,7 @@ class PanitiaController extends Controller
         $panitia->link_bimbingan_aka = $request->link_bimbingan_aka;
         $panitia->link_form015 = $request->link_form015;
         $panitia->bayar_spp = $request->bayar_spp;
+        $panitia->syarat_seminar = $request->syarat_seminar;
         $panitia->save();
 
         return Redirect::Back()->with('success', 'Sukses Simpan Link');
@@ -440,14 +442,14 @@ class PanitiaController extends Controller
         $getlist    = tb_supervisi::where('set_verif', 0)->get();
         $history    = tb_supervisi::where('set_verif', 1)->get();
         $supervisi = [];
-        $supervisi2= [];
+        $supervisi2 = [];
 
         if (count($getlist) == 0) {
             $supervisi = [];
         } else {
             foreach ($getlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                
+
                 if ($getmhs != null) {
                     $supervisi[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->kelompok);
                 }
@@ -512,13 +514,16 @@ class PanitiaController extends Controller
         $datas      = tb_panitia::where('id', $user->id_user)->get();
         $getlist    = tb_form::select('id_mhs', 'ket')->distinct()->get();
         $setlist    = $getlist->where('ket', 'sm');
+        $getlist2   = tb_daftar::where('ket', 'sm')->where('id_moderator', 0)->get();
+        $getlist3   = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->get();
 
+        $seminar    = [];
         if (count($setlist) == 0) {
             $seminar = [];
         } else {
             foreach ($setlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sm')->get();
+                $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sm')->where('ttd_dospem', 0)->get();
                 $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sm')->where('set_verif', 0)->where('set_failed', 0)->get();
                 if ($getmhs == null) {
                     $seminar = [];
@@ -528,7 +533,31 @@ class PanitiaController extends Controller
             }
         }
 
-        return view('panitia.list_sm_form', compact('datas', 'seminar'));
+        $seminar2 = [];
+        if (count($getlist2) == 0) {
+            $seminar2 = [];
+        } else {
+            foreach ($getlist2 as $get2) {
+                $getmhs2   = tb_mahasiswa::where('id', $get2->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                if ($getmhs2 != null) {
+                    $seminar2[] = array($get2->id_mhs, $getmhs2->nama, $getmhs2->nim, $get2->tgl, $getmhs2->id_dospem1);
+                }
+            }
+        }
+
+        $seminar3 = [];
+        if (count($getlist3) == 0) {
+            $seminar3 = [];
+        } else {
+            foreach ($getlist3 as $get3) {
+                $getmhs3   = tb_mahasiswa::where('id', $get3->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                if ($getmhs3 != null) {
+                    $seminar3[] = array($get3->id_mhs, $getmhs3->nama, $getmhs3->nim, $get3->tgl, $getmhs3->id_dospem1);
+                }
+            }
+        }
+
+        return view('panitia.list_sm_form', compact('datas', 'seminar', 'seminar2', 'seminar3'));
     }
 
     public function seminar_vf($id)
@@ -541,7 +570,7 @@ class PanitiaController extends Controller
         $file  = [];
 
         foreach ($forms as $form) {
-            $files   = tb_form::where('id_form', $form->id)->where('id_mhs', $id)->get();
+            $files   = tb_form::where('id_form', $form->id)->where('id_mhs', $id)->where('ttd_dospem', 0)->get();
             if (count($files) == 0) {
                 $file[]  = array('', '', '', '');
             } else {
@@ -567,10 +596,19 @@ class PanitiaController extends Controller
                 $update->set_failed = 0;
                 $update->save();
             } elseif ($request->input('verif' . ($id_form[$i]) . '') == 0) {
-                $update->komen = $request->input('komen' . ($id_form[$i]) . '');
-                $update->set_verif = 0;
-                $update->set_failed = 1;
-                $update->save();
+                if ($update->id_form == 4) {
+                    Storage::disk('local')->delete($update->file);
+                    $update->komen = $request->input('komen' . ($id_form[$i]) . '');
+                    $update->set_verif = 0;
+                    $update->set_failed = 1;
+                    $update->file = null;
+                    $update->save();
+                } else {
+                    $update->komen = $request->input('komen' . ($id_form[$i]) . '');
+                    $update->set_verif = 0;
+                    $update->set_failed = 1;
+                    $update->save();
+                }
             } else {
                 $update->set_verif = 0;
                 $update->set_failed = 0;
@@ -578,7 +616,7 @@ class PanitiaController extends Controller
             }
         }
 
-        return redirect()->route('list-sm-form')->with('success', 'Sukses Save');
+        return Redirect::Back()->with('success', 'Sukses Simpan');
     }
 
     public function list_sm_daftar()    // NOT USE
@@ -628,25 +666,27 @@ class PanitiaController extends Controller
 
         if ($daftar == null) {
             $mahasiswa = tb_mahasiswa::where('id', $id_mhs)->first();
+            $pembahas  = [];
             $dosens    = [];
             $dosbim    = [];
-            $getname   = [];
-            $filename  = [];
+            // $getname   = [];
+            // $filename  = [];
             $moderator = [];
         } else {
             $mahasiswa = tb_mahasiswa::where('id', $daftar->id_mhs)->first();
+            $pembahas  = tb_mahasiswa::where('id', $daftar->id_pembahas)->first();
             $dosens    = tb_dosen::all();
             $dosbim    = $dosens->where('id', $daftar->id_dosen)->first();
             $moderator = $dosens->where('id', $daftar->id_moderator)->first();
 
-            $filename = explode(';', $daftar->file);
+            // $filename = explode(';', $daftar->file);
 
-            for ($i = 0; $i < count($filename) - 1; $i++) {
-                $getname[] = explode('/', $filename[$i]);
-            }
+            // for ($i = 0; $i < count($filename) - 1; $i++) {
+            //     $getname[] = explode('/', $filename[$i]);
+            // }
         }
 
-        return view('panitia.verif_sm_daftar', compact('datas', 'daftar', 'dosens', 'dosbim', 'moderator', 'mahasiswa', 'getname', 'filename', 'id_mhs'));
+        return view('panitia.verif_sm_daftar', compact('datas', 'daftar', 'pembahas', 'dosens', 'dosbim', 'moderator', 'mahasiswa', 'id_mhs'));
     }
 
     public function seminar_vd_s(Request $request, $id)
@@ -659,11 +699,11 @@ class PanitiaController extends Controller
             $update->id_moderator = $request->input('moderator');
             $update->save();
 
-            return Redirect::Back()->with('success', 'Verfikasi Seminar diterima');
+            return redirect()->route('list-sm-form')->with('success', 'Verfikasi Seminar berhasil diterima');
         } else {
             $update = tb_daftar::findOrFail($id)->delete();
 
-            return Redirect::Back()->with('success', 'Verfikasi Seminar ditolak');
+            return redirect()->route('list-sm-form')->with('success', 'Verfikasi Seminar berhasil ditolak');
         }
     }
 
@@ -1121,13 +1161,15 @@ class PanitiaController extends Controller
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
     }
 
-    public function set_mahasiswa(){
+    public function set_mahasiswa()
+    {
         $user = Auth::user();
-        $datas     = tb_panitia::where('id', $user->id_user)->get();
+        $datas  = tb_panitia::where('id', $user->id_user)->get();
         $panitia = tb_panitia::where('id', $user->id_user)->first();
-        $all = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
+        $all    = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
+        $dosens = tb_dosen::all();
 
-        return view('panitia.set_mahasiswa', compact('datas', 'all'));
+        return view('panitia.set_mahasiswa', compact('datas', 'all', 'dosens'));
     }
 
     public function mahasiswa_reset($id)

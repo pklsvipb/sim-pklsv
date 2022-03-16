@@ -29,6 +29,56 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-4 text-center">
+                <div class="title bg"><b>Bar Progress Form Seminar</b></div>
+              </div>
+              <div class="progress2" style="background-color: white; margin: auto;">
+                <?php $no = 1;
+                $id = 0; ?>
+                @foreach ($semis as $sm)
+                  @if($file_sm[$id][0] == 0)
+                  <div class="circle">
+                    <p class="label">{{$no}}</p>
+                    <p class="title">{{substr($sm->nama,0,8)}}</p>
+                  </div>
+                  @else
+                  @if($file_sm[$id][1] == 1)
+                  <div class="circle done">
+                    <p class="label"><i class="fas fa-check"></i></p>
+                    <p class="title">{{substr($sm->nama,0,8)}}</p>
+                  </div>
+                  @else
+                  @if($file_sm[$id][2] == 0)
+                  <div class="circle wait">
+                    <p class="label"><i class="fas fa-ellipsis-h"></i></p>
+                    <p class="title">{{substr($sm->nama,0,8)}}</p>
+                  </div>
+                  @else
+                  <div class="circle">
+                    <p class="label">{{$no}}</p>
+                    <p class="title">{{substr($sm->nama,0,8)}}</p>
+                  </div>
+                  @endif
+                  @endif
+                  @endif
+                <?php $no += 1;
+                $id += 1; ?>
+                @endforeach
+              </div>
+            </div>
+          </div>
+          <!-- ./card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12 mb-4 text-center">
                 <div class="title bg">Status Daftar Seminar</div>
                 <br>
                 @if (count($status) == 0)
@@ -51,59 +101,13 @@
     </div>
     <!-- /.row -->
 
-
-
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                {{-- <div class="row text-center">
-
-                  <style>
-                    #menu-pertama{
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                    }
-
-                    #menu-pertama a{
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-pertama:hover{ 
-                      background: #f8f9f9;
-                    }
-
-                    #menu-kedua{
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                      border-bottom: 2px solid black;
-                    }
-
-                    #menu-kedua a{
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-kedua:hover{
-                      background: #f8f9f9;
-                    }
-                  </style>
-
-                  <div class="col-md-6" id="menu-pertama">
-                    <a href="{{ route('seminar') }}" style="text-decoration: none; padding: 17px 150px;">DOWNLOAD DAN UPLOAD FORM</a>
-                  </div>
-                  <div class="col-md-6" id="menu-kedua">
-                    <a href="{{ route('d-seminar') }}" style="text-decoration: none; padding: 17px 197px;">DAFTAR SEMINAR</a>
-                  </div>
-
-                </div> --}}
-
-                @if ($set == 0)
+                {{-- @if ($set == 0) --}}
                   @if (is_null($get))
                   <form action="{{ url('/mahasiswa/daftar-seminar-submit') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -130,14 +134,23 @@
                           <td>Dosen Pembimbing</td>
                           <td>
                             <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;">
-                              <option selected="selected" disabled>...</option>
-                              @foreach($dosens as $dosen)
-                              <option value="{{$dosen->id}}">{{$dosen->nama}}</option>
-                              @endforeach
+                              <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                             </select>
                           </td>
                         </tr>
 
+                        <tr>
+                          <td>Mahasiswa Pembahas</td>
+                          <td>
+                            <select class="form-control select2 select2-hidden-accessible" name="pembahas" style="width: 100%;" required>
+                              <option selected="selected" disabled>...</option>
+                              @foreach($mahasiswas as $mhs)
+                              <option value="{{$mhs->id}}">{{$mhs->nama}}</option>
+                              @endforeach
+                            </select>
+                          </td>
+                        </tr>
+                        
                         <tr>
                           <td>Judul Laporan Akhir</td>
                           <td><textarea name="judul" class="form-control" rows="3" required></textarea></td>
@@ -151,17 +164,6 @@
                         <tr>
                           <td>Waktu Seminar</td>
                           <td><input type="time" class="form-control" name="waktu" required></td>
-                        </tr>
-
-                        <tr>
-                          <td>Upload Persyaratan</td>
-                          <td>
-                            <div class="form-group">
-                              <div class="file-loading">
-                                <input id="file-1" class="file" name="file[]" type="file" multiple data-theme="fas">
-                              </div>
-                            </div>
-                          </td>
                         </tr>
                         
                         <tr>
@@ -217,6 +219,17 @@
                         </tr>
 
                         <tr>
+                          <td>Mahasiswa Pembahas</td>
+                          <td>
+                            <select class="form-control select2 select2-hidden-accessible" name="pembahas" style="width: 100%;" disabled>
+                              @foreach($mahasiswas as $mhs)
+                              <option value="{{$mhs->id}}" {{ ($mhs->id == $get->id_mhs) ? "selected": "" }}>{{$mhs->nama}}</option>
+                              @endforeach
+                            </select>
+                          </td>
+                        </tr>
+
+                        <tr>
                           <td>Judul Laporan Akhir</td>
                           <td>
                             <textarea name="judul" class="form-control" style="font-weight: 700;" rows="3" disabled>{{$get->judul}}</textarea>
@@ -229,17 +242,8 @@
                         </tr>
 
                         <tr>
-                          <td>Waktu Kolokium</td>
+                          <td>Waktu Seminar</td>
                           <td><input type="time" class="form-control" style="font-weight: 700;" value="{{date('H:i', strtotime($get->waktu)) }}" name="waktu" required disabled></td>
-                        </tr>
-
-                        <tr>
-                          <td>Upload Persyaratan</td>
-                          <td>
-                            <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                              <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                            <?php } ?>
-                          </td>
                         </tr>
 
                         <tr>
@@ -263,11 +267,11 @@
                     </table>
                   </form>
                   @endif
-                @else
+                {{-- @else
                   <br>
                   <div style="text-align: center; margin: 20px 0px;"><span style="font-size: 16px; color:red;">Belum bisa mendaftar seminar, unggah semua form persyaratan seminar terlebih dahulu.</span></div>
                   <br>
-                @endif
+                @endif --}}
               </div>
             </div>
           </div>

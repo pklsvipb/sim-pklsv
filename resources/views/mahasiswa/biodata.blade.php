@@ -36,11 +36,14 @@
                     <tbody>
                     @foreach($datas as $data)
                     <tr>
-                        <td colspan="3" style="border-top: none; text-align: center; font-size:18px;">ISI DATA MAHASISWA</td>
+                      <td colspan="3" style="border-top: none; text-align: center; font-size:18px;">
+                        <a href="{{route('download-biodata')}}" type="button" class="btn btn-info" style="font-size: 12px; float:left; margin-top: -10px;">DOWNLOAD</a><br>
+                        ISI DATA MAHASISWA <br>
+                      </td>
                     </tr>
                     
                     <tr>
-                      <td>Foto Diri (Usahakan berukuran 3x4) <i style="color: red;">*</i></td>
+                      <td>Foto Diri (Usahakan berukuran 4x6) <i style="color: red;">*</i></td>
                       @if (is_null($data->foto))
                       <td>
                         <input type="file" name="foto" accept=".jpg, .jpeg" data-allowed-file-extensions='["jpg", "jpeg"]' id="input-file-now" class="dropify" data-max-file-size="3000K"/>

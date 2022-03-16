@@ -73,6 +73,14 @@
                             <input type="text" readonly id="bayarSpp" class="form-control" name="bayar_spp" value="{{$panitia->bayar_spp}}" placeholder="Link untuk bukti pembayaran spp">
                           </td>
                         </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>Persyaratan Seminar</td>
+                          <td>{{$panitia->getProdi->nama}}</td>
+                          <td>
+                            <input type="text" readonly id="syaratSeminar" class="form-control" name="syarat_seminar" value="{{$panitia->syarat_seminar}}" placeholder="Link untuk file persyaratan seminar">
+                          </td>
+                        </tr>
                       </tbody>
                       <tfoot>
                         <tr>
@@ -143,6 +151,10 @@
 
   document.getElementById('bayarSpp').onclick = function() {
     document.getElementById('bayarSpp').removeAttribute('readonly');
+  };
+  
+  document.getElementById('syaratSeminar').onclick = function() {
+    document.getElementById('syaratSeminar').removeAttribute('readonly');
   };
 </script>
 @endpush

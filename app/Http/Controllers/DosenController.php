@@ -21,9 +21,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use App\Models\tb_kartu_seminar;
+use App\Models\tb_nilai_forum;
+use App\Models\tb_nilai_pembahas;
 
 class DosenController extends Controller
 {
+
+    public function __construct()
+    {
+        set_time_limit(10000000);
+    }
+
     public function dashboard_d()
     {
         $user  = Auth::user();
@@ -170,6 +179,64 @@ class DosenController extends Controller
         return view('dosen.form_kesediaan', compact('datas', 'user'));
     }
 
+    public function form_ttd()
+    {
+        $user  = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $mahas = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+
+        if (count($mahas) == 0) {
+            $form = [];
+        } else {
+            foreach ($mahas as $mhs) {
+                $get = tb_form::where('id_mhs', $mhs->id)->where('id_form', 16)->where('ttd_dospem', 1)->get();
+                if (count($get) != 0) {
+                    foreach ($get as $fr) {
+                        $form[] = array($fr->id, $fr->id_mhs, $fr->id_form, $fr->file, $fr->ket, $mhs->getProdi->nama, $mhs->nama, $mhs->nim);
+                    }
+                }
+            }
+        }
+
+        return view('dosen.form_ttd', compact('datas', 'user', 'mahas', 'form'));
+    }
+
+    public function form_ttd_submit(Request $request, $id)
+    {
+        $user  = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $form  = tb_form::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
+        $mahas = tb_mahasiswa::where('id', $form->id_mhs)->get();
+
+        $judul   = $form->judul;
+        $tanggal = $form->tanggal;
+        $pdf     = PDF::loadview('form_pdf.pdf_form_018_d', compact('mahas', 'judul', 'tanggal'))->setPaper('A4', 'portrait');
+
+        $form->set_failed = 0;
+        $form->set_verif  = 0;
+        $form->ttd_dospem = 0;
+
+        // Check File Exist
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_018.pdf');
+        }
+
+        $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_018.pdf';
+        $form->file   = $namadir;
+
+        //save to directory
+        Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_018.pdf', $pdf->output());
+
+        $form->save();
+
+        return redirect()->route('form-ttd')->with('success', 'Berhasil Tanda Tangan Form');
+    }
+
+
     public function biodata_ds(Request $request)
     {
         $user  = Auth::user();
@@ -297,22 +364,33 @@ class DosenController extends Controller
             $mhs = [];
         } else {
             foreach ($dospem as $dp) {
-                $get   = tb_mahasiswa::where('id', $dp->id_mhs)->first();
-                $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $get  = tb_mahasiswa::where('id', $dp->id_mhs)->first();
+                $tgl  = $dp->tgl . ' ' . $dp->waktu;
+                $date = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah seminar');
+                } else {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($history) == 0) {
-            $mhs2 = [];
-        } else {
+        $mhs2 = [];
+        $mhs3 = [];
+        if (count($history) != 0) {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'dosen')->where('ket', 'sm')->first();
-                $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                if ($get2->nilai1 != null && $get2->nilai2 != null && $get2->nilai3 != null) {
+                    $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                } else {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                }
             }
         }
 
-        return view('dosen.seminar_pembimbing', compact('datas', 'mhs', 'mhs2'));
+        return view('dosen.seminar_pembimbing', compact('datas', 'mhs', 'mhs2', 'mhs3'));
     }
 
     public function seminar_m()
@@ -328,21 +406,32 @@ class DosenController extends Controller
         } else {
             foreach ($moderator as $mode) {
                 $get   = tb_mahasiswa::where('id', $mode->id_mhs)->first();
-                $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $tgl   = $mode->tgl . ' ' . $mode->waktu;
+                $date  = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah seminar');
+                } else {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($history) == 0) {
-            $mhs2 = [];
-        } else {
+        $mhs2 = [];
+        $mhs3 = [];
+        if (count($history) != 0) {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'moderator')->where('ket', 'sm')->first();
-                $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                if ($get2->nilai1 != null && $get2->nilai2 != null && $get2->nilai3 != null) {
+                    $mhs2[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                } else {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, $get2->tgl, $get2->id);
+                }
             }
         }
 
-        return view('dosen.seminar_moderator', compact('datas', 'mhs', 'mhs2'));
+        return view('dosen.seminar_moderator', compact('datas', 'mhs', 'mhs2', 'mhs3'));
     }
 
     public function sidang_d()
@@ -449,6 +538,9 @@ class DosenController extends Controller
         return view('dosen.sidang_penguji', compact('datas', 'mhs', 'mhs2', 'mhs3', 'mhs4'));
     }
 
+
+
+
     public function kl_bap_d($id)
     {
         $user   = Auth::user();
@@ -485,8 +577,11 @@ class DosenController extends Controller
         $datas  = tb_dosen::where('id', $user->id_user)->get();
         $kode   = tb_daftar::where('id_mhs', $id)->where('ket', 'sm')->first();
         $mhs    = tb_mahasiswa::where('id', $kode->id_mhs)->first();
+        $pembahas = tb_mahasiswa::where('id', $kode->id_pembahas)->first();
+        $mahasiswas = tb_mahasiswa::where('id', '!=', $user->id_user)->get();
+        $kartu_sm = tb_kartu_seminar::where('id_seminar', $kode->id)->get();
 
-        return view('dosen.input_sm_bap_m', compact('datas', 'kode', 'mhs'));
+        return view('dosen.input_sm_bap_m', compact('datas', 'kode', 'mhs', 'pembahas', 'mahasiswas', 'kartu_sm'));
     }
 
     public function sd_bap_d($id)
@@ -608,7 +703,7 @@ class DosenController extends Controller
             'nilai1'  => 'required',
             'nilai2'  => 'required',
             'nilai3'  => 'required',
-
+            'nilai_pembahas'  => 'required',
         ]);
 
         $user    = Auth::user();
@@ -622,14 +717,42 @@ class DosenController extends Controller
         $bap->tgl      = $request->input('tgl');
         $bap->status   = 'moderator';
         $bap->ket      = 'sm';
-
         $bap->save();
 
         $update = tb_daftar::findOrFail($id);
         $update->set_bap_m = 1;
         $update->save();
 
-        return redirect()->route('seminar-m')->with('success', 'Sukses Input Nilai BAP');
+        $pembahas = new tb_nilai_pembahas;
+        $pembahas->id_seminar = $id;
+        $pembahas->id_pembahas = $request->input('pembahas');
+        $pembahas->nilai_pembahas = $request->input('nilai_pembahas');
+        $pembahas->save();
+
+        $id_hadir = $request->input('id_hadir');
+        for ($i = 0; $i < count($id_hadir); $i++) {
+            $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
+
+            if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
+                $hadir2->hadir = 1;
+                $hadir2->paraf = 1;
+                $hadir2->save();
+
+                if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
+                    $forum = new tb_nilai_forum;
+                    $forum->id_seminar = $id;
+                    $forum->id_mhs = $hadir2->id_mhs;
+                    $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
+                    $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
+                    $forum->save();
+                }
+            } else {
+                $hadir2->hadir = 0;
+                $hadir2->save();
+            }
+        }
+
+        return redirect()->route('seminar-m')->with('success', 'Sukses Input Form Seminar Moderator');
     }
 
     public function sd_bap_sd(Request $request, $id)
@@ -739,8 +862,23 @@ class DosenController extends Controller
         $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
         $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sm')->first();
         $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pembahas = tb_mahasiswa::where('id', $data->id_pembahas)->first();
+        $mahasiswas = tb_mahasiswa::where('id', '!=', $user->id_user)->get();
+        $kartu_sm = tb_kartu_seminar::where('id_seminar', $data->id)->get();
+        $nilai_pembahas = tb_nilai_pembahas::where('id_seminar', $data->id)->first();
 
-        return view('dosen.edit_sm_bap_m', compact('datas', 'bap', 'data', 'dosen', 'mhs'));
+        foreach ($kartu_sm as $kartu) {
+            $list = tb_nilai_forum::where('id_seminar', $kartu->id_seminar)->where('id_mhs', $kartu->id_mhs)->first();
+            $maha = tb_mahasiswa::where('id', $kartu->id_mhs)->first();
+
+            if ($list == null) {
+                $forum[] = array($kartu->id, $maha->nama, $maha->nim, $kartu->hadir, null);
+            } else {
+                $forum[] = array($kartu->id, $maha->nama, $maha->nim, $kartu->hadir, $list->id, $list->nilai, $list->keterangan);
+            }
+        }
+
+        return view('dosen.edit_sm_bap_m', compact('datas', 'bap', 'data', 'dosen', 'mhs', 'pembahas', 'mahasiswas', 'kartu_sm', 'nilai_pembahas', 'forum'));
     }
 
     public function sd_bap_ed($id)
@@ -858,22 +996,6 @@ class DosenController extends Controller
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
 
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
         return redirect()->route('seminar-d')->with('success', 'Sukses Edit Nilai BAP');
@@ -887,26 +1009,62 @@ class DosenController extends Controller
         $bap->nilai2    = $request->input('nilai2');
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
-
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
-        return redirect()->route('seminar-m')->with('success', 'Sukses Edit Nilai BAP');
+        $daftar = tb_daftar::where('ket', 'sm')->where('id_mhs', $bap->id_mhs)->where('id_moderator', $bap->id_dosen)->first();
+
+        $pembahas = tb_nilai_pembahas::where('id_seminar', $daftar->id)->first();
+        $pembahas->nilai_pembahas = $request->input('nilai_pembahas');
+        $pembahas->save();
+
+        $id_hadir = $request->input('id_hadir');
+
+        for ($i = 0; $i < count($id_hadir); $i++) {
+            $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
+
+            if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
+                $hadir2->hadir = 1;
+                $hadir2->paraf = 1;
+                $hadir2->save();
+
+                if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
+                    $forum = tb_nilai_forum::where('id_seminar', $hadir2->id_seminar)->where('id_mhs', $hadir2->id_mhs)->first();
+
+                    if ($forum == null) {
+                        $forum = new tb_nilai_forum;
+                        $forum->id_seminar = $hadir2->id_seminar;
+                        $forum->id_mhs = $hadir2->id_mhs;
+                        $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
+                        $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
+                        $forum->save();
+                    } else {
+                        $forum->id_mhs = $hadir2->id_mhs;
+                        $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
+                        $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
+                        $forum->save();
+                    }
+                } else {
+                    $forum = tb_nilai_forum::where('id_seminar', $hadir2->id_seminar)->where('id_mhs', $hadir2->id_mhs)->first();
+
+                    if ($forum != null) {
+                        $forum->delete();
+                    }
+                }
+            } else {
+                $hadir2->hadir = 0;
+                $hadir2->paraf = 0;
+                $hadir2->save();
+
+                if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
+                    $forum = tb_nilai_forum::where('id_seminar', $hadir2->id_seminar)->where('id_mhs', $hadir2->id_mhs);
+                    if ($forum != null) {
+                        $forum->delete();
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('seminar-m')->with('success', 'Sukses Edit Form Seminar');
     }
 
     public function sd_bap_ud(Request $request, $id)

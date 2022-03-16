@@ -144,23 +144,23 @@
                     <p>Kartu Bimbingan</p>
                   </a>
                 </li>
-                {{--<li class="nav-item">
+              {{--<li class="nav-item">
                   <a href="{{ route('laporan-periodik')}}" class="nav-link">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Laporan Periodik</p>
                   </a>
                 </li>--}}
               </ul>
+            </li> 
+            <li class="nav-item">
+              <a href="{{ route('list-sm-form')}}" class="nav-link">
+                <i class="nav-icon fa fa-laptop"></i>
+                <p style="padding-left: 7px;">
+                  Verifikasi Seminar
+                </p>
+              </a>
             </li>
             {{-- <li class="nav-item">
-              <a href="{{ route('list-sm-form')}}" class="nav-link">
-            <i class="nav-icon fa fa-laptop"></i>
-            <p style="padding-left: 7px;">
-              Verifikasi Seminar
-            </p>
-            </a>
-            </li>
-            <li class="nav-item">
               <a href="{{ route('list-sd-form')}}" class="nav-link">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">

@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{{asset('css_pdf/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{public_path('css_pdf/bootstrap.min.css')}}">
 
 
-  <title>Dosen Pembimbing Seminar PDF</title>
+  <title>Form Persyaratan Seminar PDF</title>
   <style>
     body {
       font-family: "Times New Roman", Times, serif;
@@ -60,30 +60,7 @@
   <table class="table table-borderless">
     <tbody>
       <tr>
-        <td colspan="3">
-          <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/019</p>
-        </td>   
-      </tr>
-      <tr>
-        <td width="15%">
-          <img src="{{url('images/logo-form2.jpg')}}" style="width: 2.06cm; height: 2.06cm; margin-top: 2px;">
-        </td>
-        <td width="80%" style="text-align:center;">
-          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt;"> KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI </p>
-          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 11pt;"> INSTITUT PERTANIAN BOGOR </p>
-          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 12pt;"> <b> SEKOLAH VOKASI </b> </p>
-          <p style="margin-bottom: -6px; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Kampus IPB Cilibende, Jl. Kumbang No.14 Bogor 16151 </p>
-          <p style="margin-bottom: -10%; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
-        </td>
-        <td width="5%">
-          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/029</p>-->
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3" style="text-align: center;">
-          <hr style="height:1px; margin-bottom:-15px; margin-top: 8px; border-width:0; background-color:black">
-          <hr style="height:3px; border-width:0; background-color:black; margin-bottom: 2px;">
-
+        <td style="text-align: center;">
           <p style="margin-bottom: -7px;"><b>BERITA ACARA SEMINAR TUGAS AKHIR</b></p>
           <p style="margin-bottom: -7px;"><b>PROGRAM STUDI {{strtoupper($mhs->getProdi->nama)}}</b></p>
           <p style="margin-bottom: -7px;"><b>TAHUN AKADEMIK 2021/2022</b></p>
@@ -185,9 +162,9 @@
         <td width="100%">
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Bogor, {{ Carbon\Carbon::parse($bap->tgl)->translatedFormat('d F Y'); }}</p>
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">Dosen Pembimbing</p>
-          <img src="{{url($dosen->ttd)}}" style="margin-left: 21em; margin-top: 7px; width: auto; height: 1.5cm;">
+          <img src="{{public_path($dosen->ttd)}}" style="margin-left: 21em; margin-top: 7px; width: auto; height: 1.5cm;">
           <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">{{$dosen->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">NPI {{$dosen->nip}}</p>
+          <p style="margin-bottom: 0em; margin-left: 22.5em; margin-right: 0px; font-size: 11pt;">NPI. {{$dosen->nip}}</p>
           <br><br><br>
         </td>
         <td></td>
@@ -209,9 +186,9 @@
     </tbody>
   </table>
 
-  <script src="{{asset('css_pdf/jquery-3.2.1.slim.min.js')}}"></script>
-  <script src="{{asset('css_pdf/popper.min.js')}}"></script>
-  <script src="{{asset('css_pdf/bootstrap.min.js')}}"></script>
+  <script src="{{public_path('css_pdf/jquery-3.2.1.slim.min.js')}}"></script>
+  <script src="{{public_path('css_pdf/popper.min.js')}}"></script>
+  <script src="{{public_path('css_pdf/bootstrap.min.js')}}"></script>
 </body>
 
 </html>

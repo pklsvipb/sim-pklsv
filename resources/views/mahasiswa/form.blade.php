@@ -177,7 +177,7 @@
                       <td>{{ $form->nama }}</td>
                       <!--<td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>-->
 
-                        @if ($form->id == 5 || $form->id == 6 || $form->id == 7)
+                        @if ($form->id == 5 || $form->id == 6 || $form->id == 7 || $form->id == 19)
                         <td style="text-align: center;"><i class="fas fa-file-word fa-lg"></i></td>
                         <td style="text-align: center;">
                           <a type="button" class="btn btn-sm btn-info" style="font-size: 11px;" disabled>Upload</a>
@@ -195,42 +195,62 @@
                           <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Upload</a>
                         </td>   
                       
+                        @elseif ($form->id == 17)
+                        <td style="text-align: center;"><i class="fas fa-file-word fa-lg"></i></td>
+                        <td style="text-align: center;">
+                          <a type="button" class="btn btn-sm btn-info" style="font-size: 11px;" disabled>Download</a>
+                        </td>
+                        <td>
+                          <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Download</a>
+                        </td>
+
                         @else   
-                        <td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>
-                          @if($file[$id][0] == 0)
-                          <td style="text-align: center;">
-                            <a type="button" class="btn btn-sm btn-secondary" style="font-size: 11px;" disabled>Belum Upload</a>
-                          </td>
-                          <td>
-                            <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Input</a>
-                          </td>
-                          @else
-    
+                      <td style="text-align: center;"><a href="{{ asset($form->file) }}" download="{{$form->file}}.docx"><i class="fas fa-file-word fa-lg"></i></a></td>
+                        
+                        @if($file[$id][0] == 0)
+                        <td style="text-align: center;">
+                          <a type="button" class="btn btn-sm btn-secondary" style="font-size: 11px;" disabled>Belum Upload</a>
+                        </td>
+                        <td>
+                          <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Input</a>
+                        </td>
+                        @else
+
                           @if($file[$id][1] == 1)
                           <td style="text-align: center;">
                             <a type="button" class="btn btn-sm btn-success" style="font-size: 11px;" disabled>Disetujui</a>
                           </td>
                           <td><a type="button" class="btn btn-danger btn-sm" href="{{ asset($file[$id][4]) }}" style="font-size: 11px;">PDF</a></td>
-                          @else
-    
-                          @if($file[$id][2] == 0)
+                          
+                          @elseif($file[$id][1] == 2)
                           <td style="text-align: center;">
-                            <a class="btn btn-sm btn-warning" style="font-size: 11px;" disabled>Menunggu</a>
-                          </td>
-                          <td></td>
-                          @elseif($file[$id][2] == 1)
-                          <td style="text-align: center;">
-                            <a type="button" class="btn btn-sm btn-danger" style="font-size: 11px;" disabled>Ditolak</a>
-                            <a type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" style="font-size: 11px;" data-target="#Komen-{{$form->id}}" title="Upload File"><i class="fas fa-info fa-sm"></i></a>
-                            @include('modal.komen')
+                            <a class="btn btn-sm btn-secondary" style="font-size: 11px;" disabled>Menunggu TTD</a>
                           </td>
                           <td>
-                            <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Input</a>
+                            <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-warning btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Check</a>
                           </td>
-                          @endif
-                          @endif
+
+                          @else
+                            @if($file[$id][2] == 0)
+                            <td style="text-align: center;">
+                              <a class="btn btn-sm btn-warning" style="font-size: 11px;" disabled>Menunggu</a>
+                            </td>
+                            <td></td>
+
+                            @elseif($file[$id][2] == 1)
+                            <td style="text-align: center;">
+                              <a type="button" class="btn btn-sm btn-danger" style="font-size: 11px;" disabled>Ditolak</a>
+                              <a type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" style="font-size: 11px;" data-target="#Komen-{{$form->id}}" title="Upload File"><i class="fas fa-info fa-sm"></i></a>
+                              @include('modal.komen')
+                            </td>
+                            <td>
+                              <a type="button" href="{{ route('menu-input', $form->id) }}" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-file-upload fa-sm"></i> Input</a>
+                            </td>
+                            @endif
                           @endif
                         @endif
+
+                      @endif
                     </tr>
                     <?php $no += 1;
                     $id += 1; ?>
