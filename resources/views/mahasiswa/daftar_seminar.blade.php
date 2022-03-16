@@ -245,7 +245,7 @@
                         </tr>
 
                         <tr>
-                          <td>Waktu Kolokium</td>
+                          <td>Waktu Seminar</td>
                           <td><input type="time" class="form-control" style="font-weight: 700;" value="{{date('H:i', strtotime($get->waktu)) }}" name="waktu" required disabled></td>
                         </tr>
 

@@ -61,7 +61,7 @@
                 <br>
 
                 @if ($daftar == null)
-                <div style="text-align: center; margin: 10px 0px 20px 0px;"><span style="font-size: 16px;"><b>{{$mahasiswa->nama}}</b> belum mendaftar kolokium</span></div>
+                <div style="text-align: center; margin: 10px 0px 20px 0px;"><span style="font-size: 16px;"><b>{{$mahasiswa->nama}}</b> belum mendaftar seminar</span></div>
                 @else
                 <form action="{{ route('seminar-vds', $daftar->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                   {{ csrf_field() }}
