@@ -187,6 +187,7 @@ class DosenController extends Controller
         } else {
             foreach ($mahas as $mhs) {
                 $get = tb_form::where('id_mhs', $mhs->id)->where('id_form', 16)->where('ttd_dospem', 1)->get();
+                $form = [];
                 if (count($get) != 0) {
                     foreach ($get as $fr) {
                         $form[] = array($fr->id, $fr->id_mhs, $fr->id_form, $fr->file, $fr->ket, $mhs->getProdi->nama, $mhs->nama, $mhs->nim);
