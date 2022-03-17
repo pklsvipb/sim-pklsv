@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    return 1;
+    return 123;
 });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
