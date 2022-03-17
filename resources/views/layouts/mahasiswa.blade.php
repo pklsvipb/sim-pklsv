@@ -111,7 +111,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
-                  Form
+                  Form-form
                   <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
