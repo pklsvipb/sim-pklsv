@@ -116,7 +116,7 @@
                 </p>
               </a>
             </li> 
-            <li class="nav-item" style="margin-top: 38%; position: fixed;">
+            <li class="nav-item">
               <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p style="padding-left: 7px;">

@@ -108,22 +108,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('list-kl-form')}}" class="nav-link">
-                <i class="nav-icon fa fa-calendar"></i>
-                <p style="padding-left: 7px;">
-                  Verifikasi Kolokium
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('list-sv-daftar')}}" class="nav-link">
-                <i class="nav-icon fa fa-building"></i>
-                <p style="padding-left: 7px;">
-                  Verifikasi Supervisi
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -152,6 +136,22 @@
                 </li>--}}
               </ul>
             </li> 
+            <li class="nav-item">
+              <a href="{{ route('list-kl-form')}}" class="nav-link">
+                <i class="nav-icon fa fa-calendar"></i>
+                <p style="padding-left: 7px;">
+                  Verifikasi Kolokium
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('list-sv-daftar')}}" class="nav-link">
+                <i class="nav-icon fa fa-building"></i>
+                <p style="padding-left: 7px;">
+                  Verifikasi Supervisi
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="{{ route('list-sm-form')}}" class="nav-link">
                 <i class="nav-icon fa fa-laptop"></i>
@@ -184,7 +184,7 @@
                 </p>
               </a>
             </li>
-            <li class="nav-item" style="margin-top: 38%; position: fixed;">
+            <li class="nav-item">
               <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p style="padding-left: 7px;">
