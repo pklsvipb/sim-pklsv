@@ -285,7 +285,7 @@ Route::middleware('role:mahasiswa')->get('/mahasiswa/jadwal-seminar', [App\Http\
 Route::middleware('role:mahasiswa')->post('/mahasiswa/jadwal-seminar/hadir/{id}', [App\Http\Controllers\MahasiswaController::class, 'hadir_seminar'])->name('hadir-seminar');
 
 Route::middleware('role:mahasiswa')->get('/mahasiswa/kartu-seminar', [App\Http\Controllers\MahasiswaController::class, 'kartu_sm'])->name('kartu-sm');
-Route::middleware('role:mahasiswa')->get('/mahasiswa/download-kartu-seminar', [App\Http\Controllers\MahasiswaController::class, 'download_kartu_sm'])->name('download-kartu-sm');
+Route::middleware('role:mahasiswa')->get('/mahasiswa/download-kartu-seminar', [App\Http\Controllers\ExportController::class, 'download_kartu_sm'])->name('download-kartu-sm');
 
 Route::middleware('role:mahasiswa')->get('/mahasiswa/daftar-sidang', [App\Http\Controllers\MahasiswaController::class, 'd_sidang'])->name('d-sidang');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/daftar-sidang-submit', [App\Http\Controllers\MahasiswaController::class, 's_sidang'])->name('s-sidang');

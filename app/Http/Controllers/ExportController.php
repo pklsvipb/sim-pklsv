@@ -9,6 +9,7 @@ use App\Models\tb_form;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
 use App\Models\tb_jurnal;
+use App\Models\tb_kartu_seminar;
 use App\Models\tb_mahasiswa;
 use App\Models\tb_masterform;
 use App\Models\tb_panitia;
@@ -1248,5 +1249,30 @@ class ExportController extends Controller
         return redirect()->route('form-m')->with('success', 'Berhasil Upload');
     }
 
-    
+    public function download_kartu_sm()
+    {
+        $user = Auth::user();
+        $mahasiswa = tb_mahasiswa::where('id', $user->id_user)->first();
+        $kartu = tb_kartu_seminar::where('id_mhs', $user->id_user)->where('paraf', 1)->get();
+        
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file3.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file3.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0,0,595.276,841.8898], 'portrait');
+
+        return $pdf->stream('Kartu Seminar.pdf');
+    }
 }

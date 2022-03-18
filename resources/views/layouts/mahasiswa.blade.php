@@ -108,6 +108,14 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{ route('jadwal-seminar') }}" class="nav-link">
+                <i class="nav-icon fa fa-calendar-check"></i>
+                <p style="padding-left: 7px;">
+                  Jadwal Seminar
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -151,14 +159,6 @@
                 <i class="nav-icon fa fa-laptop"></i>
                 <p style="padding-left: 7px;">
                   Daftar Seminar
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('jadwal-seminar') }}" class="nav-link">
-                <i class="nav-icon fa fa-calendar-check"></i>
-                <p style="padding-left: 7px;">
-                  Jadwal Seminar
                 </p>
               </a>
             </li>
