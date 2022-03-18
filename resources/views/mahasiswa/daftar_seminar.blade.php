@@ -223,7 +223,7 @@
                           <td>
                             <select class="form-control select2 select2-hidden-accessible" name="pembahas" style="width: 100%;" disabled>
                               @foreach($mahasiswas as $mhs)
-                              <option value="{{$mhs->id}}" {{ ($mhs->id == $get->id_mhs) ? "selected": "" }}>{{$mhs->nama}}</option>
+                              <option value="{{$mhs->id}}" {{ ($mhs->id == $get->id_pembahas) ? "selected": "" }}>{{$mhs->nama}}</option>
                               @endforeach
                             </select>
                           </td>
