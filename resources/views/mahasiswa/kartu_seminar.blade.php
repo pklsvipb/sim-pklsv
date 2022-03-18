@@ -30,8 +30,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div style="font-size: 18px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
-                  @if ($jumlah < 30)
-                    <a onclick="alert('Selesaikan minimal 30 list pada kartu seminar yang sudah di tanda tangani moderator')" type="button" class="btn btn-secondary" style="font-size: 12px; float: right; margin-top: -20px;"><i class="fa fa-download fa-sm"></i>&nbsp;Download Kartu Seminar</a> 
+                  @if ($jumlah < 20)
+                    <a onclick="alert('Selesaikan minimal 20 list pada kartu seminar yang sudah di tanda tangani moderator')" type="button" class="btn btn-secondary" style="font-size: 12px; float: right; margin-top: -20px;"><i class="fa fa-download fa-sm"></i>&nbsp;Download Kartu Seminar</a> 
                   @else
                     <a href="{{route('download-kartu-sm')}}" type="button" class="btn btn-info" style="font-size: 12px; float: right; margin-top: -20px;"><i class="fa fa-download fa-sm"></i>&nbsp;Download Kartu Seminar</a> 
                   @endif
