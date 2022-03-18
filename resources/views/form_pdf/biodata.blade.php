@@ -130,7 +130,7 @@
         <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 12pt;">Jalur</p></td>
         <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 12pt;">:</p></td>
         <td style="padding-top: 1px; padding-bottom: 1px;">
-            @if ($data->jalur == "usmi")
+            @if ($data->jalur == "USMI")
             <p style="margin-bottom: 0em; font-size: 12pt; margin-left: -1em;">USMI / <s>Reguler</s>
             @else
             <p style="margin-bottom: 0em; font-size: 12pt; margin-left: -1em;"><s>USMI</s> / Reguler 
