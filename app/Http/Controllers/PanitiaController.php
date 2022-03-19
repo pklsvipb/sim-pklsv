@@ -24,6 +24,9 @@ use App\Exports\ExportExcelKolokium;
 use App\Models\tb_bimbingan;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
+use App\Models\tb_kartu_seminar;
+use App\Models\tb_nilai_forum;
+use App\Models\tb_nilai_pembahas;
 use App\Models\tb_prodi;
 use App\Models\tb_supervisi;
 use ZipArchive;
@@ -701,6 +704,28 @@ class PanitiaController extends Controller
 
             return redirect()->route('list-sm-form')->with('success', 'Verfikasi Seminar berhasil diterima');
         } else {
+            $update = tb_daftar::where('id', $id)->first();
+            $kartu = tb_kartu_seminar::where('id_seminar', $update->id)->first();
+            $bap = tb_nilai_bap::where('id_mhs', $update->id_mhs)->where('ket', 'sm')->first();
+            $forum = tb_nilai_forum::where('id_seminar', $update->id)->first();
+            $pembahas = tb_nilai_pembahas::where('id_seminar', $update->id)->first();
+            
+            if($kartu != null){
+                $kartu = tb_kartu_seminar::where('id_seminar', $update->id)->delete();
+            }
+
+            if($bap != null){
+                $bap = tb_nilai_bap::where('id_mhs', $update->id_mhs)->where('ket', 'sm')->delete();
+            }
+
+            if($forum != null){
+                $forum = tb_nilai_forum::where('id_seminar', $update->id)->delete();
+            }
+
+            if($pembahas != null){
+                $pembahas = tb_nilai_pembahas::where('id_seminar', $update->id)->delete();
+            }
+
             $update = tb_daftar::findOrFail($id)->delete();
 
             return redirect()->route('list-sm-form')->with('success', 'Verfikasi Seminar berhasil ditolak');
