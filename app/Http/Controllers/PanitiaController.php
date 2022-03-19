@@ -112,7 +112,9 @@ class PanitiaController extends Controller
 
     public function pembimbing_ps(Request $request, $kelompok)
     {
-        $set = tb_mahasiswa::where('kelompok', $kelompok)->get();
+        $user = Auth::user();
+        $prodiuser = tb_panitia::where('id', $user->id_user)->first();
+        $set = tb_mahasiswa::where('kelompok', $kelompok)->where('id_prodi', $prodiuser->id_prodi)->get();
 
         foreach ($set as $dos) {
             $mahasiswa = tb_mahasiswa::findOrFail($dos->id);
