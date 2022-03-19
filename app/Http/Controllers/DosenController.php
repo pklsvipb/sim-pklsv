@@ -1202,7 +1202,7 @@ class DosenController extends Controller
         } else {
             foreach ($getlist as $gt) {
                 $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
-                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs as $data) {
                     $listmhs[] = array($data->kelompok, $data->nama, $data->nim);
                 }
@@ -1216,7 +1216,7 @@ class DosenController extends Controller
         } else {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
-                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
+                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs2 as $data) {
                     $listmhs2[] = array($data->kelompok, $data->nama, $data->nim);
                 }

@@ -503,10 +503,10 @@ class PanitiaController extends Controller
             $update->set_verif  = 1;
             $update->id_dosen   = $request->input('dosen');
             $update->save();
-            return redirect()->route('list-sv-daftar')->with('success', 'Verfikasi Supervisi Diterima');
+            return redirect()->route('list-sv-daftar')->with('success', 'Verifikasi Supervisi Diterima');
         } else {
             $update = tb_supervisi::findOrFail($id)->delete();
-            return redirect()->route('list-sv-daftar')->with('success', 'Verfikasi Supervisi Ditolak');
+            return redirect()->route('list-sv-daftar')->with('success', 'Verifikasi Supervisi Ditolak');
         }
     }
 

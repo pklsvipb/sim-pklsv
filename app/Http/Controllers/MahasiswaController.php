@@ -426,7 +426,7 @@ class MahasiswaController extends Controller
         $user   = Auth::user();
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
         foreach ($datas as $data) {
-            $get    = tb_supervisi::where('kelompok', $data->kelompok)->first();
+            $get    = tb_supervisi::where('kelompok', $data->kelompok)->where('id_prodi', $data->id_prodi)->first();
         }
 
         if (is_null($get)) {
