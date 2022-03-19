@@ -9,7 +9,7 @@
           <tbody>
             <?php
             for ($i = 0; $i < count($listmhs); $i++) {
-              if ($listmhs[$i][0] == $mhs[$j][1]) { ?>
+              if ($listmhs[$i][0] == $mhs[$j][1] && $listmhs[$i][3] == $mhs[$j][2]) { ?>
                 <tr>
                   <td style="text-align: center; width: 30%;">{{$listmhs[$i][1]}}</td>
                   <td style="text-align: center;">{{$listmhs[$i][2]}}</td>

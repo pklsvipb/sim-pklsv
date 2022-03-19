@@ -1204,7 +1204,7 @@ class DosenController extends Controller
                 $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
                 $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs as $data) {
-                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim);
+                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim, $data->getProdi->nama);
                 }
                 $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
             }
@@ -1218,7 +1218,7 @@ class DosenController extends Controller
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs2 as $data) {
-                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim);
+                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim, $data->getProdi->nama);
                 }
                 $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
             }
@@ -1244,6 +1244,7 @@ class DosenController extends Controller
         $userData = tb_dosen::where('id', $user->id_user)->first();
 
         $save = new tb_form_004();
+        $save->id_supervisi = $supervisi->id;
         $save->kelompok = $supervisi->kelompok;
         $save->dosen_penjajakan_id = $userData->id;
         $save->bidang_usaha = $supervisi->bidang_usaha;
@@ -1295,9 +1296,9 @@ class DosenController extends Controller
         } else {
             foreach ($getlist as $gt) {
                 $get   = tb_mahasiswa::where('id', $gt->id_mhs)->first();
-                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->get();
+                $getmhs = tb_mahasiswa::where('kelompok', $get->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs as $data) {
-                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim);
+                    $listmhs[] = array($data->kelompok, $data->nama, $data->nim, $data->getProdi->nama);
                 }
                 $mhs[] = array($gt->id, $get->kelompok, $get->getProdi->nama);
             }
@@ -1309,9 +1310,9 @@ class DosenController extends Controller
         } else {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
-                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->get();
+                $getmhs2   = tb_mahasiswa::where('kelompok', $hs->kelompok)->where('id_prodi', $get->id_prodi)->get();
                 foreach ($getmhs2 as $data) {
-                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim);
+                    $listmhs2[] = array($data->kelompok, $data->nama, $data->nim, $data->getProdi->nama);
                 }
                 $mhs2[] = array($hs->id, $get->kelompok, $get->getProdi->nama);
             }
@@ -1337,6 +1338,7 @@ class DosenController extends Controller
         $userData = tb_dosen::where('id', $user->id_user)->first();
 
         $save = new tb_form_015();
+        $save->id_supervisi = $supervisi->id;
         $save->kelompok = $supervisi->kelompok;
         $save->dosen_supervisi_id = $userData->id;
         $save->bidang_usaha = $supervisi->bidang_usaha;

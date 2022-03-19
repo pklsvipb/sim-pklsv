@@ -739,8 +739,8 @@ class ExportController extends Controller
     public function form_004_pdf($id)
     {
 
-        $supervisi   = tb_form_004::where('kelompok', $id)->first();
-        $daftar = tb_supervisi::where('kelompok', $id)->first();
+        $supervisi   = tb_form_004::where('id_supervisi', $id)->first();
+        $daftar = tb_supervisi::where('id', $id)->first();
         $value6 = explode(',', $supervisi->penilaian_6);
         $value7 = explode(',', $supervisi->penilaian_7);
         $pdf   = PDF::loadview('dosen.Form-004.pdf_supervisi_form_004', compact('supervisi', 'daftar', 'value6', 'value7'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
@@ -751,8 +751,8 @@ class ExportController extends Controller
     public function form_015_pdf($id)
     {
 
-        $supervisi   = tb_form_015::where('kelompok', $id)->first();
-        $daftar = tb_supervisi::where('kelompok', $id)->first();
+        $supervisi   = tb_form_015::where('id_supervisi', $id)->first();
+        $daftar = tb_supervisi::where('id', $id)->first();
         $value6 = explode(',', $supervisi->penilaian_6);
         $value7 = explode(',', $supervisi->penilaian_7);
         $value8 = explode(',', $supervisi->penilaian_8);

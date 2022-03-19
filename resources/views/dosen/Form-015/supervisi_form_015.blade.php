@@ -95,7 +95,7 @@
                     </a>
                   </td>
                   <td>
-                    <a type="button" href="{{ route('form-015-pdf', $mhs2[$i][1]) }}" class="btn btn-success btn-sm">Download</a>
+                    <a type="button" href="{{ route('form-015-pdf', $mhs2[$i][0]) }}" class="btn btn-success btn-sm">Download</a>
                     <!-- <a type="button" href="#" class="btn btn-primary btn-sm">Edit</a> -->
                   </td>
                 </tr>
