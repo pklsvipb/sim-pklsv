@@ -28,6 +28,53 @@
       <div class="card">
         <div class="card-header">
           <!-- <h5 class="card-title">Profile</h5> -->
+          <h1 class="card-title" style="font-weight: 600; font-size: 1.2rem;">Master <small style="font-size: 12px; color: #777;">Data Dosen</small></h1>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" style="font-size: 12px; color: #333; clear: both;">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="table-responsive">
+                  <table id="datatable" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline collapsed" style="font-size: 12px; font-weight: 400; color: black; width: 100%;" width="100%" role="grid" aria-describedby="data-table_info">
+                    <thead>
+                      <tr>
+                        <th width="2%">No</th>
+                        <th width="40%">Nama Lengkap</th>
+                        <th style="text-align: center;">NIP</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php $no = 1; ?>
+                      @foreach($dosens as $dosen)
+                      <tr>
+                        <td style="text-align: center;">{{ $no }}</td>
+                        <td>{{ $dosen->nama }}</td>
+                        <td style="text-align: center;">{{ $dosen->nip }}</td>
+                        <td style="text-align: center;">
+                          <a type="button" class="btn btn-warning btn-icon btn-sm" data-toggle="modal" data-target="#Reset-Dosen-{{$dosen->id}}" title="Reset Password"><i class="fas fa-sync-alt fa-sm"></i></a>
+                          {{--<a type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" data-target="#Delete-{{$dosen->id}}" title="Delete"><i class="fas fa-trash fa-sm"></i></a>--}}
+                        </td>
+                      </tr>
+                      <?php $no += 1; ?>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.dataTables -->
+        </div>
+        <!-- ./card-body -->
+      </div>
+      <!-- /.card -->
+
+      <div class="card">
+        <div class="card-header">
+          <!-- <h5 class="card-title">Profile</h5> -->
           <h1 class="card-title" style="font-weight: 600; font-size: 1.2rem;">Master <small style="font-size: 12px; color: #777;">Data Mahasiswa</small></h1>
         </div>
         <!-- /.card-header -->
@@ -86,6 +133,12 @@
 @if(is_null($all) == 0)
 @foreach($all as $mhs)
 @include('modal.reset')
+@endforeach
+@endif
+
+@if(is_null($dosens) == 0)
+@foreach($dosens as $dosen)
+@include('modal.reset-dosen')
 @endforeach
 @endif
 

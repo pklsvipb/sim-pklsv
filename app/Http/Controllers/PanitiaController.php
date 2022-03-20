@@ -1188,7 +1188,7 @@ class PanitiaController extends Controller
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
     }
 
-    public function set_mahasiswa()
+    public function management_user()
     {
         $user = Auth::user();
         $datas  = tb_panitia::where('id', $user->id_user)->get();
@@ -1196,7 +1196,7 @@ class PanitiaController extends Controller
         $all    = tb_mahasiswa::where('id_prodi', $panitia->id_prodi)->get();
         $dosens = tb_dosen::all();
 
-        return view('panitia.set_mahasiswa', compact('datas', 'all', 'dosens'));
+        return view('panitia.management_user', compact('datas', 'all', 'dosens'));
     }
 
     public function mahasiswa_reset($id)
@@ -1206,7 +1206,17 @@ class PanitiaController extends Controller
         $db->password = bcrypt($user->username);
         $db->save();
 
-        return redirect()->route('set-mahasiswa')->with('success-reset', 'Berhasil mereset password mahasiswa');
+        return redirect()->route('management-user')->with('success-reset', 'Berhasil mereset password mahasiswa');
+    }
+
+    public function dosen_reset($id)
+    {
+        $user         = user::where('id_dosen', $id)->first();
+        $db           = user::find($user->id);
+        $db->password = bcrypt(123);
+        $db->save();
+
+        return redirect()->route('management-user')->with('success-reset', 'Berhasil mereset password dosen');
     }
 
     public function set_kaprodi(Request $request){

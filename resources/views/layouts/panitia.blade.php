@@ -100,10 +100,10 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('set-mahasiswa') }}" class="nav-link">
+              <a href="{{ route('management-user') }}" class="nav-link">
                 <i class="nav-icon fa fa-users-cog"></i>
                 <p style="padding-left: 7px;">
-                  Setting Mahasiswa
+                  Management User
                 </p>
               </a>
             </li>
