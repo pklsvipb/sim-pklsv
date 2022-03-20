@@ -133,7 +133,7 @@
                         <tr>
                           <td>Dosen Pembimbing</td>
                           <td>
-                            <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;">
+                            <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;" disabled>
                               <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                             </select>
                           </td>

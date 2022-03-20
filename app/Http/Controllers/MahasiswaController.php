@@ -531,7 +531,6 @@ class MahasiswaController extends Controller
     public function s_seminar(Request $request)
     {
         $this->validate($request, [
-            'dospem' => 'required',
             'judul'  => 'required',
             'tgl'    => 'required',
             'waktu'  => 'required',
@@ -541,7 +540,7 @@ class MahasiswaController extends Controller
         $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
 
         $upload = new tb_daftar;
-        $upload->id_dosen = $request->input('dospem');
+        $upload->id_dosen = $mhs->id_dospem1;
         $upload->id_pembahas = $request->input('pembahas');
         $upload->id_mhs   = $user->id_user;
         $upload->id_prodi = $mhs->id_prodi;
@@ -558,8 +557,9 @@ class MahasiswaController extends Controller
     {
         $user   = Auth::user();
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
         $dosens = tb_dosen::all();
-        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_mhs', '!=', $user->id_user)->get();
+        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_mhs', '!=', $user->id_user)->where('id_prodi', $mhs->id_prodi)->get();
 
         return view('mahasiswa.jadwal_seminar', compact('datas', 'dosens', 'seminars'));
     }
