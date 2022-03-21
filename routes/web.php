@@ -31,10 +31,10 @@ Route::get('/n&l/up', function () {
     return 'Application is now live.';
 });
 
-Route::get('delete/file', function () {
-    Storage::disk('local')->delete('pdf/J3C119129/pdf_kartu_bimbingan.pdf');
-    return 'Berhasil dihapus';
-});
+// Route::get('delete/file', function () {
+//     Storage::disk('local')->delete('pdf/J3C119129/pdf_kartu_bimbingan.pdf');
+//     return 'Berhasil dihapus';
+// });
 
 Auth::routes();
 
