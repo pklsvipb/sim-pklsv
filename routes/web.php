@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,11 @@ Route::get('/n&l/down', function () {
 Route::get('/n&l/up', function () {
     Artisan::call('up');
     return 'Application is now live.';
+});
+
+Route::get('delete/file', function () {
+    Storage::disk('local')->delete('pdf/J3C119129/pdf_kartu_bimbingan.pdf');
+    return 'Berhasil dihapus';
 });
 
 Auth::routes();
