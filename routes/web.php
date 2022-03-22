@@ -142,6 +142,10 @@ Route::middleware('role:panitia')->get('/panitia/download-sdmu/{id}', [App\Http\
 Route::middleware('role:panitia')->get('download-zip', [App\Http\Controllers\ExportController::class, 'download_zip'])->name('download-zip');
 Route::middleware('role:panitia')->get('download-zip-supervisi', [App\Http\Controllers\ExportController::class, 'download_zip_supervisi'])->name('download-zip-supervisi');
 
+Route::middleware('role:panitia')->get('/panitia/download-sm-forum/{id}', [App\Http\Controllers\ExportController::class, 'download_sm_forum'])->name('download-sm-forum');
+Route::middleware('role:panitia')->get('/panitia/download-sm-pembahas/{id}', [App\Http\Controllers\ExportController::class, 'download_sm_pembahas'])->name('download-sm-pembahas');
+
+
 //Pengumuman
 Route::middleware('role:panitia')->post('/panitia/pengumuman', [App\Http\Controllers\PanitiaController::class, 'pengumuman'])->name('pengumuman');
 Route::middleware('role:panitia')->post('/panitia/pengumuman/delete', [App\Http\Controllers\PanitiaController::class, 'pengumuman_delete'])->name('pengumuman-delete');

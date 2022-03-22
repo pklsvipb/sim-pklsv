@@ -203,6 +203,30 @@ class ExportController extends Controller
         return $pdf->download('BAP Seminar Moderator ' . $mhs->nim . '.pdf');
     }
 
+    public function download_sm_forum($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $sm    = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sm')->first();
+        $datas = tb_nilai_forum::where('id_seminar', $sm->id)->get();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sm_forum', compact('bap', 'sm', 'datas', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->download('Form Penilaian Forum Seminar ' . $mhs->nim . '.pdf');
+    }
+
+    public function download_sm_pembahas($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $sm    = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sm')->first();
+        $data  = tb_nilai_pembahas::where('id_seminar', $sm->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sm_pembahas', compact('bap', 'sm', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->download('Form Penilaian Pembahas Seminar ' . $mhs->nim . '.pdf');
+    }
+
     public function download_bap_sdd($id)
     {
 
@@ -770,7 +794,7 @@ class ExportController extends Controller
         $lists = tb_jurnal::where('id_mhs', $user->id_user)->get();
         $totalPages = 0;
         //load pdf
-        $pdf_num   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
         //path save file pdf
         $path = 'file_form/file.pdf';
         //save pdf
@@ -784,11 +808,11 @@ class ExportController extends Controller
         Storage::disk('local')->delete('file_form/file.pdf');
 
         //load pdf again with passing var total page
-        $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
         return $pdf->stream('Jurnal Harian.pdf');
     }
-    
+
     public function form014_pdf_download()
     {
         $user  = Auth::user();
@@ -1254,10 +1278,10 @@ class ExportController extends Controller
         $user = Auth::user();
         $mahasiswa = tb_mahasiswa::where('id', $user->id_user)->first();
         $kartu = tb_kartu_seminar::where('id_mhs', $user->id_user)->where('paraf', 1)->get();
-        
+
         $totalPages = 0;
         //load pdf
-        $pdf_num   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
         //path save file pdf
         $path = 'file_form/file3.pdf';
         //save pdf
@@ -1271,7 +1295,7 @@ class ExportController extends Controller
         Storage::disk('local')->delete('file_form/file.pdf');
 
         //load pdf again with passing var total page
-        $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
         return $pdf->stream('Kartu Seminar.pdf');
     }
