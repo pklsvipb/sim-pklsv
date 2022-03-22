@@ -68,11 +68,13 @@
  
                           @if ($data[$i][3] != 0) 
                           <a href="{{route('download-bap-smm',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">BAP MODERATOR</a> &nbsp; 
+                          <a href="{{route('sm-pembahas', $data[$i][3])}}" style="font-size: 12px;" class="btn btn-primary btn-sm">PEMBAHAS</a> &nbsp;
+                          <a href="{{route('sm-forum', $data[$i][3])}}" style="font-size: 12px;" class="btn btn-primary btn-sm">FORUM</a> &nbsp;
                           @else 
                           <span></span> 
                           @endif 
  
-                          <!--<a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a>  -->
+                          {{-- <a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a> --}}
                       </td> 
                       </tr> 
                       @endfor 
