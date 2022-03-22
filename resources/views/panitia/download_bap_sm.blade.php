@@ -43,12 +43,12 @@
                   <table id="datatable" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline collapsed" style="font-size: 12px; font-weight: 400; color: black; width: 100%;" width="100%" role="grid" aria-describedby="data-table_info"> 
                     <thead> 
                       <tr> 
-                        <th width="2%">No</th> 
-                        <th width="40%">Nama Lengkap</th> 
-                        <th style="text-align: center;">NIM</th> 
-                        <th style="text-align: center;">Dospem</th> 
-                        <th style="text-align: center;">Moderator</th> 
-                        <th style="text-align: center;">Aksi</th> 
+                        <th width="5%">No</th> 
+                        <th width="20%">Nama Lengkap</th> 
+                        <th width="5%" style="text-align: center;">NIM</th> 
+                        <th width="20%" style="text-align: center;">Dospem</th> 
+                        <th width="20%" style="text-align: center;">Moderator</th> 
+                        <th width="30%" style="text-align: center;">Aksi</th> 
                       </tr> 
                     </thead> 
                     <tbody> 
