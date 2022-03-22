@@ -97,33 +97,39 @@
   <table class="table table-borderless" style="margin-top: -1em;">
     <tbody>
       <tr>
-        <td width="23%">
-          <p style="margin-bottom: 0em; font-size: 11pt;">Nama Pembahas</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">NIM</p>
-          <P style="margin-bottom: 0em; font-size: 11pt;">Hari / Tanggal</P>
-          <p style="margin-bottom: 0em; font-size: 11pt;">Nama Penyaji</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">NIM</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">Judul Makalah</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">Nilai *)</p>
-        </td>
-        <td width="1%">
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
-        </td>
-        <td width="76%">
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->getMhs->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->getMhs->nim}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{ Carbon\Carbon::parse($sm->tgl)->translatedFormat('l/ d F Y'); }}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$mhs->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$mhs->nim}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt; text-align: justify;">{{$sm->judul}}</p>
-          <p style="margin-bottom: 0em; margin-left: -1em; font-size: 11pt;">{{$data->nilai_pembahas}}</p>
-        </td>
+        <td width="24%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Nama Pembahas</p></td>
+        <td width="1%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td width="75%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $data->getMhs->nama }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">NIM</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $data->getMhs->nim }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Hari / Tanggal</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ Carbon\Carbon::parse($sm->tgl)->translatedFormat('l/ d F Y'); }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Nama Penyaji</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nama }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">NIM</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nim }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Judul Makalah</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $sm->judul }}</p></td>
+      </tr>
+      <tr>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Nilai *)</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $data->nilai_pembahas }}</p></td>
       </tr>
     </tbody>
   </table>
