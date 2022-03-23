@@ -43,12 +43,12 @@
                   <table id="datatable" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline collapsed" style="font-size: 12px; font-weight: 400; color: black; width: 100%;" width="100%" role="grid" aria-describedby="data-table_info"> 
                     <thead> 
                       <tr> 
-                        <th width="2%">No</th> 
-                        <th width="40%">Nama Lengkap</th> 
-                        <th style="text-align: center;">NIM</th> 
-                        <th style="text-align: center;">Dospem</th> 
-                        <th style="text-align: center;">Moderator</th> 
-                        <th style="text-align: center;">Aksi</th> 
+                        <th width="5%">No</th> 
+                        <th width="20%">Nama Lengkap</th> 
+                        <th width="5%" style="text-align: center;">NIM</th> 
+                        <th width="20%" style="text-align: center;">Dospem</th> 
+                        <th width="20%" style="text-align: center;">Moderator</th> 
+                        <th width="30%" style="text-align: center;">Aksi</th> 
                       </tr> 
                     </thead> 
                     <tbody> 
@@ -67,12 +67,14 @@
                           @endif 
  
                           @if ($data[$i][3] != 0) 
-                          <a href="{{route('download-bap-smm',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">BAP MODERATOR</a> &nbsp; 
+                          <a href="{{route('download-bap-smm',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">BAP MODERATOR</a><br>
+                          <a href="{{route('download-sm-pembahas', $data[$i][3])}}" style="font-size: 12px;" class="btn btn-primary btn-sm">PEMBAHAS</a> &nbsp;
+                          <a href="{{route('download-sm-forum', $data[$i][3])}}" style="font-size: 12px;" class="btn btn-primary btn-sm">FORUM</a> &nbsp;
                           @else 
                           <span></span> 
                           @endif 
  
-                          <!--<a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a>  -->
+                          {{-- <a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a> --}}
                       </td> 
                       </tr> 
                       @endfor 

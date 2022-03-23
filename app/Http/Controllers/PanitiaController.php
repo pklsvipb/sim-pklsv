@@ -709,20 +709,20 @@ class PanitiaController extends Controller
             $bap = tb_nilai_bap::where('id_mhs', $update->id_mhs)->where('ket', 'sm')->first();
             $forum = tb_nilai_forum::where('id_seminar', $update->id)->first();
             $pembahas = tb_nilai_pembahas::where('id_seminar', $update->id)->first();
-            
-            if($kartu != null){
+
+            if ($kartu != null) {
                 $kartu = tb_kartu_seminar::where('id_seminar', $update->id)->delete();
             }
 
-            if($bap != null){
+            if ($bap != null) {
                 $bap = tb_nilai_bap::where('id_mhs', $update->id_mhs)->where('ket', 'sm')->delete();
             }
 
-            if($forum != null){
+            if ($forum != null) {
                 $forum = tb_nilai_forum::where('id_seminar', $update->id)->delete();
             }
 
-            if($pembahas != null){
+            if ($pembahas != null) {
                 $pembahas = tb_nilai_pembahas::where('id_seminar', $update->id)->delete();
             }
 
@@ -1217,13 +1217,14 @@ class PanitiaController extends Controller
         return redirect()->route('management-user')->with('success-reset', 'Berhasil mereset password dosen');
     }
 
-    public function set_kaprodi(Request $request){
+    public function set_kaprodi(Request $request)
+    {
         $user = Auth::user();
         $panitia = tb_panitia::where('id', $user->id_user)->first();
         $kaprodi = tb_prodi::findOrFail($panitia->id_prodi);
         $kaprodi->id_kaprodi = $request->input('kaprodi');
         $kaprodi->save();
 
-        return Redirect::Back()->with('success', 'Sukses Set Kaprodi');        
+        return Redirect::Back()->with('success', 'Sukses Set Kaprodi');
     }
 }
