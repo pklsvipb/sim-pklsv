@@ -59,10 +59,11 @@
                         <?php 
                           $tgl = $sm->tgl . ' ' . $sm->waktu;
                           $date = Carbon\Carbon::parse($tgl);
-                          $past = $date->isPast();
+                          $now = Carbon\Carbon::now();
+                          $past = $date->greaterThanOrEqualTo($now);
                         ?>
 
-                        @if ($date->isPast())
+                        @if ($date->greaterThanOrEqualTo($now))
                         <button type="button" class="btn btn-secondary btn-sm" onclick="return alert('pendaftaran seminar sudah ditutup')"><i class="fas fa fa-check"></i></button>
                         @else
                         <form action="{{ route('hadir-seminar', $sm->id) }}" method="POST" enctype="multipart/form-data">
