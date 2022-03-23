@@ -63,7 +63,7 @@
                           $past = $date->greaterThanOrEqualTo($now);
                         ?>
 
-                        @if ($date->greaterThanOrEqualTo($now))
+                        @if ($date->equalTo($now))
                         <button type="button" class="btn btn-secondary btn-sm" onclick="return alert('pendaftaran seminar sudah ditutup')"><i class="fas fa fa-check"></i></button>
                         @else
                         <form action="{{ route('hadir-seminar', $sm->id) }}" method="POST" enctype="multipart/form-data">
