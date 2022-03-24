@@ -60,25 +60,16 @@
                           $tgl = $sm->tgl . ' ' . $sm->waktu;
                           $date = Carbon\Carbon::parse($tgl);
                           $now = Carbon\Carbon::now();
-                          $past = $date->greaterThanOrEqualTo($now);
+                          $past = $date->lessThan($now);
                         ?>
 
-                        {{--@if ($date->isSameDay($now))
+                        @if ($date->lessThan($now))
                         <button type="button" class="btn btn-secondary btn-sm" onclick="return alert('pendaftaran seminar sudah ditutup')"><i class="fas fa fa-check"></i></button>
                         @else
                         <form action="{{ route('hadir-seminar', $sm->id) }}" method="POST" enctype="multipart/form-data">
                           @csrf
                           <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Yakin ingin menghadiri seminar ini?')"><i class="fas fa fa-check"></i></button>
                         </form>
-                        @endif--}}
-
-                        @if ($date->isSameDay($now))
-                        <form action="{{ route('hadir-seminar', $sm->id) }}" method="POST" enctype="multipart/form-data">
-                          @csrf
-                          <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Yakin ingin menghadiri seminar ini?')"><i class="fas fa fa-check"></i></button>
-                        </form>
-                        @else
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="return alert('pendaftaran seminar sudah ditutup')"><i class="fas fa fa-check"></i></button>
                         @endif
 
                       </td>
