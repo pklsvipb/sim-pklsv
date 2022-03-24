@@ -135,7 +135,7 @@ class DosenController extends Controller
                 $file = [];
             }
         }
-dd($status);
+
         return view('dosen.dashboard', compact('datas', 'get_form', 'mhs', 'mhs2', 'kolo', 'semi', 'sida', 'forms', 'status'));
     }
 

@@ -271,7 +271,7 @@
 <!-- /.content --> 
  
  
-@if(is_null($mhs) == 0) 
+{{--@if(is_null($mhs) == 0) 
 @foreach ($mhs as $bimbingan) 
 @include('modal.status-mhs') 
 @endforeach 
@@ -282,6 +282,6 @@
 @foreach ($mhs2 as $bimbingan) 
 @include('modal.status-mhs') 
 @endforeach 
-@endif  
+@endif  --}}
  
 @endsection
