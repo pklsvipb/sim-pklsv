@@ -232,10 +232,10 @@
                     <tr>
                       <td>Sidang</td>
                       <td>
-                        @if (count($bap_sm) == 0)
+                        @if (count($bap_sd) == 0)
                         <span style="font-size: 20px;"> - </span>
                         @else
-                          @if ($bap_sm[0] == 0)
+                          @if ($bap_sd[0] == 0)
                               <span style="font-size: 20px;"> - </span>
                           @else
                           <i class="fas fa-check text-success"></i>
@@ -246,10 +246,10 @@
                       <td><span> Tidak ada </span></td>
                       
                       <td>
-                        @if (count($bap_sm) == 0)
+                        @if (count($bap_sd) == 0)
                         <span style="font-size: 20px;"> - </span>
                         @else
-                          @if ($bap_sm[1] == 0)
+                          @if ($bap_sd[1] == 0)
                               <span style="font-size: 20px;"> - </span>
                           @else
                           <i class="fas fa-check text-success"></i>
