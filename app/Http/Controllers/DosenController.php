@@ -1477,7 +1477,7 @@ class DosenController extends Controller
             $file[] = array($getmhs[$i][0], $list);
         }
 
-        dd($file);
+        // dd($file);
 
         return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
     }
