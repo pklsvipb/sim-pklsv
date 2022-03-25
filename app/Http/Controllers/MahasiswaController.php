@@ -559,7 +559,7 @@ class MahasiswaController extends Controller
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
         $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
         $dosens = tb_dosen::all();
-        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_mhs', '!=', $user->id_user)->where('id_prodi', $mhs->id_prodi)->get();
+        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_prodi', $mhs->id_prodi)->get();
         $jadwal = [];
 
         foreach ($seminars as $sm) {
