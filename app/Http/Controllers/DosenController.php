@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use App\Models\tb_kartu_seminar;
 use App\Models\tb_nilai_forum;
 use App\Models\tb_nilai_pembahas;
+use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
 {
@@ -707,6 +708,9 @@ class DosenController extends Controller
             'nilai_pembahas'  => 'required',
         ]);
 
+        DB::beginTransaction();
+
+        try {
         $user    = Auth::user();
 
         $bap  = new tb_nilai_bap;
@@ -752,8 +756,16 @@ class DosenController extends Controller
                 $hadir2->save();
             }
         }
+        
+            DB::commit();
+            // all good
 
-        return redirect()->route('seminar-m')->with('success', 'Sukses Input Form Seminar Moderator');
+            return redirect()->route('seminar-m')->with('success', 'Sukses Input Form Seminar Moderator');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->route('seminar-m')->with('success', $e->getMessage());
+        }
     }
 
     public function sd_bap_sd(Request $request, $id)
@@ -1465,7 +1477,7 @@ class DosenController extends Controller
             $file[] = array($getmhs[$i][0], $list);
         }
 
-        // dd($file);
+        dd($getmhs);
 
         return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
     }
