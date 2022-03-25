@@ -19,8 +19,8 @@
                   @for ($g = 0; $g < count($file[$j][1]); $g++) 
                     <tr> 
                       <td>{{$g+1}}</td>
-                      <td><p style="font-size: 13px;">{{ Carbon\Carbon::parse($file[$j][1][$i][3])->translatedFormat('l, d F Y'); }}</p></td> 
-                      <td style="text-align: left;">{{ $file[$j][1][$i][4] }}</td>
+                      <td><p style="font-size: 13px;">{{ Carbon\Carbon::parse($file[$j][1][$g][3])->translatedFormat('l, d F Y'); }}</p></td> 
+                      <td style="text-align: left;">{{ $file[$j][1][$g][4] }}</td>
                     </tr> 
                     @endfor                      
                   @endif 

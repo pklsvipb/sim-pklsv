@@ -16,11 +16,11 @@
                 @for ($j = 0; $j < count($file); $j++)
                   @if ($file[$j][0] == $getmhs[$i][1]) 
 
-                  @for ($i = 0; $i < count($file[$j][1]); $i++) 
+                  @for ($g = 0; $g < count($file[$j][1]); $g++) 
                     <tr> 
-                      <td><p style="font-size: 13px; font-weight: 400;">{{ Carbon\Carbon::parse($file[$j][1][$i][4])->translatedFormat('l, d F Y'); }}</p></td> 
-                      <td>{{$file[$j][1][$i][5]}} - {{$file[$j][1][$i][6]}}</td>
-                      <td style="text-align: left;">{{ $file[$j][1][$i][7] }}</td>
+                      <td><p style="font-size: 13px; font-weight: 400;">{{ Carbon\Carbon::parse($file[$j][1][$g][4])->translatedFormat('l, d F Y'); }}</p></td> 
+                      <td>{{$file[$j][1][$g][5]}} - {{$file[$j][1][$g][6]}}</td>
+                      <td style="text-align: left;">{{ $file[$j][1][$g][7] }}</td>
                     </tr> 
                     @endfor                      
                   @endif 
