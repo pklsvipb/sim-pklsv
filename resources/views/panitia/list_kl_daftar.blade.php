@@ -40,12 +40,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @for($i=0; $i < count($kolokium); $i++) <tr>
+                      @for($i=0; $i < count($kolokium); $i++) 
+                      <tr>
                         <td style="text-align: center;">{{$i + 1}}</td>
                         <td>{{$kolokium[$i][2]}}</td>
                         <td style="text-align: center;">{{$kolokium[$i][3]}}</td>
                         <td><a href="{{route('kolokium-vd', $kolokium[$i][0])}}" title="Verifikasi Form" type="button" class="btn btn-success btn-sm">Verifikasi</a></td>
-                        </tr>
+                      </tr>
                       @endfor
                     </tbody>
                   </table>

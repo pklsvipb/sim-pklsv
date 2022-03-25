@@ -43,21 +43,21 @@
                     <th width="5%">No</th>
                     <th width="5%">Hadir</th>
                     <th width="10%">Tanggal</th>
-                    <th width="25%">Nama Pemrasan</th>
+                    <th width="20%">Nama Pemrasan</th>
                     <th width="10%">Nim Pemrasan</th>
                     <th width="5%">Judul</th>
+                    <th width="5%">Jumlah Forum</th>
                     <th width="20%">Dosen Pembimbing</th>
                     <th width="20%">Moderator</th>
                   </thead>
                   <tbody>
-                    <?php $no = 1; ?>
-                    @foreach ($seminars as $sm)
+                    @for($i=0; $i < count($jadwal); $i++) 
                     <tr>
-                      <td>{{ $no; }}</td>
+                      <td>{{$i + 1}}</td>
                       <td>
 
                         <?php 
-                          $tgl = $sm->tgl . ' ' . $sm->waktu;
+                          $tgl = $jadwal[$i][1] . ' ' . $jadwal[$i][2];
                           $date = Carbon\Carbon::parse($tgl);
                           $now = Carbon\Carbon::now();
                           $past = $date->lessThan($now);
@@ -66,25 +66,25 @@
                         @if ($date->lessThan($now))
                         <button type="button" class="btn btn-secondary btn-sm" onclick="return alert('pendaftaran seminar sudah ditutup')"><i class="fas fa fa-check"></i></button>
                         @else
-                        <form action="{{ route('hadir-seminar', $sm->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('hadir-seminar', $jadwal[$i][0]) }}" method="POST" enctype="multipart/form-data">
                           @csrf
                           <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Yakin ingin menghadiri seminar ini?')"><i class="fas fa fa-check"></i></button>
                         </form>
                         @endif
 
                       </td>
-                      <td>{{ date('d-m-Y', strtotime($sm->tgl)) }} {{ date('H:i', strtotime($sm->waktu)) }}</td>
-                      <td>{{ $sm->getMahasiswa->nama }}</td>
-                      <td>{{ $sm->getMahasiswa->nim }}</td>
+                      <td>{{ date('d-m-Y', strtotime($jadwal[$i][1])) }} {{ date('H:i', strtotime($jadwal[$i][2])) }}</td>
+                      <td>{{ $jadwal[$i][3] }}</td>
+                      <td>{{ $jadwal[$i][4] }}</td>
                       <td style="text-align: center;">
-                        <a type="button" class="btn btn-info btn-icon btn-sm" data-toggle="modal" style="font-size: 11px;" data-target="#Judul-{{$sm->id}}" title="Judul"><i class="fas fa fa-book"></i></a>
+                        <a type="button" class="btn btn-info btn-icon btn-sm" data-toggle="modal" style="font-size: 11px;" data-target="#Judul-{{$jadwal[$i][0]}}" title="Judul"><i class="fas fa fa-book"></i></a>
                         @include('modal.judul-sm')
                       </td>
-                      <td>{{ $sm->getDosen->nama }}</td>
-                      <td>{{ $sm->getModerator->nama }}</td>
+                      <td>{{ $jadwal[$i][7] }}</td>
+                      <td>{{ $jadwal[$i][5] }}</td>
+                      <td>{{ $jadwal[$i][6] }}</td>
                     </tr>
-                    <?php $no += 1; ?>
-                    @endforeach
+                    @endfor
                   </tbody>
                 </table>
                 </form>
