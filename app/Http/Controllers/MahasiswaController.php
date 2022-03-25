@@ -143,7 +143,7 @@ class MahasiswaController extends Controller
         $bio->jalur             = $request->input('jalur');
         $bio->ipk1              = $request->input('ipk1');
         $bio->ipk2              = $request->input('ipk2');
-        $bio->instansi          = $request->input('instansi'); 
+        $bio->instansi          = $request->input('instansi');
         $bio->alamat_instansi   = $request->input('alamat_instansi');
         $bio->kajian            = $request->input('kajian');
         $bio->pembimbing_lapang = $request->input('pemlap');
@@ -559,9 +559,15 @@ class MahasiswaController extends Controller
         $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
         $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
         $dosens = tb_dosen::all();
-        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_mhs', '!=', $user->id_user)->where('id_prodi', $mhs->id_prodi)->get();
+        $seminars = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->where('id_prodi', $mhs->id_prodi)->get();
+        $jadwal = [];
 
-        return view('mahasiswa.jadwal_seminar', compact('datas', 'dosens', 'seminars'));
+        foreach ($seminars as $sm) {
+            $kartu = tb_kartu_seminar::where('id_seminar', $sm->id)->get();
+            $jadwal[] = array($sm->id, $sm->tgl, $sm->waktu, $sm->getMahasiswa->nama, $sm->getMahasiswa->nim, $sm->getDosen->nama, $sm->getModerator->nama, count($kartu), $sm->judul);
+        }
+
+        return view('mahasiswa.jadwal_seminar', compact('datas', 'dosens', 'seminars', 'jadwal'));
     }
 
     public function hadir_seminar($id)
@@ -870,7 +876,7 @@ class MahasiswaController extends Controller
     public function upload_jurnal(Request $request)
     {
         $usr = Auth::user();
-        $mhs = tb_mahasiswa::where('id',$usr->id_user)->first();
+        $mhs = tb_mahasiswa::where('id', $usr->id_user)->first();
         // Check File Exist
         $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_jurnal_harian.pdf');
         // Delete File
