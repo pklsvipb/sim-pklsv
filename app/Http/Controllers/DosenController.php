@@ -1448,7 +1448,7 @@ class DosenController extends Controller
         $datas = tb_dosen::where('id', $user->id_user)->get();
         $dosen = tb_dosen::where('id', $user->id_user)->first();
         $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
-        $mhs = [];
+        $getmhs = [];
         $file = [];
    
         if(count($mhs1) != 0){
@@ -1477,7 +1477,7 @@ class DosenController extends Controller
             $file[] = array($getmhs[$i][0], $list);
         }
 
-        // dd($file);
+        dd($file);
 
         return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
     }
