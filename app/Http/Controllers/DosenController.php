@@ -711,52 +711,52 @@ class DosenController extends Controller
         DB::beginTransaction();
 
         try {
-        $user    = Auth::user();
+            $user    = Auth::user();
 
-        $bap  = new tb_nilai_bap;
-        $bap->id_dosen = $user->id_user;
-        $bap->id_mhs   = $request->input('id_mhs');
-        $bap->nilai1   = $request->input('nilai1');
-        $bap->nilai2   = $request->input('nilai2');
-        $bap->nilai3   = $request->input('nilai3');
-        $bap->tgl      = $request->input('tgl');
-        $bap->status   = 'moderator';
-        $bap->ket      = 'sm';
-        $bap->save();
+            $bap  = new tb_nilai_bap;
+            $bap->id_dosen = $user->id_user;
+            $bap->id_mhs   = $request->input('id_mhs');
+            $bap->nilai1   = $request->input('nilai1');
+            $bap->nilai2   = $request->input('nilai2');
+            $bap->nilai3   = $request->input('nilai3');
+            $bap->tgl      = $request->input('tgl');
+            $bap->status   = 'moderator';
+            $bap->ket      = 'sm';
+            $bap->save();
 
-        $update = tb_daftar::findOrFail($id);
-        $update->set_bap_m = 1;
-        $update->save();
+            $update = tb_daftar::findOrFail($id);
+            $update->set_bap_m = 1;
+            $update->save();
 
-        $pembahas = new tb_nilai_pembahas;
-        $pembahas->id_seminar = $id;
-        $pembahas->id_pembahas = $request->input('pembahas');
-        $pembahas->nilai_pembahas = $request->input('nilai_pembahas');
-        $pembahas->save();
+            $pembahas = new tb_nilai_pembahas;
+            $pembahas->id_seminar = $id;
+            $pembahas->id_pembahas = $request->input('pembahas');
+            $pembahas->nilai_pembahas = $request->input('nilai_pembahas');
+            $pembahas->save();
 
-        $id_hadir = $request->input('id_hadir');
-        for ($i = 0; $i < count($id_hadir); $i++) {
-            $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
+            $id_hadir = $request->input('id_hadir');
+            for ($i = 0; $i < count($id_hadir); $i++) {
+                $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
 
-            if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
-                $hadir2->hadir = 1;
-                $hadir2->paraf = 1;
-                $hadir2->save();
+                if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
+                    $hadir2->hadir = 1;
+                    $hadir2->paraf = 1;
+                    $hadir2->save();
 
-                if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
-                    $forum = new tb_nilai_forum;
-                    $forum->id_seminar = $id;
-                    $forum->id_mhs = $hadir2->id_mhs;
-                    $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
-                    $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
-                    $forum->save();
+                    if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
+                        $forum = new tb_nilai_forum;
+                        $forum->id_seminar = $id;
+                        $forum->id_mhs = $hadir2->id_mhs;
+                        $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
+                        $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
+                        $forum->save();
+                    }
+                } else {
+                    $hadir2->hadir = 0;
+                    $hadir2->save();
                 }
-            } else {
-                $hadir2->hadir = 0;
-                $hadir2->save();
             }
-        }
-        
+
             DB::commit();
             // all good
 
@@ -1414,21 +1414,21 @@ class DosenController extends Controller
         $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
         $mhs = [];
         $file = [];
-   
-        if(count($mhs1) != 0){
-            foreach($mhs1 as $mahasiswa1){
+
+        if (count($mhs1) != 0) {
+            foreach ($mhs1 as $mahasiswa1) {
                 $getmhs[] = array(1, $mahasiswa1->id, $mahasiswa1->nama, $mahasiswa1->nim);
             }
         }
 
         $mhs2 = tb_mahasiswa::where('id_dospem2', $user->id_user)->get();
-        if(count($mhs2) != 0){
-            foreach($mhs2 as $mahasiswa2){
+        if (count($mhs2) != 0) {
+            foreach ($mhs2 as $mahasiswa2) {
                 $getmhs[] = array(2, $mahasiswa2->id, $mahasiswa2->nama, $mahasiswa2->nim);
             }
         }
 
-        for($i=0; $i < count($getmhs); $i++) {
+        for ($i = 0; $i < count($getmhs); $i++) {
             $kegiatan = tb_jurnal::where('id_mhs', $getmhs[$i][1])->get();
             $list = [];
             foreach ($kegiatan as $getKegiatan) {
@@ -1450,25 +1450,25 @@ class DosenController extends Controller
         $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
         $getmhs = [];
         $file = [];
-   
-        if(count($mhs1) != 0){
-            foreach($mhs1 as $mahasiswa){
+
+        if (count($mhs1) != 0) {
+            foreach ($mhs1 as $mahasiswa) {
                 $cek = tb_bimbingan::where('id_mhs', $mahasiswa->id)->first();
-                if($cek == null){
+                if ($cek == null) {
                     $paraf = "";
-                }else{
+                } else {
                     $cek2 = tb_bimbingan::where('id_mhs', $mahasiswa->id)->get();
-                    if(count($cek2) == 8){
+                    if (count($cek2) == 8) {
                         $paraf = $cek->paraf;
-                    }else{
+                    } else {
                         $paraf = "";
                     }
                 }
-                $getmhs[] = array($mahasiswa->id, $mahasiswa->nama, $mahasiswa->nim, $mahasiswa->getProdi->nama,$paraf);
+                $getmhs[] = array($mahasiswa->id, $mahasiswa->nama, $mahasiswa->nim, $mahasiswa->getProdi->nama, $paraf);
             }
         }
 
-        for($i=0; $i < count($getmhs); $i++) {
+        for ($i = 0; $i < count($getmhs); $i++) {
             $kegiatan = tb_bimbingan::where('id_mhs', $getmhs[$i][0])->get();
             $list = [];
             foreach ($kegiatan as $getKegiatan) {
@@ -1482,34 +1482,43 @@ class DosenController extends Controller
         return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
     }
 
-    public function paraf_bimbingan($id){
+    public function paraf_bimbingan($id)
+    {
         $paraf = tb_bimbingan::where('id_mhs', $id)->get();
-        foreach($paraf as $get){
+        foreach ($paraf as $get) {
             $update = tb_bimbingan::findOrFail($get->id);
             $update->paraf = 1;
             $update->save();
-        } 
+        }
         return redirect()->route('d-kartu-bimbingan')->with('success', 'Sukses Menandatangani');
     }
 
-    public function ttd_kaprodi(){
+    public function ttd_kaprodi()
+    {
         $user = Auth::user();
-        $datas = tb_panitia::where('id', $user->id_user)->get();
-        $panitia = tb_panitia::where('id', $user->id_user)->first();
-        $getlist = tb_bimbingan::select('id_mhs', 'paraf')->distinct()->get();
-        $getmhs = $getlist->where('paraf', 1);
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $dosen = tb_dosen::where('id', $user->id_user)->first();
+        $prodi = tb_prodi::where('id_kaprodi', $dosen->id)->first();
+        $getmhs = [];
         $file = [];
 
-        foreach ($getmhs as $get) {
-            $kegiatan = tb_bimbingan::where('id_mhs', $get->id_mhs)->get();
-            $list = [];
-            foreach ($kegiatan as $getKegiatan) {
-                $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+        if ($prodi != null) {
+
+            $getlist = tb_bimbingan::select('id_mhs', 'paraf', 'id_prodi')->distinct()->get();
+            $getmhs = $getlist->where('paraf', 1)->where('id_prodi', $prodi->id);
+
+            foreach ($getmhs as $get) {
+                $kegiatan = tb_bimbingan::where('id_mhs', $get->id_mhs)->get();
+                $list = [];
+                foreach ($kegiatan as $getKegiatan) {
+                    $list[] = array($getKegiatan->id, $getKegiatan->id_mhs, $getKegiatan->id_prodi, $getKegiatan->tanggal, $getKegiatan->kegiatan);
+                }
+                $file[] = array($get->id_mhs, $list);
             }
-            $file[] = array($get->id_mhs, $list);
+
         }
 
-        // dd($file);
+        // dd($getmhs);
         return view('dosen.ttd_kaprodi', compact('datas', 'getmhs', 'file'));
     }
 
@@ -1520,10 +1529,10 @@ class DosenController extends Controller
         $dosen = tb_dosen::where('id', $datas->id_dospem1)->first();
         $prodi = tb_prodi::where('id', $datas->id_prodi)->first();
         $kaprodi = tb_dosen::where('id', $prodi->id_kaprodi)->first();
-        
+
         $totalPages = 0;
         //load pdf
-        $pdf_num   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf_num   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
         //path save file pdf
         $path = 'file_form/file2.pdf';
         //save pdf
@@ -1537,9 +1546,9 @@ class DosenController extends Controller
         Storage::disk('local')->delete('file_form/file2.pdf');
 
         //load pdf again with passing var total page
-        $pdf   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0,0,595.276,841.8898], 'portrait');
+        $pdf   = PDF::loadview('dosen.pdf_kartu_bimbingan', compact('totalPages', 'datas', 'lists', 'dosen', 'kaprodi'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
         //save pdf
-        Storage::disk('local')->put('pdf/'.$datas->nim.'/pdf_kartu_bimbingan.pdf', $pdf->output());
+        Storage::disk('local')->put('pdf/' . $datas->nim . '/pdf_kartu_bimbingan.pdf', $pdf->output());
         // return $pdf->stream('Kartu Bimbingan.pdf');
         return redirect()->route('d-ttd-kaprodi')->with('success', 'Sukses Menandatangani Kartu Bimbingan');
     }
