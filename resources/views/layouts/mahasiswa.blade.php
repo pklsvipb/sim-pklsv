@@ -91,7 +91,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header" style="font-size: 11px; color: #999;">Navigation <i class="fa fa-paper-plane m-l-5"></i></li>
             <li class="nav-item">
-              <a href="{{ route('dashboard-m') }}" class="nav-link">
+              <a href="{{ route('dashboard-m') }}" class="nav-link {{ Route::currentRouteNamed('dashboard-m') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-id-card"></i>
                 <p style="padding-left: 7px;">
                   Dashboard
@@ -100,7 +100,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('biodata-m') }}" class="nav-link">
+              <a href="{{ route('biodata-m') }}" class="nav-link {{ Route::currentRouteNamed('biodata-m') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-user"></i>
                 <p style="padding-left: 7px;">
                   Biodata
@@ -108,14 +108,14 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('jadwal-seminar') }}" class="nav-link">
+              <a href="{{ route('jadwal-seminar') }}" class="nav-link @if(Route::currentRouteNamed('jadwal-seminar')) active @elseif(Route::currentRouteNamed('kartu-sm')) active @else '' @endif">
                 <i class="nav-icon fa fa-calendar-check"></i>
                 <p style="padding-left: 7px;">
                   Jadwal Seminar
                 </p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Route::currentRouteNamed('jurnal')) menu-open @elseif(Route::currentRouteNamed('k-bimbingan')) menu-open @elseif(Route::currentRouteNamed('periodik')) menu-open @elseif(Route::currentRouteNamed('form-m')) menu-open @elseif(Route::currentRouteNamed('menu-input')) menu-open @elseif(Route::currentRouteNamed('menu-input')) menu-open @else '' @endif">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -125,13 +125,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('form-m')}}" class="nav-link">
+                  <a href="{{ route('form-m')}}" class="nav-link @if(Route::currentRouteNamed('form-m')) active @elseif(Route::currentRouteNamed('menu-input')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Daftar Form</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('jurnal')}}" class="nav-link">
+                  <a href="{{ route('jurnal')}}" class="nav-link @if(Route::currentRouteNamed('jurnal')) active @elseif(Route::currentRouteNamed('k-bimbingan')) active @elseif(Route::currentRouteNamed('periodik')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Form Daily</p>
                   </a>
@@ -139,7 +139,7 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a href="{{ route('d-kolokium') }}" class="nav-link">
+              <a href="{{ route('d-kolokium') }}" class="nav-link @if(Route::currentRouteNamed('d-kolokium')) active @elseif(Route::currentRouteNamed('perbaikan-kolokium')) active @else '' @endif">
                 <i class="nav-icon fa fa-calendar"></i>
                 <p style="padding-left: 7px;">
                   Daftar Kolokium
@@ -147,7 +147,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('d-supervisi') }}" class="nav-link">
+              <a href="{{ route('d-supervisi') }}" class="nav-link @if(Route::currentRouteNamed('d-supervisi')) active @else '' @endif">
                 <i class="nav-icon fa fa-building"></i>
                 <p style="padding-left: 7px;">
                   Daftar Supervisi
@@ -155,7 +155,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('d-seminar') }}" class="nav-link">
+              <a href="{{ route('d-seminar') }}" class="nav-link @if(Route::currentRouteNamed('d-seminar')) active @else '' @endif">
                 <i class="nav-icon fa fa-laptop"></i>
                 <p style="padding-left: 7px;">
                   Daftar Seminar
@@ -163,7 +163,7 @@
               </a>
             </li>
             {{-- <li class="nav-item">
-              <a href="{{ route('d-sidang') }}" class="nav-link">
+              <a href="{{ route('d-sidang') }}" class="nav-link @if(Route::currentRouteNamed('d-sidang')) active @else '' @endif">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">
                   Daftar Sidang

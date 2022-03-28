@@ -84,7 +84,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header" style="font-size: 11px; color: #999;">Navigation <i class="fa fa-paper-plane m-l-5"></i></li>
             <li class="nav-item">
-              <a href="{{ route('dashboard-a') }}" class="nav-link">
+              <a href="{{ route('dashboard-a') }}" class="nav-link {{ Route::currentRouteNamed('dashboard-a') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-id-card"></i>
                 <p style="padding-left: 7px;">
                   Dashboard
@@ -93,7 +93,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('download-bap-kolokium') }}" class="nav-link">
+              <a href="{{ route('download-bap-kolokium') }}" class="nav-link {{ Route::currentRouteNamed('download-bap-kolokium') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-calendar"></i>
                 <p style="padding-left: 7px;">
                   BAP Kolokium
@@ -101,7 +101,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('download-bap-seminar') }}" class="nav-link">
+              <a href="{{ route('download-bap-seminar') }}" class="nav-link {{ Route::currentRouteNamed('download-bap-seminar') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-laptop"></i>
                 <p style="padding-left: 7px;">
                   BAP Seminar
@@ -109,7 +109,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('download-bap-sidang') }}" class="nav-link">
+              <a href="{{ route('download-bap-sidang') }}" class="nav-link {{ Route::currentRouteNamed('download-bap-sidang') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">
                   BAP Sidang

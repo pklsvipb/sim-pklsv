@@ -85,7 +85,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header" style="font-size: 11px; color: #999;">Navigation <i class="fa fa-paper-plane m-l-5"></i></li>
             <li class="nav-item">
-              <a href="{{ route('dashboard-d') }}" class="nav-link">
+              <a href="{{ route('dashboard-d') }}" class="nav-link {{ Route::currentRouteNamed('dashboard-d') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-id-card"></i>
                 <p style="padding-left: 7px;">
                   Dashboard
@@ -94,7 +94,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('biodata-d') }}" class="nav-link">
+              <a href="{{ route('biodata-d') }}" class="nav-link {{ Route::currentRouteNamed('biodata-d') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-user"></i>
                 <p style="padding-left: 7px;">
                   Biodata
@@ -102,22 +102,22 @@
               </a>
             </li>
             {{-- <li class="nav-item">
-              <a href="{{ route('form-kesediaan') }}" class="nav-link">
-                <i class="nav-icon fa fa-window-restore"></i>
-                <p style="padding-left: 7px;">
-                  Form Kesediaan
-                </p>
-              </a>
+              <a href="{{ route('form-kesediaan') }}" class="nav-link {{ Route::currentRouteNamed('form-kesediaan') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-window-restore"></i>
+            <p style="padding-left: 7px;">
+              Form Kesediaan
+            </p>
+            </a>
             </li> --}}
             <li class="nav-item">
-              <a href="{{ route('form-ttd') }}" class="nav-link">
+              <a href="{{ route('form-ttd') }}" class="nav-link {{ Route::currentRouteNamed('form-ttd') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-pen"></i>
                 <p style="padding-left: 7px;">
                   Tanda Tangan Form
                 </p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Route::currentRouteNamed('d-jurnal-harian')) menu-open @elseif(Route::currentRouteNamed('d-kartu-bimbingan')) menu-open @elseif(Route::currentRouteNamed('d-ttd-kaprodi')) menu-open @else '' @endif">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -127,101 +127,101 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('d-jurnal-harian')}}" class="nav-link">
+                  <a href="{{ route('d-jurnal-harian')}}" class="nav-link {{ Route::currentRouteNamed('d-jurnal-harian') ? 'active' : '' }}">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Jurnal Harian</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('d-kartu-bimbingan')}}" class="nav-link">
+                  <a href="{{ route('d-kartu-bimbingan')}}" class="nav-link {{ Route::currentRouteNamed('d-kartu-bimbingan') ? 'active' : '' }}">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Kartu Bimbingan</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('d-ttd-kaprodi')}}" class="nav-link">
+                  <a href="{{ route('d-ttd-kaprodi')}}" class="nav-link {{ Route::currentRouteNamed('d-ttd-kaprodi') ? 'active' : '' }}">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>TTD Kaprodi</p>
                   </a>
                 </li>
                 {{--<li class="nav-item">
-                  <a href="{{ route('laporan-periodik')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Laporan Periodik</p>
-                  </a>
-                </li>--}}
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
-                <p style="padding-left: 7px;">
-                  Kolokium
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ route('kolokium-d')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Pembimbing</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{ route('kolokium-m')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Moderator</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-building" style="border-radius: 4px;"></i>
-                <p style="padding-left: 7px;">
-                  Supervisi
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ route('list-form-004')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Form 004</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{ route('list-form-015')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Form 015</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-laptop" style="border-radius: 4px;"></i>
-                <p style="padding-left: 7px;">
-                  Seminar
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ route('seminar-d')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Pembimbing</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{ route('seminar-m')}}" class="nav-link">
-                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Moderator</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            {{-- <li class="nav-item">
+                  <a href="{{ route('laporan-periodik')}}" class="nav-link {{ Route::currentRouteNamed('laporan-periodik') ? 'active' : '' }}">
+                <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                <p>Laporan Periodik</p>
+                </a>
+            </li>--}}
+          </ul>
+          </li>
+          <li class="nav-item @if(Route::currentRouteNamed('kolokium-d')) menu-open @elseif(Route::currentRouteNamed('kolokium-m')) menu-open @elseif(Route::currentRouteNamed('kl-bap-d')) menu-open @elseif(Route::currentRouteNamed('kl-bap-ed')) menu-open @elseif(Route::currentRouteNamed('kl-bap-m')) menu-open @elseif(Route::currentRouteNamed('kl-bap-em')) menu-open @else '' @endif">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-calendar" style="border-radius: 4px;"></i>
+              <p style="padding-left: 7px;">
+                Kolokium
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('kolokium-d')}}" class="nav-link @if(Route::currentRouteNamed('kolokium-d')) active @elseif(Route::currentRouteNamed('kl-bap-d')) active @elseif(Route::currentRouteNamed('kl-bap-ed')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Pembimbing</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('kolokium-m')}}" class="nav-link @if(Route::currentRouteNamed('kolokium-m')) active @elseif(Route::currentRouteNamed('kl-bap-m')) active @elseif(Route::currentRouteNamed('kl-bap-em')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Moderator</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item @if(Route::currentRouteNamed('list-form-004')) menu-open @elseif(Route::currentRouteNamed('list-form-015')) menu-open @elseif(Route::currentRouteNamed('input-form-015')) menu-open @elseif(Route::currentRouteNamed('input-form-004')) menu-open @else '' @endif">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-building" style="border-radius: 4px;"></i>
+              <p style="padding-left: 7px;">
+                Supervisi
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('list-form-004')}}" class="nav-link @if(Route::currentRouteNamed('list-form-004')) active @elseif(Route::currentRouteNamed('input-form-004')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Form 004</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('list-form-015')}}" class="nav-link @if(Route::currentRouteNamed('list-form-015')) active @elseif(Route::currentRouteNamed('input-form-015')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Form 015</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item @if(Route::currentRouteNamed('seminar-d')) menu-open @elseif(Route::currentRouteNamed('seminar-m')) menu-open @elseif(Route::currentRouteNamed('sm-bap-d')) menu-open @elseif(Route::currentRouteNamed('sm-bap-ed')) menu-open @elseif(Route::currentRouteNamed('sm-bap-m')) menu-open @elseif(Route::currentRouteNamed('sm-bap-em')) menu-open @else '' @endif">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-laptop" style="border-radius: 4px;"></i>
+              <p style="padding-left: 7px;">
+                Seminar
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('seminar-d')}}" class="nav-link @if(Route::currentRouteNamed('seminar-d')) active @elseif(Route::currentRouteNamed('sm-bap-d')) active @elseif(Route::currentRouteNamed('sm-bap-ed')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Pembimbing</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('seminar-m')}}" class="nav-link @if(Route::currentRouteNamed('seminar-m')) active @elseif(Route::currentRouteNamed('sm-bap-m')) active @elseif(Route::currentRouteNamed('sm-bap-em')) active @else '' @endif">
+                  <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                  <p>Moderator</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+      {{-- <li class="nav-item @if(Route::currentRouteNamed('sidang-d')) menu-open @elseif(Route::currentRouteNamed('sidang-j')) menu-open @elseif(Route::currentRouteNamed('sd-bap-du')) menu-open @elseif(Route::currentRouteNamed('sd-bap-ju')) menu-open @elseif(Route::currentRouteNamed('sd-bap-ed')) menu-open @elseif(Route::currentRouteNamed('sd-bap-j')) menu-open @elseif(Route::currentRouteNamed('sd-bap-ej')) menu-open @elseif(Route::currentRouteNamed('sd-bap-edu')) menu-open @elseif(Route::currentRouteNamed('sd-bap-eju')) menu-open @else '' @endif">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-book-open" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -231,30 +231,30 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('sidang-d')}}" class="nav-link">
+                  <a href="{{ route('sidang-d')}}" class="nav-link @if(Route::currentRouteNamed('sidang-d')) active @elseif(Route::currentRouteNamed('sd-bap-du')) active @elseif(Route::currentRouteNamed('sd-bap-ed')) active @elseif(Route::currentRouteNamed('sd-bap-edu')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Pembimbing</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('sidang-j')}}" class="nav-link">
+                  <a href="{{ route('sidang-j')}}" class="nav-link @if(Route::currentRouteNamed('sidang-j')) active @elseif(Route::currentRouteNamed('sd-bap-ju')) active @elseif(Route::currentRouteNamed('sd-bap-ej')) active @elseif(Route::currentRouteNamed('sd-bap-eju')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Penguji</p>
                   </a>
                 </li>
               </ul>
-            </li> --}}
-            <li class="nav-item">
-              <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
-                <i class="nav-icon fas fa-sign-out-alt"></i>
-                <p style="padding-left: 7px;">
-                  Logout
-                </p>
-              </a>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf 
-              </form>
-            </li>
+          </li> --}}
+          <li class="nav-item">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p style="padding-left: 7px;">
+                Logout
+              </p>
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
+          </li>
 
           </ul>
         </nav>
@@ -330,7 +330,7 @@
   <!-- Signature -->
   <script src="{{asset('js/jquery-ui.min.js')}}"></script>
   <script src="{{asset('js/jquery.signature.js')}}"></script>
-  
+
 
   <!-- AdminLTE for demo purposes -->
   <script src="{{ asset('admin_asset/dist/js/demo.js') }}"></script>
