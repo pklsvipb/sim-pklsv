@@ -263,14 +263,33 @@ class MahasiswaController extends Controller
         return view('mahasiswa.jurnal_harian', compact('datas', 'forms', 'jurnals', 'mhs'));
     }
 
+    public function sortDate($a, $b) 
+    {
+        if (strtotime($a[4]) == strtotime($b[4])) return 0;
+        return (strtotime($a[4]) > strtotime($b[4])) ?1:-1;
+    }
+
     public function periodik()
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
         $forms = tb_masterform::all();
-        $periodiks = tb_periodik::where('id_mhs', $user->id_user)->get();
+        $gets = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
+        $periodik = [];
+        $periode = [];
 
-        return view('mahasiswa.laporan_periodik', compact('datas', 'forms', 'periodiks'));
+        if ($gets != '') {
+            foreach ($gets as $get) {
+                $lists = tb_periodik::where('id_mhs', $get->id_mhs)->where('tgl_awal', $get->tgl_awal)->where('tgl_selesai', $get->tgl_selesai)->get();
+                foreach ($lists as $list) {
+                    $periodik[] = array($list->id, $list->id_mhs, $list->id_mhs, $list->id_prodi, $list->tanggal, $list->informasi, $list->kendala, $list->catatan, $list->tgl_awal, $list->tgl_selesai);
+                }
+                usort($periodik, array($this, 'sortDate'));
+                $periode[] = array($get->id, $get->tgl_awal, $get->tgl_selesai);
+            }               
+        }
+
+        return view('mahasiswa.laporan_periodik', compact('datas', 'forms', 'periodik', 'periode'));
     }
 
     public function k_bimbingan()
@@ -908,7 +927,8 @@ class MahasiswaController extends Controller
 
         $input = new tb_periodik;
         $input->id_mhs = $user->id_user;
-        $input->periode = $request->input('periode');
+        $input->tgl_awal = $request->input('awal');
+        $input->tgl_selesai = $request->input('selesai');
         $input->tanggal = $request->input('tanggal');
         $input->informasi = $request->input('info');
         $input->kendala = $request->input('kendala');
@@ -918,6 +938,30 @@ class MahasiswaController extends Controller
         $input->save();
 
         return Redirect::Back()->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function edit_periode(Request $request)
+    {
+        $all = tb_periodik::where('tgl_awal', $request->input('id'))->get();
+        foreach ($all as $get) {
+            $update = tb_periodik::findOrFail($get->id);
+            $update->tgl_awal = $request->input('tgl_awal');
+            $update->tgl_selesai = $request->input('tgl_selesai');
+            $update->save();
+        }
+        return redirect()->route('periodik')->with('success', 'Berhasil Edit Periode');
+    }
+
+    public function edit_periodik(Request $request)
+    {
+        $mhs = tb_periodik::findOrFail($request->input('id'));
+        $mhs->tanggal = $request->input('tanggal');
+        $mhs->informasi = $request->input('informasi');
+        $mhs->kendala = $request->input('kendala');
+        $mhs->catatan = $request->input('catatan');
+        $mhs->save();
+
+        return redirect()->route('periodik')->with('success', 'Berhasil Edit Laporan Periodik');
     }
 
     public function bimbingan_submit(Request $request)

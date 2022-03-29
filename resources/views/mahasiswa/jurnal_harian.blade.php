@@ -64,13 +64,13 @@
                     }
                   </style>
 
-                  <div class="col-md-6" id="menu-pertama">
+                  <div class="col-md-4" id="menu-pertama">
                     <a href="{{ route('jurnal') }}" style="text-decoration: none; padding: 17px 50px;">JURNAL HARIAN</a>
                   </div>
-                  {{--<div class="col-md-6" id="menu-kedua">
+                  <div class="col-md-4" id="menu-kedua">
                     <a href="{{ route('periodik') }}" style="text-decoration: none; padding: 17px 50px;">LAPORAN PERIODIK</a>
-                  </div>--}}
-                  <div class="col-md-6" id="menu-kedua">
+                  </div>
+                  <div class="col-md-4" id="menu-kedua">
                     <a href="{{ route('k-bimbingan') }}" style="text-decoration: none; padding: 17px 50px;">KARTU BIMBINGAN TA</a>
                   </div>
                   {{--<div class="col-md-3" id="menu-kedua">
@@ -155,11 +155,11 @@
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th width="10%" style="text-align: center">Hari</th>
-                      <th width="20%" style="text-align: center; padding:2px;">Tanggal</th>
-                      <th width="20%" style="text-align: center; padding:2px;">Waktu</th>
-                      <th width="50%" style="text-align: center; padding:2px;">Kegiatan</th>
-                      <th width="10%" style="text-align: center; padding:2px;">Edit</th>
+                      <th width="10%" style="text-align: center;">Hari</th>
+                      <th width="20%" style="text-align: center;">Tanggal</th>
+                      <th width="20%" style="text-align: center;">Waktu</th>
+                      <th width="50%" style="text-align: center;">Kegiatan</th>
+                      <th width="10%" style="text-align: center;">Edit</th>
                       <!-- <th width="10%" style="text-align: center">Paraf Pembimbing Lapangan</th> -->
                     </tr>
                   </thead>

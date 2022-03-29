@@ -64,127 +64,146 @@
                     }
                   </style>
 
-                  <div class="col-md-6" id="menu-kedua">
+                  <div class="col-md-4" id="menu-kedua">
                     <a href="{{ route('jurnal') }}" style="text-decoration: none; padding: 17px 50px;">JURNAL HARIAN</a>
                   </div>
-                  <div class="col-md-6" id="menu-pertama">
+                  <div class="col-md-4" id="menu-pertama">
                     <a href="{{ route('periodik') }}" style="text-decoration: none; padding: 17px 50px;">LAPORAN PERIODIK</a>
                   </div>
-                  {{--<div class="col-md-3" id="menu-kedua">
+                  <div class="col-md-4" id="menu-kedua">
                     <a href="{{ route('k-bimbingan') }}" style="text-decoration: none; padding: 17px 50px;">KARTU BIMBINGAN TA</a>
                   </div>
-                  <div class="col-md-3" id="menu-kedua">
+                  {{--<div class="col-md-3" id="menu-kedua">
                     <a href="{{ route('k-seminar') }}" style="text-decoration: none; padding: 17px 50px;">KARTU SEMINAR</a>
-                  </div>--}}
+                </div>--}}
 
-                </div>
-                <hr style="margin-top: -9px;">
-
-                <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
-                  FORM 010 <br>
-                  LAPORAN PERIODIK PKL
-                </div>
-                <form action="{{ route('periodik-submit') }}" method="POST" enctype="multipart/form-data">
-                  @csrf
-
-                  <table cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 20px 0px;">
-                    <tbody>
-                      <tr>
-                        <td width="25%">Periode Laporan</td>
-                        <td>:</td>
-                        <td width="75%">
-                          <select name="periode" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required>
-                            <option value="03 Januari 2022 - 07 Januari 2022">03 Januari 2022 - 07 Januari 2022</option>
-                            <option value="10 Januari 2022 - 14 Januari 2022">10 Januari 2022 - 14 Januari 2022</option>
-                            <option value="17 Januari 2022 - 21 Januari 2022">17 Januari 2022 - 21 Januari 2022</option>
-                            <option value="24 Januari 2022 - 28 Januari 2022">24 Januari 2022 - 28 Januari 2022</option>
-                            <option value="31 Januari 2022 - 04 Fenruari 2022">31 Januari 2022 - 04 Fenruari 2022</option>
-                            <option value="07 Februari 2022 - 11 Februari 2022">07 Februari 2022 - 11 Februari 2022</option>
-                            <option value="14 Februari 2022 - 18 Februari 2022">14 Februari 2022 - 18 Februari 2022</option>
-                            <option value="07 Februari 2022 - 11 Februari 2022">07 Februari 2022 - 11 Februari 2022</option>
-                            <option value="21 Februari 2022 - 25 Februari 2022">21 Februari 2022 - 25 Februari 2022</option>
-                            <option value="28 Februari 2022 - 04 Maret 2022">28 Februari 2022 - 04 Maret 2022</option>
-                          </select>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px;">
-                    <thead>
-                      <tr>
-                        <th width="10%" style="text-align: center">Tanggal</th>
-                        <th width="45%" style="text-align: center">Informasi yang diperoleh</th>
-                        <th width="45%" style="text-align: center">Masalah/Kendala</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="date" name="tanggal" class="form-control"></td>
-                        <td><textarea name="info" rows="3" cols="47" class="form-control"></textarea></td>
-                        <td><textarea name="kendala" rows="3" cols="47" class="form-control"></textarea></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <div class="row">
-                    <div class="col-md-12" style="font-size: .875rem; font-weight: 600; margin-bottom: 50px;">
-                      <label>Catatan Khusus Selama Periode (Opsional)</label>
-                      <textarea name="catatan" rows="3" class="form-control"></textarea>
-                    </div>
-                  </div>
-
-                  <br>
-                  <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: ;"><i class="fas fa-save fa-sm"></i>&nbsp; Simpan</button>
-                </form>
               </div>
-            </div>
-          </div>
-          <!-- ./card-body -->
-        </div>
-        <!-- /.card -->
+              <hr style="margin-top: -9px;">
 
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+              <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
+                FORM 010 <br>
+                LAPORAN PERIODIK PKL
+              </div>
+              <form action="{{ route('periodik-submit') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <table cellspacing="0" cellpadding="3" border="1" style="font-size: .875rem; font-weight: 600; margin: 50px 0px;">
                   <thead>
                     <tr>
-                      <th width="10%">Periode</th>
-                      <th width="10%">Tanggal</th>
-                      <th width="30%">Informasi yang diperoleh</th>
-                      <th width="30%">Masalah/Kendala</th>
-                      <th width="10%">Catatan Khusus</th>
+                      <th colspan="2" width="10%" style="text-align: center;">Periode <br><span style="font-size: 11px;">(jangka waktu perminggu / perdua minggu)</span></th>
+                      <th rowspan="2" width="10%" style="text-align: center">Tanggal</th>
+                      <th rowspan="2" width="40%" style="text-align: center">Informasi yang diperoleh</th>
+                      <th rowspan="2" width="40%" style="text-align: center">Masalah/Kendala</th>
+                    </tr>
+                    <tr>
+                      <th style="text-align: center">Tgl Awal</th>
+                      <th style="text-align: center">Tgl Selesai</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($periodiks as $periodik)
                     <tr>
-                      <td style="font-size: 12px;">{{ $periodik->periode }}</td>
-                      <td style="font-size: 12px;">{{ $periodik->tanggal }}</td>
-                      <td><textarea name="info" rows="3" cols="47" class="form-control">{{ $periodik->informasi }}</textarea></td>
-                      <td><textarea name="kendala" rows="3" cols="47" class="form-control">{{ $periodik->kendala }}</textarea></td>
-                      <td>{{ $periodik->catatan }}</td>
+                      <td><input type="date" name="awal" class="form-control"></td>
+                      <td><input type="date" name="selesai" class="form-control"></td>
+                      <td><input type="date" name="tanggal" class="form-control"></td>
+                      <td><textarea name="info" rows="3" cols="47" class="form-control"></textarea></td>
+                      <td><textarea name="kendala" rows="3" cols="47" class="form-control"></textarea></td>
                     </tr>
-                    @endforeach
                   </tbody>
                 </table>
-              </div>
+
+                <div class="row">
+                  <div class="col-md-12" style="font-size: .875rem; font-weight: 600; margin-bottom: 50px;">
+                    <label>Catatan Khusus Selama Periode (<span style="color: red;">Opsional</span>)</label>
+                    <textarea name="catatan" rows="3" class="form-control"></textarea>
+                  </div>
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save fa-sm"></i>&nbsp; Simpan</button>
+              </form>
             </div>
           </div>
-          <!-- ./card-body -->
         </div>
-        <!-- /.card -->
+        <!-- ./card-body -->
       </div>
-      <!-- /.col -->
+      <!-- /.card -->
+
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+            @if(count($periode) == 0)
+              <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+                <thead>
+                  <tr>
+                    <th width="10%">Tanggal</th>
+                    <th width="30%">Informasi yang diperoleh</th>
+                    <th width="30%">Masalah/Kendala</th>
+                    <th width="25%">Catatan Khusus</th>
+                    <th width="5%" style="text-align: center;">Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            @else
+              <?php for ($i = 0; $i < count($periode); $i++) { ?>
+                <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+                  <thead>
+                    <tr>
+                      <th colspan="5" style="font-weight: 900; padding: 5px; background: #02F0F6;">Periode</th>
+                    </tr>
+                    <tr>
+                      <td colspan="5" style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periode[$i][1])->translatedFormat('l, d F Y'); }} / {{ Carbon\Carbon::parse($periode[$i][2])->translatedFormat('l, d F Y'); }} <a data-toggle="modal" data-target="#Edit-Periode-{{$periode[$i][0]}}" title="edit kegiatan" style="font-size: .875rem; cursor: pointer; color: #005b8f; float: right;"><i class="fas fa-edit fa-lg"></i></a></td>
+                    </tr>
+                    <tr>
+                      <th width="10%" style="font-weight: 900;">Tanggal</th>
+                      <th width="30%" style="font-weight: 900;">Informasi yang diperoleh</th>
+                      <th width="30%" style="font-weight: 900;">Masalah/Kendala</th>
+                      <th width="25%" style="font-weight: 900;">Catatan Khusus</th>
+                      <th width="5%" style="text-align: center;">Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php for ($j = 0; $j < count($periodik); $j++) { ?>
+                      @if($periode[$i][1] == $periodik[$j][8] && $periode[$i][2] == $periodik[$j][9])
+                      <tr>
+                        <td style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periodik[$j][4])->translatedFormat('l, d F Y'); }}</td>
+                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][5] }}</td>
+                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][6] }}</td>
+                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][7] }}</td>
+                        <td><a data-toggle="modal" data-target="#Edit-Periodik-{{$periodik[$j][0]}}" title="edit kegiatan" style="cursor: pointer; color: #005b8f;"><i class="fas fa-edit fa-lg"></i></a></td>
+                      </tr>
+                      @endif
+                    <?php } ?>
+                  </tbody>
+                </table>
+              <?php } ?>
+              @endif
+            </div>
+          </div>
+        </div>
+        <!-- ./card-body -->
+      </div>
+      <!-- /.card -->
     </div>
-    <!-- /.row -->
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
 
   </div>
   <!--/. container-fluid -->
 </section>
 <!-- /.content -->
+
+@if(is_null($periode) == 0)
+  @for($i=0; $i < count($periode); $i++) 
+    @include('modal.edit-periode') 
+    @for($j=0; $j < count($periodik); $j++)
+      @if($periode[$i][1] == $periodik[$j][8])
+        @include('modal.edit-periodik') 
+      @endif
+    @endfor
+  @endfor 
+@endif 
 
 @endsection
 
