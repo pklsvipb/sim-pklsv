@@ -530,7 +530,7 @@ class PanitiaController extends Controller
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
                 $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sm')->where('ttd_dospem', 0)->get();
                 $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sm')->where('set_verif', 0)->where('set_failed', 0)->get();
-                if ($getmhs != null) {
+                if ($getmhs != null && count($getfrm) != 0) {
                     $seminar[] = array($get->id_mhs, $getmhs->nama, $getmhs->nim, count($getfrm), count($getver));
                 }
             }
