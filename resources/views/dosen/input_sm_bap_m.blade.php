@@ -327,7 +327,7 @@
         [5, 25, 50, 75, -1],
         [5, 25, 50, 75, "All"]
       ],
-      "pageLength": All,
+      "paging": false,
       "autoWidth": false
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
   });
