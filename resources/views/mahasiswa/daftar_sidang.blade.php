@@ -61,7 +61,7 @@
             <div class="row">
               <div class="col-md-12">
 
-                @if ($pembahas == null)
+                @if ($pembahas != null)
                 {{-- NILAI PEMBAHAS DIUBAH JADI != --}}
                   @if (is_null($get2))
                     @if (is_null($get))
