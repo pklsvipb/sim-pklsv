@@ -42,7 +42,7 @@
                     </tbody>
                   </table>
 
-                  <form action="{{ url('/dosen/update/sidang-bap-penguji', $bap->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                  <form action="{{ url('/dosen/update/sidang2-bap-penguji', $bap->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <p style="font-size: .875rem; font-weight: 600;">Penilaian :</p>
                     <table class="table table-bordered text-center" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
@@ -104,10 +104,10 @@
                       <div class="col-md-8 mt-5"></div>
                       <div class="col-md-4">
                         <br>
-                        <img src="{{asset($dosen->ttd)}}" style="width: 3cm; height: 2cm;">
+                        <img src="{{asset($data->ttd)}}" style="width: 3cm; height: 2cm;">
                         <div>
                           <p style="padding-top:10px; margin-bottom:-2px; font-weight: 600; font-size: 14px;">{{$dosen->nama}}</p>
-                          <p style="font-weight: 600; font-size: 14px;">NIP. {{$dosen->nip}}</p>
+                          <p style="font-weight: 600; font-size: 14px;">NPI {{$dosen->nip}}</p>
                         </div>
 
                       </div>

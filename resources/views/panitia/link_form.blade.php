@@ -81,6 +81,14 @@
                             <input type="text" readonly id="syaratSeminar" class="form-control" name="syarat_seminar" value="{{$panitia->syarat_seminar}}" placeholder="Link untuk file persyaratan seminar">
                           </td>
                         </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>Persyaratan Sidang</td>
+                          <td>{{$panitia->getProdi->nama}}</td>
+                          <td>
+                            <input type="text" readonly id="syaratSidang" class="form-control" name="syarat_sidang" value="{{$panitia->syarat_sidang}}" placeholder="Link untuk file persyaratan sidang">
+                          </td>
+                        </tr>
                       </tbody>
                       <tfoot>
                         <tr>
@@ -155,6 +163,10 @@
   
   document.getElementById('syaratSeminar').onclick = function() {
     document.getElementById('syaratSeminar').removeAttribute('readonly');
+  };
+
+  document.getElementById('syaratSidang').onclick = function() {
+    document.getElementById('syaratSidang').removeAttribute('readonly');
   };
 </script>
 @endpush

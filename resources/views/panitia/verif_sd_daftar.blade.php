@@ -1,5 +1,7 @@
 @extends('layouts.panitia')
 
+{{-- NEW --}}
+
 @section('content')
 <!-- Main content -->
 <section class="content">
@@ -61,7 +63,7 @@
                 <br>
                 
                 @if ($daftar == null) <!-- BELUM DAFTAR -->
-                <div style="text-align: center; margin: 10px 0px 20px 0px;"><span style="font-size: 16px;"><b>{{$mahasiswa->nama}}</b> belum mendaftar sidang</span></div>
+                <div style="text-align: center; margin: 10px 0px 20px 0px;"><span style="font-size: 16px;"><b></b> belum mendaftar sidang</span></div>
                 
                 @else
                   @if ($daftar->set_ulang == 0) <!-- TIDAK SIDANG ULANG -->
@@ -105,15 +107,6 @@
                           </tr>
     
                           <tr>
-                            <td>Upload Persyaratan</td>
-                            <td>
-                              <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                                <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                              <?php } ?>
-                            </td>
-                          </tr>
-    
-                          <tr>
                             <td>Dosen Penguji</td>
                             <td>
                                 <select class="form-control select2 select2-hidden-accessible" name="dosji" style="width: 100%;">
@@ -132,7 +125,7 @@
                           </tr>
     
                           <tr>
-                            <td>Tautan</td>
+                            <td>Ruangan</td>
                             <td><input type="text" class="form-control" style="font-weight: 700;" name="link" value="{{$daftar->link}}"></td>
                           </tr>
     
@@ -202,21 +195,12 @@
                               </tr>
         
                               <tr>
-                                <td>Upload Persyaratan</td>
-                                <td>
-                                  <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                                    <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                                  <?php } ?>
-                                </td>
-                              </tr>
-        
-                              <tr>
                                 <td>Dosen Penguji</td>
                                 <td><input type="text" name="dosen" class="form-control" style="font-weight: 700;" value="{{$dosji->nama}}" disabled></td>  
                               </tr>
         
                               <tr>
-                                <td>Tautan</td>
+                                <td>Ruangan</td>
                                 <td><input type="text" class="form-control" style="font-weight: 700;" name="link" value="{{$daftar->link}}" disabled></td>
                               </tr>
                             </tbody>
@@ -268,15 +252,6 @@
                           </tr>
     
                           <tr>
-                            <td>Upload Persyaratan</td>
-                            <td>
-                              <?php for ($i = 0; $i < count($getname2); $i++) { ?>
-                                <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename2[$i]) }}" download="{{$getname2[$i][3]}}">{{$getname2[$i][3]}}</a>
-                              <?php } ?>
-                            </td>
-                          </tr>
-    
-                          <tr>
                             <td>Dosen Penguji</td>
                             <td>
                                 <select class="form-control select2 select2-hidden-accessible" name="dosji" style="width: 100%;">
@@ -295,7 +270,7 @@
                           </tr>
     
                           <tr>
-                            <td>Tautan</td>
+                            <td>Ruangan</td>
                             <td><input type="text" class="form-control" style="font-weight: 700;" name="link" value="{{$ulang->link}}"></td>
                           </tr>
     
@@ -355,21 +330,12 @@
                               </tr>
         
                               <tr>
-                                <td>Upload Persyaratan</td>
-                                <td>
-                                  <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                                    <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                                  <?php } ?>
-                                </td>
-                              </tr>
-        
-                              <tr>
                                 <td>Dosen Penguji</td>
                                 <td><input type="text" name="dosen" class="form-control" style="font-weight: 700;" value="{{$dosji->nama}}" disabled></td>  
                               </tr>
         
                               <tr>
-                                <td>Tautan</td>
+                                <td>Ruangan</td>
                                 <td><input type="text" class="form-control" style="font-weight: 700;" name="link" value="{{$daftar->link}}" disabled></td>
                               </tr>
                             </tbody>
@@ -396,7 +362,7 @@
 <!-- /.content -->
 
 @if(is_null($daftar) == 0)
-@include('modal.ulang-sidang')
+@include('modal.ulang-sidang2')
 @endif
 @endsection
 

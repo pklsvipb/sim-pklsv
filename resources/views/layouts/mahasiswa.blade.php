@@ -162,14 +162,14 @@
                 </p>
               </a>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a href="{{ route('d-sidang') }}" class="nav-link @if(Route::currentRouteNamed('d-sidang')) active @else '' @endif">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">
                   Daftar Sidang
                 </p>
               </a>
-            </li> --}}
+            </li>
             <li class="nav-item">
               <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
