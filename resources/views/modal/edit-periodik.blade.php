@@ -13,7 +13,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tanggal <i style="color: red">*</i></label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" name="tanggal" value="{{$periodik[$j][4]}}" required="">
+                                    <input type="date" class="form-control" name="tanggal" value="{{$periodik[$j][3]}}" required="">
                                 </div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Informasi <i style="color: red">*</i></label>
                                 <div class="col-sm-8">
-                                    <textarea name="informasi" rows="3" cols="50" class="form-control">{{$periodik[$j][5]}}</textarea>
+                                    <textarea name="informasi" rows="3" cols="50" class="form-control">{{$periodik[$j][4]}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Kendala <i style="color: red">*</i></label>
                                 <div class="col-sm-8">
-                                    <textarea name="kendala" rows="3" cols="50" class="form-control">{{$periodik[$j][6]}}</textarea>
+                                    <textarea name="kendala" rows="3" cols="50" class="form-control">{{$periodik[$j][5]}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Catatan <i style="color: red">*</i></label>
                                 <div class="col-sm-8">
-                                    <textarea name="catatan" rows="3" cols="50" class="form-control">{{$periodik[$j][7]}}</textarea>
+                                    <textarea name="catatan" rows="3" cols="50" class="form-control">{{$periodik[$j][6]}}</textarea>
                                 </div>
                             </div>
                         </div>

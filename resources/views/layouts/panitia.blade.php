@@ -107,7 +107,7 @@
                 </p>
               </a>
             </li>
-            <li class="nav-item @if(Route::currentRouteNamed('jurnal-harian')) menu-open @elseif(Route::currentRouteNamed('kartu-bimbingan')) menu-open @elseif(Route::currentRouteNamed('laporan-periodik')) menu-open  @else '' @endif">
+            <li class="nav-item @if(Route::currentRouteNamed('jurnal-harian')) menu-open @elseif(Route::currentRouteNamed('kartu-bimbingan')) menu-open @elseif(Route::currentRouteNamed('laporan-periodik')) menu-open @elseif(Route::currentRouteNamed('kartu-seminar-p')) menu-open  @else '' @endif">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-folder" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -123,17 +123,23 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="{{ route('laporan-periodik')}}" class="nav-link @if(Route::currentRouteNamed('laporan-periodik')) active @else '' @endif">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Laporan Periodik</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="{{ route('kartu-bimbingan')}}" class="nav-link @if(Route::currentRouteNamed('kartu-bimbingan')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Kartu Bimbingan</p>
                   </a>
                 </li>
-              {{--<li class="nav-item">
-                  <a href="{{ route('laporan-periodik')}}" class="nav-link @if(Route::currentRouteNamed('laporan-periodik')) active @else '' @endif">
+                <li class="nav-item">
+                  <a href="{{ route('kartu-seminar-p')}}" class="nav-link @if(Route::currentRouteNamed('kartu-seminar-p')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
-                    <p>Laporan Periodik</p>
+                    <p>Kartu Seminar</p>
                   </a>
-                </li>--}}
+                </li>
               </ul>
             </li> 
             <li class="nav-item">

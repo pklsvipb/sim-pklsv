@@ -150,9 +150,11 @@ Route::middleware('role:panitia')->get('/panitia/download-sm-pembahas/{id}', [Ap
 Route::middleware('role:panitia')->post('/panitia/pengumuman', [App\Http\Controllers\PanitiaController::class, 'pengumuman'])->name('pengumuman');
 Route::middleware('role:panitia')->post('/panitia/pengumuman/delete', [App\Http\Controllers\PanitiaController::class, 'pengumuman_delete'])->name('pengumuman-delete');
 
-Route::middleware('role:panitia')->get('/panitia/jurnal_harian', [App\Http\Controllers\PanitiaController::class, 'jurnal_harian'])->name('jurnal-harian');
+Route::middleware('role:panitia')->get('/panitia/kartu-seminar', [App\Http\Controllers\PanitiaController::class, 'kartu_seminar'])->name('kartu-seminar-p');
+Route::middleware('role:panitia')->get('/panitia/download-kartu-seminar-panitia/{id}', [App\Http\Controllers\ExportController::class, 'download_kartu_sm_p'])->name('download-kartu-sm-p');
+Route::middleware('role:panitia')->get('/panitia/jurnal-harian', [App\Http\Controllers\PanitiaController::class, 'jurnal_harian'])->name('jurnal-harian');
 Route::middleware('role:panitia')->get('/panitia/kartu-bimbingan', [App\Http\Controllers\PanitiaController::class, 'kartu_bimbingan'])->name('kartu-bimbingan');
-Route::middleware('role:panitia')->get('/panitia/laporan_periodik', [App\Http\Controllers\PanitiaController::class, 'laporan_periodik'])->name('laporan-periodik');
+Route::middleware('role:panitia')->get('/panitia/laporan-periodik', [App\Http\Controllers\PanitiaController::class, 'laporan_periodik'])->name('laporan-periodik');
 Route::middleware('role:panitia')->post('/panitia/set-kaprodi/submit', [App\Http\Controllers\PanitiaController::class, 'set_kaprodi'])->name('set-kaprodi');
 
 Route::middleware('role:panitia')->get('/panitia/link_form', [App\Http\Controllers\PanitiaController::class, 'link_form'])->name('link-form');
@@ -319,6 +321,11 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/form029/moderator/{id}', [
 Route::middleware('role:mahasiswa')->get('/mahasiswa/download/jurnal-harian', [App\Http\Controllers\ExportController::class, 'download_jurnal'])->name('download-jurnal');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/upload/jurnal-harian', [App\Http\Controllers\MahasiswaController::class, 'upload_jurnal'])->name('upload-jurnal');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/jurnal-harian', [App\Http\Controllers\MahasiswaController::class, 'edit_jurnal'])->name('edit-jurnal');
+
+Route::middleware('role:mahasiswa')->get('/mahasiswa/download/laporan-periodik', [App\Http\Controllers\ExportController::class, 'download_periodik'])->name('download-periodik');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/upload/laporan-periodik', [App\Http\Controllers\MahasiswaController::class, 'upload_periodik'])->name('upload-periodik');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/laporan-periodik', [App\Http\Controllers\MahasiswaController::class, 'edit_periodik'])->name('edit-periodik');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/periode', [App\Http\Controllers\MahasiswaController::class, 'edit_periode'])->name('edit-periode');
 
 Route::middleware('role:mahasiswa')->post('/mahasiswa/edit/kartu-bimbingan', [App\Http\Controllers\MahasiswaController::class, 'edit_bimbingan'])->name('edit-bimbingan');
 Route::middleware('role:mahasiswa')->get('/mahasiswa/form014/download', [App\Http\Controllers\ExportController::class, 'form014_pdf_download'])->name('form014-pdf-download');

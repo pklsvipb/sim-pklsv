@@ -132,52 +132,66 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-            @if(count($periode) == 0)
-              <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
-                <thead>
-                  <tr>
-                    <th width="10%">Tanggal</th>
-                    <th width="30%">Informasi yang diperoleh</th>
-                    <th width="30%">Masalah/Kendala</th>
-                    <th width="25%">Catatan Khusus</th>
-                    <th width="5%" style="text-align: center;">Edit</th>
-                  </tr>
-                </thead>
-              </table>
-            @else
-              <?php for ($i = 0; $i < count($periode); $i++) { ?>
+              @if (File::exists(public_path('pdf/'.$mhs->nim.'/pdf_laporan_periodik.pdf')))
+                <a href="{{ asset('pdf/'.$mhs->nim.'/pdf_laporan_periodik.pdf') }}" class="btn btn-danger btn-sm" download="pdf_laporan_periodik.pdf" style="text-decoration: none; float: right;"><i class="fas fa-file-pdf fa-lg" style="color: white;"></i> <span style="font-size: 12px; color: white;">File Upload</span></a>
+              @endif
+            </div>
+            <div class="col-md-12">
+              <div style="font-size: 16px; font-weight: 600; margin: 20px 0px 40px 0px; text-align:center;">
+                LIST LAPORAN PERIODIK<br><br>
+                @if(count($periodik) != 0)
+                <span>
+                  <a href="{{route('download-periodik')}}" class="btn btn-danger btn-sm" style="width: 15%; margin-right: auto; padding: 2px;">Unduh PDF</a>
+                  <a data-toggle="modal" data-target="#Upload-Periodik" title="Upload pdf yang sudh diparaf dan ditandatangani" class="btn btn-primary btn-sm" style="width: 15%; margin-right: auto; padding: 2px;">Upload PDF</a>
+                </span>
+                @endif
+              </div>
+              @if(count($periode) == 0)
                 <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
                   <thead>
                     <tr>
-                      <th colspan="5" style="font-weight: 900; padding: 5px; background: #02F0F6;">Periode</th>
-                    </tr>
-                    <tr>
-                      <td colspan="5" style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periode[$i][1])->translatedFormat('l, d F Y'); }} / {{ Carbon\Carbon::parse($periode[$i][2])->translatedFormat('l, d F Y'); }} <a data-toggle="modal" data-target="#Edit-Periode-{{$periode[$i][0]}}" title="edit kegiatan" style="font-size: .875rem; cursor: pointer; color: #005b8f; float: right;"><i class="fas fa-edit fa-lg"></i></a></td>
-                    </tr>
-                    <tr>
-                      <th width="10%" style="font-weight: 900;">Tanggal</th>
-                      <th width="30%" style="font-weight: 900;">Informasi yang diperoleh</th>
-                      <th width="30%" style="font-weight: 900;">Masalah/Kendala</th>
-                      <th width="25%" style="font-weight: 900;">Catatan Khusus</th>
+                      <th width="10%">Tanggal</th>
+                      <th width="30%">Informasi yang diperoleh</th>
+                      <th width="30%">Masalah/Kendala</th>
+                      <th width="25%">Catatan Khusus</th>
                       <th width="5%" style="text-align: center;">Edit</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php for ($j = 0; $j < count($periodik); $j++) { ?>
-                      @if($periode[$i][1] == $periodik[$j][8] && $periode[$i][2] == $periodik[$j][9])
-                      <tr>
-                        <td style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periodik[$j][4])->translatedFormat('l, d F Y'); }}</td>
-                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][5] }}</td>
-                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][6] }}</td>
-                        <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][7] }}</td>
-                        <td><a data-toggle="modal" data-target="#Edit-Periodik-{{$periodik[$j][0]}}" title="edit kegiatan" style="cursor: pointer; color: #005b8f;"><i class="fas fa-edit fa-lg"></i></a></td>
-                      </tr>
-                      @endif
-                    <?php } ?>
-                  </tbody>
                 </table>
-              <?php } ?>
-              @endif
+              @else
+                <?php for ($i = 0; $i < count($periode); $i++) { ?>
+                  <table class="table table-bordered" cellspacing="0" cellpadding="3" style="font-size: .875rem; font-weight: 600; margin: 50px 0px; text-align: center;">
+                    <thead>
+                      <tr>
+                        <th colspan="5" style="font-weight: 900; padding: 5px; background: #02F0F6;">Periode</th>
+                      </tr>
+                      <tr>
+                        <td colspan="5" style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periode[$i][1])->translatedFormat('l, d F Y'); }} / {{ Carbon\Carbon::parse($periode[$i][2])->translatedFormat('l, d F Y'); }} <a data-toggle="modal" data-target="#Edit-Periode-{{$periode[$i][0]}}" title="edit kegiatan" style="font-size: .875rem; cursor: pointer; color: #005b8f; float: right;"><i class="fas fa-edit fa-lg"></i></a></td>
+                      </tr>
+                      <tr>
+                        <th width="10%" style="font-weight: 900;">Tanggal</th>
+                        <th width="30%" style="font-weight: 900;">Informasi yang diperoleh</th>
+                        <th width="30%" style="font-weight: 900;">Masalah/Kendala</th>
+                        <th width="25%" style="font-weight: 900;">Catatan Khusus</th>
+                        <th width="5%" style="text-align: center;">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php for ($j = 0; $j < count($periodik); $j++) { ?>
+                        @if($periode[$i][1] == $periodik[$j][7] && $periode[$i][2] == $periodik[$j][8])
+                        <tr>
+                          <td style="font-size: 12px; text-align:center;">{{ Carbon\Carbon::parse($periodik[$j][3])->translatedFormat('l, d F Y'); }}</td>
+                          <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][4] }}</td>
+                          <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][5] }}</td>
+                          <td style="font-size: 12px; text-align:left;">{{ $periodik[$j][6] }}</td>
+                          <td><a data-toggle="modal" data-target="#Edit-Periodik-{{$periodik[$j][0]}}" title="edit kegiatan" style="cursor: pointer; color: #005b8f;"><i class="fas fa-edit fa-lg"></i></a></td>
+                        </tr>
+                        @endif
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                <?php } ?>
+                @endif
             </div>
           </div>
         </div>
@@ -198,12 +212,14 @@
   @for($i=0; $i < count($periode); $i++) 
     @include('modal.edit-periode') 
     @for($j=0; $j < count($periodik); $j++)
-      @if($periode[$i][1] == $periodik[$j][8])
+      @if($periode[$i][1] == $periodik[$j][7])
         @include('modal.edit-periodik') 
       @endif
     @endfor
   @endfor 
 @endif 
+
+@include('modal.upload-periodik') 
 
 @endsection
 

@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use App\Models\tb_kartu_seminar;
 use App\Models\tb_nilai_forum;
 use App\Models\tb_nilai_pembahas;
+use App\Models\tb_periodik;
 use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
@@ -1442,6 +1443,62 @@ class DosenController extends Controller
         return view('dosen.jurnal_harian', compact('datas', 'getmhs', 'file'));
     }
 
+    public function sortDate($a, $b) 
+    {
+        if (strtotime($a[3]) == strtotime($b[3])) return 0;
+        return (strtotime($a[3]) > strtotime($b[3])) ?1:-1;
+    }
+
+    public function laporan_periodik()
+    {
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $dosen = tb_dosen::where('id', $user->id_user)->first();
+        $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+        $getlist = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
+        $getmhs = [];
+        $file = [];
+
+        if (count($mhs1) != 0) {
+            foreach ($mhs1 as $mahasiswa1) {
+                $listmhs1 = $getlist->where('id_mhs', $mahasiswa1->id);
+                foreach($listmhs1 as $ls1){
+                    $list[] = array($ls1->id_mhs, $ls1->tgl_awal, $ls1->tgl_selesai);
+                }
+                $getmhs1 = $getlist->where('id_mhs', $mahasiswa1->id)->first();
+                if ($getmhs1 != null) {
+                    $getmhs[] = array(1, $getmhs1->id_mhs, $mahasiswa1->nama, $mahasiswa1->nim);
+                }
+            }
+        }
+
+        $mhs2 = tb_mahasiswa::where('id_dospem2', $user->id_user)->get();
+        if (count($mhs2) != 0) {
+            foreach ($mhs2 as $mahasiswa2) {
+                $listmhs2 = $getlist->where('id_mhs', $mahasiswa2->id);
+                foreach($listmhs2 as $ls2){
+                    $list[] = array($ls2->id_mhs, $ls2->tgl_awal, $ls2->tgl_selesai);
+                }
+                $getmhs2 = $getlist->where('id_mhs', $mahasiswa2->id)->first();
+                if ($getmhs1 != null) {
+                    $getmhs[] = array(2, $getmhs2->id_mhs, $mahasiswa2->nama, $mahasiswa2->nim);
+                }
+            }
+        }
+
+        for ($i = 0; $i < count($list); $i++) {
+            $lists = tb_periodik::where('id_mhs', $list[$i][0])->where('tgl_awal', $list[$i][1])->where('tgl_selesai', $list[$i][2])->get();
+
+            foreach ($lists as $ls) {
+                $periodik[] = array($ls->id, $ls->id_mhs, $ls->id_prodi, $ls->tanggal, $ls->informasi, $ls->kendala, $ls->catatan, $ls->tgl_awal, $ls->tgl_selesai);
+            }
+            usort($periodik, array($this, 'sortDate'));
+            $periode[] = array($list[$i][0], $list[$i][1], $list[$i][2]);
+        }
+
+        return view('dosen.laporan_periodik', compact('datas', 'getmhs', 'periode', 'periodik'));
+    }
+
     public function kartu_bimbingan()
     {
         $user = Auth::user();
@@ -1515,7 +1572,6 @@ class DosenController extends Controller
                 }
                 $file[] = array($get->id_mhs, $list);
             }
-
         }
 
         // dd($getmhs);
