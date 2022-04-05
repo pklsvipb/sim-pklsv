@@ -28,25 +28,32 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-5">
-                <div class="title text-center" style="font-weight: 600;"> REQUEST PENGISIAN BAP PEMBIMBING SIDANG</div>
+                <div class="title text-center" style="font-weight: 600;"> REQUEST PENGISIAN FORM SIDANG</div>
               </div>
             </div>
             @if (count($mhs) == 0)
             <div class="div text-secondary text-center">
-              <h1 style="font-size: 12px;">Tidak Ada Request Pengisian BAP Pembimbing Sidang</h1>
+              <h1 style="font-size: 12px;">Tidak Ada Request Pengisian Form Sidang</h1>
             </div>
             @else
             <?php for ($i = 0; $i < count($mhs); $i++) { ?>
-              <div class="row pt-4" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
-                <div class="col-md-1"></div>
-                <div class="col-md-2 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
-                <div class="col-md-5 mb-4">
+              <div class="row" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
+                <div class="col-md-1 pt-4"></div>
+                <div class="col-md-2 pt-4 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
+                <div class="col-md-5 pt-4 mb-4">
                   <h1 style="font-size: 16px; font-weight: 600;">{{$mhs[$i][1]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs[$i][2]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs[$i][3]}}</h1>
                 </div>
-                <div class="col-md-4 mt-3">
-                  <a href="{{route('sd-bap-d',$mhs[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT NILAI BAP</a>
+                <div class="col-md-2 pt-4 mt-3">
+                  <a href="{{route('sd-bap-d',$mhs[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT BAP</a>
+                </div>
+                <div class="col-md-2" style="padding: 0px; text-align: right;">
+                  @if ($mhs[$i][4] == '')
+                  <span class="badge badge-danger badge-lg p-1" style="font-size: 9px;">BELUM SIDANG</span>
+                  @else
+                    <span class="badge badge-success badge-lg p-1" style="font-size: 9px;">SUDAH SIDANG</span>
+                  @endif
                 </div>
               </div>
             <?php } ?>
@@ -67,7 +74,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-5">
-                <div class="title text-center" style="font-weight: 600;"> HISTORY PENGISIAN BAP PEMBIMBING SIDANG</div>
+                <div class="title text-center" style="font-weight: 600;"> HISTORY PENGISIAN FORM SIDANG</div>
               </div>
             </div>
             <table class="table text-center" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
@@ -77,7 +84,8 @@
                   <td width="400px"><i class="fas fa-user fa-md"></i>&nbsp; Nama Mahasiswa</td>
                   <td><i class="fas fa-school fa-md"></i>&nbsp; Program Studi</td>
                   <td><i class="fas fa-clock fa-md"></i>&nbsp; Tanggal dan Waktu</td>
-                  <td><i class="fas fa-info-circle fa-md"></i>&nbsp; Status</td>
+                  <td width="180px"><i class="fas fa-download fa-md"></i>&nbsp; Download</td>
+                  <td><i class="fas fa-edit fa-md"></i>&nbsp; Edit</td>
                 </tr>
               </thead>
               <tbody>
@@ -90,7 +98,10 @@
                   <td>{{$mhs2[$i][3]}}</td>
                   <td>{{date('d-m-Y', strtotime($mhs2[$i][4]))}}</td>
                   <td>
-                    <a type="button" href="{{url('dosen/dospem/bap-sd/view-pdf', $mhs2[$i][5])}}" class="btn btn-success btn-sm">Download</a>
+                    <a type="button" href="{{url('dosen/dospem/bap-sd/view-pdf', $mhs2[$i][5])}}" class="btn btn-success btn-sm">BAP</a>
+                    <a type="button" href="{{url('dosen/sd-form025/view-pdf', $mhs2[$i][5])}}" class="btn btn-success btn-sm">FORM025</a>
+                  </td>
+                  <td>
                     <a type="button" href="{{url('dosen/dospem/bap-sd/edit', $mhs2[$i][5])}}" class="btn btn-primary btn-sm">Edit</a>
                   </td>
                 </tr>
@@ -116,25 +127,32 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-5">
-                <div class="title text-center" style="font-weight: 600;"> REQUEST PENGISIAN BAP PEMBIMBING SIDANG ULANG</div>
+                <div class="title text-center" style="font-weight: 600;"> REQUEST PENGISIAN FORM SIDANG ULANG</div>
               </div>
             </div>
             @if (count($mhs3) == 0)
             <div class="div text-secondary text-center">
-              <h1 style="font-size: 12px;">Tidak Ada Request Pengisian BAP Pembimbing Sidang Ulang</h1>
+              <h1 style="font-size: 12px;">Tidak Ada Request Pengisian Form Sidang Ulang</h1>
             </div>
             @else
             <?php for ($i = 0; $i < count($mhs3); $i++) { ?>
-              <div class="row pt-4" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
-                <div class="col-md-1"></div>
-                <div class="col-md-2 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
-                <div class="col-md-5 mb-4">
+              <div class="row" style="background-color: #b3bfff; border-radius: 5px; margin: 0px 10% 2% 10%;">
+                <div class="col-md-1 pt-4"></div>
+                <div class="col-md-2 pt-4 mb-4 text-center"><i class="fa fa-user-circle fa-4x text-inverse"></i></div>
+                <div class="col-md-5 pt-4 mb-4">
                   <h1 style="font-size: 16px; font-weight: 600;">{{$mhs3[$i][1]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs3[$i][2]}}</h1>
                   <h1 style="font-size: 14px;">{{$mhs3[$i][3]}}</h1>
                 </div>
-                <div class="col-md-4 mt-3">
-                  <a href="{{route('sd-bap-du',$mhs3[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT NILAI BAP</a>
+                <div class="col-md-2 pt-4 mt-3">
+                  <a href="{{route('sd-bap-du',$mhs3[$i][0])}}" type="button" class="btn btn-success btn-md">INPUT BAP</a>
+                </div>
+                <div class="col-md-2" style="padding: 0px; text-align: right;">
+                  @if ($mhs3[$i][4] == '')
+                  <span class="badge badge-danger badge-lg p-1" style="font-size: 9px;">BELUM SIDANG</span>
+                  @else
+                    <span class="badge badge-success badge-lg p-1" style="font-size: 9px;">SUDAH SIDANG</span>
+                  @endif
                 </div>
               </div>
             <?php } ?>
@@ -155,7 +173,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 mb-5">
-                <div class="title text-center" style="font-weight: 600;"> HISTORY PENGISIAN BAP PEMBIMBING SIDANG ULANG</div>
+                <div class="title text-center" style="font-weight: 600;"> HISTORY PENGISIAN FORM SIDANG ULANG</div>
               </div>
             </div>
             <table class="table text-center" cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;">
@@ -165,7 +183,8 @@
                   <td width="400px"><i class="fas fa-user fa-md"></i>&nbsp; Nama Mahasiswa</td>
                   <td><i class="fas fa-school fa-md"></i>&nbsp; Program Studi</td>
                   <td><i class="fas fa-clock fa-md"></i>&nbsp; Tanggal dan Waktu</td>
-                  <td><i class="fas fa-info-circle fa-md"></i>&nbsp; Status</td>
+                  <td width="180px"><i class="fas fa-download fa-md"></i>&nbsp; Download</td>
+                  <td><i class="fas fa-edit fa-md"></i>&nbsp; Edit</td>
                 </tr>
               </thead>
               <tbody>
@@ -178,7 +197,10 @@
                   <td>{{$mhs4[$i][3]}}</td>
                   <td>{{date('d-m-Y', strtotime($mhs4[$i][4]))}}</td>
                   <td>
-                    <a type="button" href="{{url('dosen/dospem/bap-sd-ulang/view-pdf', $mhs4[$i][5])}}" class="btn btn-success btn-sm">Download</a>
+                    <a type="button" href="{{url('dosen/dospem/bap-sd-ulang/view-pdf', $mhs4[$i][5])}}" class="btn btn-success btn-sm">BAP</a>
+                    <a type="button" href="{{url('dosen/sdu-form025/view-pdf', $mhs2[$i][5])}}" class="btn btn-success btn-sm">FORM025</a>
+                  </td>
+                  <td>
                     <a type="button" href="{{url('dosen/dospem/bap-sd-ulang/edit', $mhs4[$i][5])}}" class="btn btn-primary btn-sm">Edit</a>
                   </td>
                 </tr>

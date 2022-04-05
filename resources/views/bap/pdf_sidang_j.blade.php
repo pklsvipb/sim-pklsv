@@ -76,7 +76,7 @@
           <p style="margin-bottom: -10%; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;"> Telp. /Fax. (0251) 83480007/8376845 </p>
         </td>
         <td width="5%">
-          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/023</p>-->
+          <!--<p style="text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/029</p>-->
         </td>
       </tr>
       <tr>
@@ -84,7 +84,7 @@
           <hr style="height:1px; margin-bottom:-15px; margin-top: 8px; border-width:0; background-color:black">
           <hr style="height:3px; border-width:0; background-color:black; margin-bottom: 2px;">
 
-          <p style="margin-bottom: -7px;"><b>BERITA ACARA DAN NILAI UJIAN TUGAS AKHIR</b></p>
+          <p style="margin-bottom: -7px;"><b>BERITA ACARA SEMINAR TUGAS AKHIR</b></p>
           <p style="margin-bottom: -7px;"><b>PROGRAM STUDI {{strtoupper($mhs->getProdi->nama)}}</b></p>
           <p style="margin-bottom: -7px;"><b>TAHUN AKADEMIK 2021/2022</b></p>
 
@@ -192,7 +192,7 @@
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">Dosen Penguji</p>
           <img src="{{url($dosen->ttd)}}" style="margin-left: 3em; margin-top: 7px; width: auto; height: 1.5cm;">
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">{{$dosen->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">NPI. {{$dosen->nip}}</p>
+          <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">NIP {{$dosen->nip}}</p>
           <br><br><br>
         </td>
       </tr>

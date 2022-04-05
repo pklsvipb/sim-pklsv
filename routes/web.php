@@ -109,9 +109,6 @@ Route::middleware('role:panitia')->post('/panitia/seminar/verif-form/submit/{id}
 Route::middleware('role:panitia')->get('/panitia/serminar/verif-daftar/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vd'])->name('seminar-vd');
 Route::middleware('role:panitia')->post('/panitia/seminar/verif-daftar/submit/{id}', [App\Http\Controllers\PanitiaController::class, 'seminar_vd_s'])->name('seminar-vds');
 
-
-
-
 Route::middleware('role:panitia')->get('/panitia/sidang/list-mahasiswa-form', [App\Http\Controllers\PanitiaController::class, 'list_sd_form'])->name('list-sd-form');
 Route::middleware('role:panitia')->get('/panitia/sidang/verif-form/{id}', [App\Http\Controllers\PanitiaController::class, 'sidang_vf'])->name('sidang-vf');
 Route::middleware('role:panitia')->post('/panitia/sidang/verif-form/submit/{id}', [App\Http\Controllers\PanitiaController::class, 'sidang_vf_s'])->name('sidang-vfs');
@@ -163,6 +160,10 @@ Route::middleware('role:panitia')->post('/panitia/link_form/save', [App\Http\Con
 Route::middleware('role:panitia')->get('/panitia/setting/management-user', [App\Http\Controllers\PanitiaController::class, 'management_user'])->name('management-user');
 Route::middleware('role:panitia')->get('/panitia/setting/mahasiswa/reset/{id}', [App\Http\Controllers\PanitiaController::class, 'mahasiswa_reset'])->name('mahasiswa-reset');
 Route::middleware('role:panitia')->get('/panitia/setting/dosen/reset/{id}', [App\Http\Controllers\PanitiaController::class, 'dosen_reset'])->name('dosen-reset');
+
+Route::middleware('role:panitia')->get('/panitia/download-sd-form025/{id}', [App\Http\Controllers\ExportController::class, 'download_sd_form025'])->name('download-sd-form025');
+Route::middleware('role:panitia')->get('/panitia/download-sdu-form025/{id}', [App\Http\Controllers\ExportController::class, 'download_sdu_form025'])->name('download-sdu-form025');
+
 
 
 
@@ -254,6 +255,11 @@ Route::middleware('role:dosen')->get('/dosen/paraf-bimbingan/{id}', [App\Http\Co
 Route::middleware('role:dosen')->get('/dosen/ttd-kaprodi', [App\Http\Controllers\DosenController::class, 'ttd_kaprodi'])->name('d-ttd-kaprodi');
 Route::middleware('role:dosen')->get('/dosen/ttd-kaprodi/submit/{id}', [App\Http\Controllers\DosenController::class, 'ttd_kaprodi_submit'])->name('d-ttd-kaprodi-submit');
 
+Route::middleware('role:dosen')->get('/dosen/form/tanda-tangan/022', [App\Http\Controllers\DosenController::class, 'form_ttd_022'])->name('form-ttd-022');
+Route::middleware('role:dosen')->post('/dosen/form/tanda-tangan/022/submit/{id}', [App\Http\Controllers\DosenController::class, 'form_ttd_022_submit'])->name('form-ttd-022-submit');
+
+Route::middleware('role:dosen')->get('/dosen/sd-form025/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sd_form025'])->name('sd-form025');
+Route::middleware('role:dosen')->get('/dosen/sdu-form025/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sdu_form025'])->name('sdu-form025');
 
 
 
@@ -346,3 +352,6 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/{id}', [App\Http\C
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/save/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_save'])->name('penggunaan-produk-pdf-save');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/delete', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_delete'])->name('penggunaan-produk-pdf-delete');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf'])->name('penggunaan-produk-pdf');
+
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form022/delete/{id}', [App\Http\Controllers\ExportController::class, 'form022_pdf_delete'])->name('form022-pdf-delete');
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form022/{id}', [App\Http\Controllers\ExportController::class, 'form022_pdf'])->name('form022-pdf');

@@ -166,14 +166,14 @@
                 </p>
               </a>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a href="{{ route('list-sd-form')}}" class="nav-link @if(Route::currentRouteNamed('list-sd-form')) active @elseif(Route::currentRouteNamed('sidang-vf')) active @elseif(Route::currentRouteNamed('sidang-vd')) active @elseif(Route::currentRouteNamed('sidang-ulang')) active  @else '' @endif">
                 <i class="nav-icon fa fa-book-open"></i>
                 <p style="padding-left: 7px;">
                   Verifikasi Sidang
                 </p>
               </a>
-            </li> --}}
+            </li>
             <li class="nav-item">
               <a href="{{ route('link-form') }}" class="nav-link @if(Route::currentRouteNamed('link-form')) active @else '' @endif">
                 <i class="nav-icon fa fa-link"></i>

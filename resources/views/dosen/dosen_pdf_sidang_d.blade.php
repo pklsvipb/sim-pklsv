@@ -201,7 +201,7 @@
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">Dosen Pembimbing</p>
           <img src="{{public_path($bap->ttd)}}" style="margin-left: 3em; margin-top: 7px; width: auto; height: 1.5cm;">
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">{{$dosen->nama}}</p>
-          <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">NPI. {{$dosen->nip}}</p>
+          <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">NIP {{$dosen->nip}}</p>
           <br><br><br>
         </td>
       </tr>
@@ -217,7 +217,7 @@
               <tr>
                 <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="40%">No. Revisi : 0</td>
                 <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="10%">Hal: 1/1</td>
-                <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="50%">Tanggal Berlaku: 09 Oktober 2020</td>
+                <td style="font-size: 10pt; text-align: center; font-family: Arial, Helvetica, sans-serif;" width="50%">Tanggal Berlaku: 09 Oktober 2021</td>
               </tr>
             </tbody>
           </table>

@@ -13,6 +13,8 @@
 </div>
 @endsection
 
+{{-- NEW --}}
+
 @section('content')
 <!-- Main content -->
 <section class="content">
@@ -58,51 +60,9 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                {{-- <div class="row text-center">
 
-                  <style>
-                    #menu-pertama{
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                    }
-
-                    #menu-pertama a{
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-pertama:hover{ 
-                      background: #f8f9f9;
-                    }
-
-                    #menu-kedua{
-                      padding: 7px 0px;
-                      margin-bottom: 10px;
-                      border-bottom: 2px solid black;
-                    }
-
-                    #menu-kedua a{
-                      color: black;
-                      font-weight: 600;
-                      font-size: 13px;
-                    }
-
-                    #menu-kedua:hover{
-                      background: #f8f9f9;
-                    }
-                  </style>
-
-                  <div class="col-md-6" id="menu-pertama">
-                    <a href="{{ route('sidang') }}" style="text-decoration: none; padding: 17px 150px;">DOWNLOAD DAN UPLOAD FORM</a>
-                  </div>
-                  <div class="col-md-6" id="menu-kedua">
-                    <a href="{{ route('d-sidang') }}" style="text-decoration: none; padding: 17px 197px;">DAFTAR SIDANG</a>
-                  </div>
-
-                </div> --}}
-
-                @if ($set == 0)
+                @if ($pembahas != null && $form022 != null)
+                {{-- NILAI PEMBAHAS DIUBAH JADI != --}}
                   @if (is_null($get2))
                     @if (is_null($get))
                     <form action="{{ url('/mahasiswa/daftar-sidang-submit') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
@@ -129,23 +89,8 @@
                           <tr>
                             <td>Dosen Pembimbing</td>
                             <td>
-                              <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;">
-                                <option selected="selected" disabled>...</option>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}">{{$dosen->nama}}</option>
-                                @endforeach
-                              </select>
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td>Dosen Penguji</td>
-                            <td>
-                              <select class="form-control select2 select2-hidden-accessible" name="dosji" style="width: 100%;">
-                                <option selected="selected" disabled>...</option>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}">{{$dosen->nama}}</option>
-                                @endforeach
+                              <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;" disabled>
+                                <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                               </select>
                             </td>
                           </tr>
@@ -165,19 +110,13 @@
                             <td><input type="time" class="form-control" name="waktu" required></td>
                           </tr>
 
-                          <tr>  
-                            <td>Upload Persyaratan</td>
-                            <td>
-                              <div class="form-group">
-                                <div class="file-loading">
-                                  <input id="file-1" class="file" name="file[]" type="file" multiple data-theme="fas">
-                                </div>
-                              </div>
-                            </td>
+                          <tr>
+                            <td>Dosen Penguji</td>
+                            <td>(akan diisi oleh panitia)</td>
                           </tr>
 
                           <tr>
-                            <td>Tautan</td>
+                            <td>Ruangan</td>
                             <td>(akan diisi oleh panitia)</td>
                           </tr>
 
@@ -214,22 +153,9 @@
 
                           <tr>
                             <td>Dosen Pembimbing</td>
-                            <td>
+                            <td>                              
                               <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;" disabled>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}" {{ ($dosen->id == $get->id_dosen) ? "selected": "" }}>{{$dosen->nama}}</option>
-                                @endforeach
-                              </select>
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td>Dosen Penguji</td>
-                            <td>
-                              <select class="form-control select2 select2-hidden-accessible" name="dosji" style="width: 100%;" disabled>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}" {{ ($dosen->id == $get->id_dosji) ? "selected": "" }}>{{$dosen->nama}}</option>
-                                @endforeach
+                                <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                               </select>
                             </td>
                           </tr>
@@ -247,21 +173,23 @@
                           </tr>
 
                           <tr>
-                            <td>Waktu Kolokium</td>
+                            <td>Waktu Sidang</td>
                             <td><input type="time" class="form-control" style="font-weight: 700;" value="{{date('H:i', strtotime($get->waktu)) }}" name="waktu" required disabled></td>
                           </tr>
 
                           <tr>
-                            <td>Upload Persyaratan</td>
+                            <td>Dosen Penguji</td>
                             <td>
-                              <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                                <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                              <?php } ?>
+                              @if ($dosji == null)
+                              Belum ada dosen penguji
+                              @else
+                              {{$dosji->nama}}                              
+                              @endif
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Tautan</td>
+                            <td>Ruangan</td>
                             <td>{{$get->link ?? 'Belum ada tautan'}}</td>
                           </tr>
                           @endforeach
@@ -294,22 +222,9 @@
 
                           <tr>
                             <td>Dosen Pembimbing</td>
-                            <td>
+                            <td>                              
                               <select class="form-control select2 select2-hidden-accessible" name="dospem" style="width: 100%;" disabled>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}" {{ ($dosen->id == $get2->id_dosen) ? "selected": "" }}>{{$dosen->nama}}</option>
-                                @endforeach
-                              </select>
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td>Dosen Penguji</td>
-                            <td>
-                              <select class="form-control select2 select2-hidden-accessible" name="dosji" style="width: 100%;" disabled>
-                                @foreach($dosens as $dosen)
-                                <option value="{{$dosen->id}}" {{ ($dosen->id == $get2->id_dosji) ? "selected": "" }}>{{$dosen->nama}}</option>
-                                @endforeach
+                                <option value="{{$data->id_dospem1}}" selcted>{{$data->getDospem1->nama}}</option>
                               </select>
                             </td>
                           </tr>
@@ -327,21 +242,23 @@
                           </tr>
 
                           <tr>
-                            <td>Waktu Kolokium</td>
+                            <td>Waktu Sidang</td>
                             <td><input type="time" class="form-control" style="font-weight: 700;" value="{{date('H:i', strtotime($get2->waktu)) }}" name="waktu" required disabled></td>
                           </tr>
 
                           <tr>
-                            <td>Upload Persyaratan</td>
+                            <td>Dosen Penguji</td>
                             <td>
-                              <?php for ($i = 0; $i < count($getname); $i++) { ?>
-                                <a type="button" class="btn btn-primary btn-sm mb-2" style="border-radius: 20px;" href="{{ asset($filename[$i]) }}" download="{{$getname[$i][3]}}">{{$getname[$i][3]}}</a>
-                              <?php } ?>
+                              @if ($dosji == null)
+                              Belum ada dosen penguji
+                              @else
+                              {{$dosji->nama}}                              
+                              @endif
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Tautan</td>
+                            <td>Ruangan</td>
                             <td>{{$get2->link ?? 'Belum ada tautan'}}</td>
                           </tr>
                           @endforeach
@@ -351,9 +268,9 @@
                   @endif
 
                 @else
-                  <br>
-                  <div style="text-align: center; margin: 20px 0px;"><span style="font-size: 16px; color:red;">Belum bisa mendaftar sidang, unggah semua form persyaratan sidang terlebih dahulu.</span></div>
-                  <br>
+                  <p style="text-align: center; color: red; margin: 40px;">
+                    Mahasiswa belum bisa mendaftar sidang karena belum ada nilai pembahas dan mengisi form 022
+                  </p>
                 @endif
               </div>
             </div>
@@ -380,20 +297,6 @@
   $(function() {
     //Initialize Select2 Elements
     $('.select2').select2()
-  });
-</script>
-
-<script>
-  $("#file-1").fileinput({
-    theme: 'fas',
-    browseOnZoneClick: true,
-    showUpload: false,
-    removeClass: "btn-sm",
-    browseClass: "btn btn-primary btn-sm",
-    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-    fileActionSettings: {
-      showUpload: false,
-    },
   });
 </script>
 @endpush

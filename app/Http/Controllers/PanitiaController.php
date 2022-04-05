@@ -435,6 +435,7 @@ class PanitiaController extends Controller
         $panitia->link_form015 = $request->link_form015;
         $panitia->bayar_spp = $request->bayar_spp;
         $panitia->syarat_seminar = $request->syarat_seminar;
+        $panitia->syarat_sidang = $request->syarat_sidang;
         $panitia->save();
 
         return Redirect::Back()->with('success', 'Sukses Simpan Link');
@@ -738,33 +739,69 @@ class PanitiaController extends Controller
         $user       = Auth::user();
         $prodiuser  = tb_panitia::where('id', $user->id_user)->first();
         $datas      = tb_panitia::where('id', $user->id_user)->get();
-        $getlist    = tb_form::select('id_mhs', 'ket')->distinct()->get();
-        $setlist    = $getlist->where('ket', 'sd');
+        $getlist    = tb_daftar::where('ket', 'sd')->get();
+        $getulang   = tb_daftar::where('ket', 'sd2')->get();
+        // $history    = tb_daftar::where('ket', 'sd')->where('set_verif', 1)->orWhere('ket', 'sd2')->get();
+
+        $getlist2   = tb_form::select('id_mhs', 'ket', 'ttd_dospem')->distinct()->get();
+        $setlist    = $getlist2->where('ket', 'sd')->where('ttd_dospem', 0);
+
+        $sidang     = [];
+        $sidang2    = [];
+        $sidang3    = [];
 
         if (count($setlist) == 0) {
             $sidang = [];
         } else {
             foreach ($setlist as $get) {
                 $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->get();
+                $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
                 $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
-                $status   = tb_daftar::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->first();
 
-                if ($status == null) {
-                    $get_ulang = 0;
-                } else {
-                    $get_ulang = $status->set_ulang;
+                foreach ($getlist as $get2) {
+                    if ($get2->id_mhs == $get->id_mhs) {
+                        $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
+                    }
                 }
 
-                if ($getmhs == null) {
-                    $sidang = [];
-                } else {
-                    $sidang[] = array($get->id_mhs, $getmhs->nama, $getmhs->nim, count($getfrm), count($getver), $get_ulang);
+                if ($getmhs != null) {
+                    if (count($getlist) == 0) {
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
+                    } else {
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get2->tgl, $penguji->nama ?? ' - ', count($getfrm), count($getver));
+                    }
                 }
             }
         }
 
-        return view('panitia.list_sd_form', compact('datas', 'sidang'));
+
+        if (count($getulang) == 0) {
+            $sidang3 = [];
+        } else {
+            foreach ($getulang as $get) {
+                $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                $penguji  = tb_dosen::where('id', $get->id_dosji)->first();
+
+                if ($getmhs != null) {
+                    $sidang3[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->tgl, $penguji->nama ?? ' - ');
+                }
+            }
+        }
+
+        // if (count($history) == 0) {
+        //     $sidang2 = [];
+        // } else {
+        //     foreach ($history as $hs) {
+        //         $getmhs   = tb_mahasiswa::where('id', $hs->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+        //         $penguji  = tb_dosen::where('id', $hs->id_dosji)->first();
+
+        //         if ($getmhs != null) {
+        //             $sidang2[] = array($hs->id, $hs->id_mhs, $getmhs->nama, $getmhs->nim, $hs->tgl, $penguji->nama ?? ' - ', $hs->set_ulang, $hs->ket);
+        //         }
+        //     }
+        // }
+
+        return view('panitia.list_sd_form', compact('datas', 'sidang', 'sidang2', 'sidang3'));
     }
 
     public function sidang_vf($id)
@@ -814,7 +851,7 @@ class PanitiaController extends Controller
             }
         }
 
-        return redirect()->route('list-sd-form')->with('success', 'Sukses Save');
+        return Redirect::Back()->with('success', 'Sukses Save');
     }
 
     public function list_sd_daftar()    // NOT USE
@@ -882,43 +919,27 @@ class PanitiaController extends Controller
             $mahasiswa = tb_mahasiswa::where('id', $id_mhs)->first();
             $dosens    = [];
             $dosbim    = [];
-            $getname   = [];
-            $filename  = [];
             $dosji     = [];
         } else {
             $mahasiswa = tb_mahasiswa::where('id', $daftar->id_mhs)->first();
             $dosens    = tb_dosen::all();
             $dosbim    = $dosens->where('id', $daftar->id_dosen)->first();
             $dosji     = $dosens->where('id', $daftar->id_dosji)->first();
-
-            $filename = explode(';', $daftar->file);
-
-            for ($i = 0; $i < count($filename) - 1; $i++) {
-                $getname[] = explode('/', $filename[$i]);
-            }
         }
 
         if ($ulang == null) {
             $mahasiswa2 = tb_mahasiswa::where('id', $id_mhs)->first();
             $dosens2    = [];
             $dosbim2    = [];
-            $getname2   = [];
-            $filename2  = [];
             $dosji2     = [];
         } else {
             $mahasiswa2 = tb_mahasiswa::where('id', $ulang->id_mhs)->first();
             $dosens     = tb_dosen::all();
             $dosbim2    = $dosens->where('id', $ulang->id_dosen)->first();
             $dosji2     = $dosens->where('id', $ulang->id_dosji)->first();
-
-            $filename2 = explode(';', $ulang->file);
-
-            for ($i = 0; $i < count($filename2) - 1; $i++) {
-                $getname2[] = explode('/', $filename2[$i]);
-            }
         }
 
-        return view('panitia.verif_sd_daftar', compact('datas', 'daftar', 'dosens', 'dosbim', 'dosji', 'mahasiswa', 'getname', 'filename', 'id_mhs', 'ulang', 'dosbim2', 'dosji2', 'mahasiswa2', 'getname2', 'filename2'));
+        return view('panitia.verif_sd_daftar', compact('datas', 'daftar', 'dosens', 'dosbim', 'dosji', 'mahasiswa', 'id_mhs', 'ulang', 'dosbim2', 'dosji2', 'mahasiswa2'));
     }
 
     public function sidang_vd_s(Request $request, $id)
@@ -931,11 +952,11 @@ class PanitiaController extends Controller
             $update->id_dosji = $request->input('dosji');
             $update->save();
 
-            return Redirect::Back()->with('success', 'Verfikasi Sidang diterima');
+            return redirect()->route('list-sd-form')->with('success', 'Verfikasi Sidang diterima');
         } else {
             $update = tb_daftar::findOrFail($id)->delete();
 
-            return Redirect::Back()->with('success', 'Verfikasi Sidang ditolak');
+            return redirect()->route('list-sd-form')->with('success', 'Verfikasi Sidang ditolak');
         }
     }
 
@@ -948,6 +969,7 @@ class PanitiaController extends Controller
         return Redirect::Back()->with('success', 'Sukses Melakukan Sidang Ulang');
     }
 
+
     // DOWNLOAD BAP
 
     public function bap_filter(Request $request)
@@ -958,12 +980,11 @@ class PanitiaController extends Controller
         $list_daftar = tb_daftar::where('ket', $request->input('ket'))->where('set_verif', 1)->get();
         $data        = [];
 
-        
 
         if ($request->input('ket') == 'kl') {
             foreach ($list_daftar as $list) {
                 $mhs    = tb_mahasiswa::where('id', $list->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-    
+
                 if ($mhs != null) {
                     $nilai_d = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('status', 'dosen')->first();
                     $nilai_m = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('status', 'moderator')->first();
@@ -972,80 +993,80 @@ class PanitiaController extends Controller
                     $exist_form = tb_form::where('id_mhs', $mhs->id)->where('ket', 'kl')->where('set_verif', 1)->first();
                     $exist_004 = tb_form_004::where('kelompok', $mhs->kelompok)->first();
                     $exist_015 = tb_form_015::where('kelompok', $mhs->kelompok)->first();
-    
+
                     if ($exist_015 == null) {
                         $get_015 = 0;
                     } else {
                         $get_015 = 1;
                     }
-    
+
                     if ($exist_004 == null) {
                         $get_004 = 0;
                     } else {
                         $get_004 = 1;
                     }
-    
+
                     if ($exist_form == null) {
                         $get_form = 0;
                     } else {
                         $get_form = 1;
                     }
-    
+
                     if ($nilai_d == null) {
                         $get_nilai_d = 0;
                     } else {
                         $get_nilai_d = $nilai_d->id;
                     }
-    
+
                     if ($nilai_m == null) {
                         $get_nilai_m = 0;
                     } else {
                         $get_nilai_m = $nilai_m->id;
                     }
-    
+
                     if ($dospem == null) {
                         $nama_dospem = "-";
                     } else {
                         $nama_dospem = $dospem->nama;
                     }
-    
+
                     if ($mode == null) {
                         $nama_mode = "-";
                     } else {
                         $nama_mode = $mode->nama;
                     }
-    
+
                     $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $nama_dospem, $nama_mode, $mhs->id, $get_form, $get_004, $get_015, $mhs->kelompok);
                 }
             }
-            
+
             return view('panitia.download_bap', compact('datas', 'data'));
         } elseif ($request->input('ket') == 'sm') {
             foreach ($list_daftar as $list) {
                 $mhs = tb_mahasiswa::where('id', $list->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-    
+
                 if ($mhs != null) {
                     $nilai_d = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'dosen')->first();
                     $nilai_m = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'moderator')->first();
                     $dospem = tb_dosen::where('id', $list->id_dosen)->first();
                     $mode   = tb_dosen::where('id', $list->id_moderator)->first();
-    
+
                     if ($mode == null) {
                         $mode   = tb_dosen::where('id', $list->id_dosji)->first();
                     }
-    
+
                     if ($nilai_d == null) {
                         $get_nilai_d = 0;
                     } else {
                         $get_nilai_d = $nilai_d->id;
                     }
-    
+
                     if ($nilai_m == null) {
                         $get_nilai_m = 0;
                     } else {
                         $get_nilai_m = $nilai_m->id;
                     }
-    
+
                     $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $dospem->nama, $mode->nama, $list->file);
                 }
             }
@@ -1054,29 +1075,29 @@ class PanitiaController extends Controller
         } elseif ($request->input('ket') == 'sd') {
             foreach ($list_daftar as $list) {
                 $mhs = tb_mahasiswa::where('id', $list->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-    
+
                 if ($mhs != null) {
                     $nilai_d = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'dosen')->first();
                     $nilai_m = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'moderator')->first();
                     $dospem = tb_dosen::where('id', $list->id_dosen)->first();
                     $mode   = tb_dosen::where('id', $list->id_moderator)->first();
-    
+
                     if ($mode == null) {
                         $mode   = tb_dosen::where('id', $list->id_dosji)->first();
                     }
-    
+
                     if ($nilai_d == null) {
                         $get_nilai_d = 0;
                     } else {
                         $get_nilai_d = $nilai_d->id;
                     }
-    
+
                     if ($nilai_m == null) {
                         $get_nilai_m = 0;
                     } else {
                         $get_nilai_m = $nilai_m->id;
                     }
-    
+
                     $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $dospem->nama, $mode->nama, $list->file);
                 }
             }
@@ -1085,29 +1106,29 @@ class PanitiaController extends Controller
         } else {
             foreach ($list_daftar as $list) {
                 $mhs = tb_mahasiswa::where('id', $list->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-    
+
                 if ($mhs != null) {
                     $nilai_d = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'dosen')->first();
                     $nilai_m = tb_nilai_bap::where('id_mhs', $mhs->id)->where('ket', $request->input('ket'))->where('status', 'moderator')->first();
                     $dospem = tb_dosen::where('id', $list->id_dosen)->first();
                     $mode   = tb_dosen::where('id', $list->id_moderator)->first();
-    
+
                     if ($mode == null) {
                         $mode   = tb_dosen::where('id', $list->id_dosji)->first();
                     }
-    
+
                     if ($nilai_d == null) {
                         $get_nilai_d = 0;
                     } else {
                         $get_nilai_d = $nilai_d->id;
                     }
-    
+
                     if ($nilai_m == null) {
                         $get_nilai_m = 0;
                     } else {
                         $get_nilai_m = $nilai_m->id;
                     }
-    
+
                     $data[] = array($mhs->nama, $mhs->nim, $get_nilai_d, $get_nilai_m, $dospem->nama, $mode->nama, $list->file);
                 }
             }
