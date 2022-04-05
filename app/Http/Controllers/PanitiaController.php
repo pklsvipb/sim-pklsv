@@ -1381,8 +1381,9 @@ class PanitiaController extends Controller
     {
         $user = Auth::user();
         $datas = tb_panitia::where('id', $user->id_user)->get();
-        $listmhs = tb_kartu_seminar::select('id_mhs', 'paraf')->distinct()->get();
-        $list = $listmhs->where('paraf', 1);
+        $panitia = tb_panitia::where('id', $user->id_user)->first();
+        $listmhs = tb_kartu_seminar::select('id_mhs', 'id_prodi','paraf')->distinct()->get();
+        $list = $listmhs->where('paraf', 1)->where('id_prodi', $panitia->id_prodi);
 
 
         foreach($list as $ls){
