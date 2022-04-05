@@ -61,7 +61,7 @@
             <div class="row">
               <div class="col-md-12">
 
-                @if ($pembahas != null)
+                @if ($pembahas != null && $form022 != null)
                 {{-- NILAI PEMBAHAS DIUBAH JADI != --}}
                   @if (is_null($get2))
                     @if (is_null($get))
@@ -269,7 +269,7 @@
 
                 @else
                   <p style="text-align: center; color: red; margin: 40px;">
-                    Mahasiswa belum bisa mendaftar sidang karena belum ada nilai pembahas
+                    Mahasiswa belum bisa mendaftar sidang karena belum ada nilai pembahas dan mengisi form 022
                   </p>
                 @endif
               </div>

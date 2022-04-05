@@ -749,39 +749,25 @@ class PanitiaController extends Controller
         $sidang2    = [];
         $sidang3    = [];
 
-        if (count($getlist) == 0 && count($setlist) == 0) {
+        if (count($setlist) == 0) {
             $sidang = [];
         } else {
-            if (count($getlist) == 0 && count($setlist) != 0) {
-                foreach ($setlist as $get) {
-                    $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                    $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
-                    $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
+            foreach ($setlist as $get) {
+                $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
+                $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
+                $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
 
-                    if ($getmhs != null) {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
-                    }
-                }
-            } elseif (count($getlist) != 0 && count($setlist) == 0) {
-                foreach ($getlist as $get) {
-                    $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                    $penguji  = tb_dosen::where('id', $get->id_dosji)->first();
-
-                    if ($getmhs != null) {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get->tgl, $penguji->nama ?? ' - ', 0, 0);
-                    }
-                }
-            } else {
-                foreach ($setlist as $get) {
-                    $getmhs   = tb_mahasiswa::where('id', $get->id_mhs)->where('id_prodi', $prodiuser->id_prodi)->first();
-                    $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
-                    $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
-
-                    foreach ($getlist as $get2) {
+                foreach ($getlist as $get2) {
+                    if ($get2->id_mhs == $get->id_mhs) {
                         $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
-                        if ($getmhs != null) {
-                            $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get2->tgl, $penguji->nama ?? ' - ', count($getfrm), count($getver));
-                        }
+                    }
+                }
+
+                if ($getmhs != null) {
+                    if (count($getlist) == 0) {
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
+                    } else {
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get2->tgl, $penguji->nama ?? ' - ', count($getfrm), count($getver));
                     }
                 }
             }
@@ -864,7 +850,7 @@ class PanitiaController extends Controller
             }
         }
 
-        return redirect()->route('list-sd-form')->with('success', 'Sukses Save');
+        return Redirect::Back()->with('success', 'Sukses Save');
     }
 
     public function list_sd_daftar()    // NOT USE
@@ -965,11 +951,11 @@ class PanitiaController extends Controller
             $update->id_dosji = $request->input('dosji');
             $update->save();
 
-            return Redirect::Back()->with('success', 'Verfikasi Sidang diterima');
+            return redirect()->route('list-sd-form')->with('success', 'Verfikasi Sidang diterima');
         } else {
             $update = tb_daftar::findOrFail($id)->delete();
 
-            return Redirect::Back()->with('success', 'Verfikasi Sidang ditolak');
+            return redirect()->route('list-sd-form')->with('success', 'Verfikasi Sidang ditolak');
         }
     }
 

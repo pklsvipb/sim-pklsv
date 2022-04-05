@@ -650,6 +650,7 @@ class MahasiswaController extends Controller
         $set    = 0;
 
         $pembahas = tb_nilai_pembahas::where('id_pembahas', $user->id_user)->first();
+        $form022 = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ttd_dospem', 0)->where('set_verif', 1)->first();
 
         if (is_null($get2)) {
             if (is_null($get)) {
@@ -664,7 +665,7 @@ class MahasiswaController extends Controller
             $status = array($get2->set_verif);
         }
 
-        return view('mahasiswa.daftar_sidang', compact('datas', 'dosens', 'get', 'set', 'get2', 'dosji', 'status', 'pembahas'));
+        return view('mahasiswa.daftar_sidang', compact('datas', 'dosens', 'get', 'set', 'get2', 'dosji', 'status', 'pembahas', 'form022'));
     }
 
     public function s_sidang(Request $request)
