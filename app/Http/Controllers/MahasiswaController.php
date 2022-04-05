@@ -650,7 +650,7 @@ class MahasiswaController extends Controller
         $set    = 0;
 
         $pembahas = tb_nilai_pembahas::where('id_pembahas', $user->id_user)->first();
-        $form022 = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ttd_dospem', 0)->where('set_verif', 1)->first();
+        $form022 = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ttd_dospem', 0)->first();
 
         if (is_null($get2)) {
             if (is_null($get)) {
