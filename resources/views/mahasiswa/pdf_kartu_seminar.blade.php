@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{public_path('css_pdf/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{public_path('admin_asset/plugins/fontawesome-free/css/all.min.css')}}">
 
-  <title>Jurnal Harian</title>
+  <title>Kartu Seminar</title>
   <style>
     body {
       font-family: "Times New Roman", Times, serif;
