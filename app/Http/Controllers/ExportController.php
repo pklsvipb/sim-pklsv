@@ -1272,7 +1272,7 @@ class ExportController extends Controller
         //load pdf again with passing var total page
         $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
-        return $pdf->stream('Jurnal Harian.pdf');
+        return $pdf->stream('Jurnal Harian_'.$datas->nama.'_'.$datas->nim.'.pdf');
     }
 
     public function download_kartu_sm()
@@ -1299,7 +1299,7 @@ class ExportController extends Controller
         //load pdf again with passing var total page
         $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
-        return $pdf->stream('Kartu Seminar.pdf');
+        return $pdf->stream('Kartu Seminar_'.$mahasiswa->nama.'_'.$mahasiswa->nim.'.pdf');
     }
 
     public function download_kartu_sm_p($id)
@@ -1373,7 +1373,7 @@ class ExportController extends Controller
         //load pdf again with passing var total page
         $pdf   = PDF::loadview('mahasiswa.pdf_laporan_periodik', compact('totalPages', 'datas', 'periode', 'periodik'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
-        return $pdf->stream('Laporan Periodik.pdf');
+        return $pdf->stream('Laporan Periodik_'.$datas->nama.'_'.$datas->nim.'.pdf');
     }
 
     public function form022_pdf_delete($id)
