@@ -1502,6 +1502,9 @@ class DosenController extends Controller
         $getlist = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
         $getmhs = [];
         $file = [];
+        $list = [];
+        $periodik = [];
+        $periode = [];
 
         if (count($mhs1) != 0) {
             foreach ($mhs1 as $mahasiswa1) {
