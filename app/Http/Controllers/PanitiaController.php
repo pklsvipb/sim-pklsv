@@ -739,8 +739,8 @@ class PanitiaController extends Controller
         $user       = Auth::user();
         $prodiuser  = tb_panitia::where('id', $user->id_user)->first();
         $datas      = tb_panitia::where('id', $user->id_user)->get();
-        $getlist    = tb_daftar::where('ket', 'sd')->get();
-        $getulang   = tb_daftar::where('ket', 'sd2')->get();
+        $getlist    = tb_daftar::where('ket', 'sd')->where('id_prodi', $prodiuser->id)->get();
+        $getulang   = tb_daftar::where('ket', 'sd2')->where('id_prodi', $prodiuser->id)->get();
         // $history    = tb_daftar::where('ket', 'sd')->where('set_verif', 1)->orWhere('ket', 'sd2')->get();
 
         $getlist2   = tb_form::select('id_mhs', 'ket', 'ttd_dospem')->distinct()->get();
@@ -1298,10 +1298,10 @@ class PanitiaController extends Controller
         return view('panitia.kartu_bimbingan', compact('datas', 'getmhs', 'file', 'kaprodi', 'dosen'));
     }
 
-    public function sortDate($a, $b) 
+    public function sortDate($a, $b)
     {
         if (strtotime($a[3]) == strtotime($b[3])) return 0;
-        return (strtotime($a[3]) > strtotime($b[3])) ?1:-1;
+        return (strtotime($a[3]) > strtotime($b[3])) ? 1 : -1;
     }
 
     public function laporan_periodik()
@@ -1311,7 +1311,7 @@ class PanitiaController extends Controller
         $panitia = tb_panitia::where('id', $user->id_user)->first();
         $getlist = tb_periodik::select('id_mhs', 'id_prodi')->distinct()->get();
         $getmhs = $getlist->where('id_prodi', $panitia->id_prodi);
-        $getper = tb_periodik::select('id_mhs', 'id_prodi','tgl_awal', 'tgl_selesai')->distinct()->get();
+        $getper = tb_periodik::select('id_mhs', 'id_prodi', 'tgl_awal', 'tgl_selesai')->distinct()->get();
         $gets = $getper->where('id_prodi', $panitia->id_prodi);
         $periodik = [];
         $periode = [];
@@ -1324,10 +1324,10 @@ class PanitiaController extends Controller
                 }
                 usort($periodik, array($this, 'sortDate'));
                 $periode[] = array($get->id_mhs, $get->tgl_awal, $get->tgl_selesai);
-            }               
+            }
         }
         // dd($periode);
-        return view('panitia.laporan_periodik', compact('datas', 'getmhs','gets', 'periode', 'periodik'));
+        return view('panitia.laporan_periodik', compact('datas', 'getmhs', 'gets', 'periode', 'periodik'));
     }
 
     public function export_kolokium()
@@ -1382,21 +1382,21 @@ class PanitiaController extends Controller
         $user = Auth::user();
         $datas = tb_panitia::where('id', $user->id_user)->get();
         $panitia = tb_panitia::where('id', $user->id_user)->first();
-        $listmhs = tb_kartu_seminar::select('id_mhs', 'id_prodi','paraf')->distinct()->get();
+        $listmhs = tb_kartu_seminar::select('id_mhs', 'id_prodi', 'paraf')->distinct()->get();
         $list = $listmhs->where('paraf', 1)->where('id_prodi', $panitia->id_prodi);
 
 
-        foreach($list as $ls){
+        foreach ($list as $ls) {
             $getlist = tb_kartu_seminar::where('id_mhs', $ls->id_mhs)->where('paraf', 1)->get();
             $get = [];
-            foreach($getlist as $gl){
+            foreach ($getlist as $gl) {
                 $get[] = array($gl->tanggal, $gl->waktu, $gl->nama_pemrasaran, $gl->nim_pemrasaran, $gl->getDosen->nama, $gl->paraf);
             }
             $mahasiswa[] = array($ls->id_mhs, $get);
         }
 
         // dd($mahasiswa);
-        
+
         return view('panitia.kartu_seminar', compact('datas', 'list', 'mahasiswa'));
     }
 }

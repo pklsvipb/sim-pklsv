@@ -23,7 +23,7 @@
       <div class="card">
         <div class="card-header">
           <!-- <h5 class="card-title">Profile</h5> -->
-          <h1 class="card-title" style="font-weight: 600; font-size: 1.2rem;">Form 022<small style="font-size: 12px; color: #777;"> Tanda Tangan Dosen Pembimbing</small></h1>
+          <h1 class="card-title" style="font-weight: 600; font-size: 1.2rem;">Form 022 Persetujuan Ujian Akhir<small style="font-size: 12px; color: #777;"> Tanda Tangan Dosen Pembimbing</small></h1>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
