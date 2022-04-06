@@ -62,18 +62,19 @@
                         <td style="text-align: center;">{{ $data[$i][5] }}</td> 
                         <td style="text-align: center;"> 
                           @if ($data[$i][2] != 0) 
-                          <a href="{{route('download-bap-sdd',$data[$i][2])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">BAP DOSPEM</a> &nbsp; 
+                          <a href="{{route('download-bap-sdd',$data[$i][2])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 10.5px;">DOSPEM</a> &nbsp; 
+                          <a href="{{route('download-sd-form025', $data[$i][2])}}" style="font-size: 10.5px;" class="btn btn-primary btn-sm">FORM 025</a> &nbsp;
                           @else 
                           <span></span> 
                           @endif 
  
                           @if ($data[$i][3] != 0) 
-                          <a href="{{route('download-bap-sdj',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">BAP MODERATOR</a> &nbsp; 
+                          <a href="{{route('download-bap-sdj',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 10.5px;">MODERATOR</a> &nbsp; 
                           @else 
                           <span></span> 
                           @endif 
  
-                          <!--<a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a>  -->
+                          {{-- <a href="{{route('download-zip',['file'=>$data[$i][6], 'nama'=>$data[$i][0] ])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">ZIP FILE</a>   --}}
                         </td> 
                       </tr> 
                       @endfor 

@@ -8,6 +8,7 @@ use App\Models\tb_dosen;
 use App\Models\tb_form;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
+use App\Models\tb_form_025;
 use App\Models\tb_jurnal;
 use App\Models\tb_kartu_seminar;
 use App\Models\tb_mahasiswa;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Redirect;
 use ZipArchive;
 use App\Models\tb_nilai_forum;
 use App\Models\tb_nilai_pembahas;
+use App\Models\tb_periodik;
 
 class ExportController extends Controller
 {
@@ -787,32 +789,6 @@ class ExportController extends Controller
         return $pdf->stream('Supervisi Form 004 ' . $supervisi->kelompok . '.pdf');
     }
 
-    public function download_jurnal()
-    {
-        $user  = Auth::user();
-        $datas = tb_mahasiswa::where('id', $user->id_user)->first();
-        $lists = tb_jurnal::where('id_mhs', $user->id_user)->get();
-        $totalPages = 0;
-        //load pdf
-        $pdf_num   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
-        //path save file pdf
-        $path = 'file_form/file.pdf';
-        //save pdf
-        Storage::disk('local')->put('file_form/file.pdf', $pdf_num->output());
-
-        //variabel for get total page
-        $pdftext = file_get_contents($path);
-        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
-
-        //delete file pdf from public
-        Storage::disk('local')->delete('file_form/file.pdf');
-
-        //load pdf again with passing var total page
-        $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
-
-        return $pdf->stream('Jurnal Harian.pdf');
-    }
-
     public function form014_pdf_download()
     {
         $user  = Auth::user();
@@ -1273,6 +1249,32 @@ class ExportController extends Controller
         return redirect()->route('form-m')->with('success', 'Berhasil Upload');
     }
 
+    public function download_jurnal()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->first();
+        $lists = tb_jurnal::where('id_mhs', $user->id_user)->get();
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('mahasiswa.pdf_jurnal_harian', compact('totalPages', 'datas', 'lists'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+
+        return $pdf->stream('Jurnal Harian_'.$datas->nama.'_'.$datas->nim.'.pdf');
+    }
+
     public function download_kartu_sm()
     {
         $user = Auth::user();
@@ -1297,7 +1299,216 @@ class ExportController extends Controller
         //load pdf again with passing var total page
         $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
-        return $pdf->stream('Kartu Seminar.pdf');
+        return $pdf->stream('Kartu Seminar_'.$mahasiswa->nama.'_'.$mahasiswa->nim.'.pdf');
+    }
+
+    public function download_kartu_sm_p($id)
+    {
+        $mahasiswa = tb_mahasiswa::where('id', $id)->first();
+        $kartu = tb_kartu_seminar::where('id_mhs', $id)->where('paraf', 1)->get();
+
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file7.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file7.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file7.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+
+        return $pdf->stream('Kartu Seminar_' . $mahasiswa->nama . '_' . $mahasiswa->nim . '.pdf');
+    }
+
+    public function sortDate($a, $b)
+    {
+        if (strtotime($a[3]) == strtotime($b[3])) return 0;
+        return (strtotime($a[3]) > strtotime($b[3])) ? 1 : -1;
+    }
+
+    public function download_periodik()
+    {
+        $user  = Auth::user();
+        $datas = tb_mahasiswa::where('id', $user->id_user)->first();
+        $gets = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
+        $periodik = [];
+        $periode = [];
+
+        if ($gets != '') {
+            foreach ($gets as $get) {
+                if ($get->id_mhs == $datas->id) {
+                    $lists = tb_periodik::where('id_mhs', $get->id_mhs)->where('tgl_awal', $get->tgl_awal)->where('tgl_selesai', $get->tgl_selesai)->get();
+                    foreach ($lists as $list) {
+                        $periodik[] = array($list->id, $list->id_mhs, $list->id_prodi, $list->tanggal, $list->informasi, $list->kendala, $list->catatan, $list->tgl_awal, $list->tgl_selesai);
+                    }
+                    usort($periodik, array($this, 'sortDate'));
+                    $periode[] = array($get->id, $get->tgl_awal, $get->tgl_selesai);
+                }
+            }
+        }
+
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('mahasiswa.pdf_laporan_periodik', compact('totalPages', 'datas', 'periode', 'periodik'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file5.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file5.pdf', $pdf_num->output());
+
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file5.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('mahasiswa.pdf_laporan_periodik', compact('totalPages', 'datas', 'periode', 'periodik'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+
+        return $pdf->stream('Laporan Periodik_'.$datas->nama.'_'.$datas->nim.'.pdf');
+    }
+
+    public function form022_pdf_delete($id)
+    {
+        $user = Auth::user();
+        $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
+
+        // Delete File
+        if ($file) {
+            $update = tb_form::findOrFail($cek->id);
+            $update->delete();
+
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form 022');
+    }
+
+    public function form022_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $datas  = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $judul   = $request->input('judul');
+        $tanggal = $request->input('tanggal');
+        $waktu = $request->input('waktu');
+        $pdf   = PDF::loadview('form_pdf.pdf_form_022', compact('datas', 'judul', 'tanggal', 'waktu'))->setPaper('A4', 'portrait');
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sd';
+            $form->set_verif  = 2;
+            $form->ttd_dospem = 1;
+            $form->judul      = $request->input('judul');
+            $form->tanggal    = $request->input('tanggal');
+            $form->waktu      = $request->input('waktu');
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_022.pdf';
+            $form->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_022.pdf', $pdf->output());
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_verif  = 2;
+            $update->ttd_dospem = 1;
+            $update->judul      = $request->input('judul');
+            $update->tanggal    = $request->input('tanggal');
+            $update->waktu      = $request->input('waktu');
+
+            // Check File Exist
+            $file            = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_022.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_022.pdf', $pdf->output());
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload dan Request Tanda Tangan Kepada Dosen Pembimbing');
+    }
+
+    public function sd_form025($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd')->first();
+        $form  = tb_form_025::where('id_sidang', $data->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sd_025', compact('bap', 'form', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Form 025 ' . $mhs->nim . '.pdf', compact('bap', 'form', 'data', 'dosen', 'mhs'));
+    }
+
+    public function download_sd_form025($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd')->first();
+        $form  = tb_form_025::where('id_sidang', $data->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sd_025', compact('bap', 'form', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->download('Form 025 ' . $mhs->nim . '.pdf', compact('bap', 'form', 'data', 'dosen', 'mhs'));
+    }
+
+    public function sdu_form025($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd2')->first();
+        $form  = tb_form_025::where('id_sidang', $data->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sd_025', compact('bap', 'form', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->stream('Form 025 ' . $mhs->nim . '.pdf', compact('bap', 'form', 'data', 'dosen', 'mhs'));
+    }
+
+    public function download_sdu_form025($id)
+    {
+        $bap   = tb_nilai_bap::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd2')->first();
+        $form  = tb_form_025::where('id_sidang', $data->id)->first();
+        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $pdf   = PDF::loadview('bap.pdf_sd_025', compact('bap', 'form', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
+
+        return $pdf->download('Form 025 ' . $mhs->nim . '.pdf', compact('bap', 'form', 'data', 'dosen', 'mhs'));
     }
 
     public function form027_pdf(Request $request, $id)

@@ -24,6 +24,8 @@ use Carbon\Carbon;
 use App\Models\tb_kartu_seminar;
 use App\Models\tb_nilai_forum;
 use App\Models\tb_nilai_pembahas;
+use App\Models\tb_periodik;
+use App\Models\tb_form_025;
 use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
@@ -238,6 +240,64 @@ class DosenController extends Controller
         return redirect()->route('form-ttd')->with('success', 'Berhasil Tanda Tangan Form');
     }
 
+    public function form_ttd_022()
+    {
+        $user  = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $mahas = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+
+        if (count($mahas) == 0) {
+            $form = [];
+        } else {
+            $form = [];
+            foreach ($mahas as $mhs) {
+                $get = tb_form::where('id_mhs', $mhs->id)->where('id_form', 23)->where('ttd_dospem', 1)->get();
+                if (count($get) != 0) {
+                    foreach ($get as $fr) {
+                        $form[] = array($fr->id, $fr->id_mhs, $fr->id_form, $fr->file, $fr->ket, $mhs->getProdi->nama, $mhs->nama, $mhs->nim);
+                    }
+                }
+            }
+        }
+
+        return view('dosen.form_ttd_022', compact('datas', 'user', 'mahas', 'form'));
+    }
+
+    public function form_ttd_022_submit(Request $request, $id)
+    {
+        $user  = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $form  = tb_form::where('id', $id)->first();
+        $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
+        $mahas = tb_mahasiswa::where('id', $form->id_mhs)->get();
+
+        $judul   = $form->judul;
+        $tanggal = $form->tanggal;
+        $waktu   = $form->waktu;
+        $pdf     = PDF::loadview('form_pdf.pdf_form_022_d', compact('mahas', 'judul', 'tanggal', 'waktu'))->setPaper('A4', 'portrait');
+
+        $form->set_failed = 0;
+        $form->set_verif  = 0;
+        $form->ttd_dospem = 0;
+
+        // Check File Exist
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_022.pdf');
+        }
+
+        $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_022.pdf';
+        $form->file   = $namadir;
+
+        //save to directory
+        Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_022.pdf', $pdf->output());
+
+        $form->save();
+
+        return redirect()->route('form-ttd-022')->with('success', 'Berhasil Tanda Tangan Form');
+    }
 
     public function biodata_ds(Request $request)
     {
@@ -452,13 +512,19 @@ class DosenController extends Controller
         } else {
             foreach ($dospem as $dp) {
                 $get   = tb_mahasiswa::where('id', $dp->id_mhs)->first();
-                $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $tgl  = $dp->tgl . ' ' . $dp->waktu;
+                $date = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah sidang');
+                } else {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($history) == 0) {
-            $mhs2 = [];
-        } else {
+        $mhs2 = [];
+        if (count($history) != 0) {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'dosen')->where('ket', 'sd')->first();
@@ -470,14 +536,20 @@ class DosenController extends Controller
             $mhs3 = [];
         } else {
             foreach ($ulang as $ul) {
-                $get   = tb_mahasiswa::where('id', $ul->id_mhs)->first();
-                $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $get  = tb_mahasiswa::where('id', $ul->id_mhs)->first();
+                $tgl  = $ul->tgl . ' ' . $ul->waktu;
+                $date = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah sidang ulang');
+                } else {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($sejarah) == 0) {
-            $mhs4 = [];
-        } else {
+        $mhs4 = [];
+        if (count($sejarah) != 0) {
             foreach ($sejarah as $sj) {
                 $get    = tb_mahasiswa::where('id', $sj->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $sj->id_mhs)->where('status', 'dosen')->where('ket', 'sd2')->first();
@@ -504,13 +576,19 @@ class DosenController extends Controller
         } else {
             foreach ($dosji as $dj) {
                 $get   = tb_mahasiswa::where('id', $dj->id_mhs)->first();
-                $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $tgl   = $dj->tgl . ' ' . $dj->waktu;
+                $date  = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah sidang');
+                } else {
+                    $mhs[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($history) == 0) {
-            $mhs2 = [];
-        } else {
+        $mhs2 = [];
+        if (count($history) != 0) {
             foreach ($history as $hs) {
                 $get    = tb_mahasiswa::where('id', $hs->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $hs->id_mhs)->where('status', 'moderator')->where('ket', 'sd')->first();
@@ -518,18 +596,23 @@ class DosenController extends Controller
             }
         }
 
-        if (count($ulang) == 0) {
-            $mhs3 = [];
-        } else {
+        $mhs3 = [];
+        if (count($ulang) != 0) {
             foreach ($ulang as $ul) {
                 $get   = tb_mahasiswa::where('id', $ul->id_mhs)->first();
-                $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama);
+                $tgl   = $ul->tgl . ' ' . $ul->waktu;
+                $date  = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, 'sudah sidang ulang');
+                } else {
+                    $mhs3[] = array($get->id, $get->nim, $get->nama, $get->getProdi->nama, '');
+                }
             }
         }
 
-        if (count($sejarah) == 0) {
-            $mhs4 = [];
-        } else {
+        $mhs4 = [];
+        if (count($sejarah) != 0) {
             foreach ($sejarah as $sj) {
                 $get    = tb_mahasiswa::where('id', $sj->id_mhs)->first();
                 $get2   = tb_nilai_bap::where('id_mhs', $sj->id_mhs)->where('status', 'moderator')->where('ket', 'sd2')->first();
@@ -788,14 +871,24 @@ class DosenController extends Controller
         $bap->tgl      = $request->input('tgl');
         $bap->status   = 'dosen';
         $bap->ket      = $request->input('ket');
-
         $bap->save();
+
+        $form  = new tb_form_025;
+        $form->id_dosen = $user->id_user;
+        $form->id_mhs   = $request->input('id_mhs');
+        $form->id_sidang = $id;
+        $form->nilai1   = $request->input('form_nilai1');
+        $form->nilai2   = $request->input('form_nilai2');
+        $form->nilai3   = $request->input('form_nilai3');
+        $form->nilai_jurnal   = $request->input('nilai_jurnal');
+        $form->ket      = $request->input('form_ket');
+        $form->save();
 
         $update = tb_daftar::findOrFail($id);
         $update->set_bap_d = 1;
         $update->save();
 
-        return redirect()->route('sidang-d')->with('success', 'Sukses Input Nilai BAP');
+        return redirect()->route('sidang-d')->with('success', 'Sukses Input Nilai BAP dan FORM 025');
     }
 
     public function sd_bap_sj(Request $request, $id)
@@ -898,12 +991,13 @@ class DosenController extends Controller
     {
         $user   = Auth::user();
         $datas  = tb_panitia::where('id', $user->id_user)->get();
-        $bap   = tb_nilai_bap::where('id', $id)->first();
-        $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
-        $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd')->first();
-        $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $bap    = tb_nilai_bap::where('id', $id)->first();
+        $mhs    = tb_mahasiswa::where('id', $bap->id_mhs)->first();
+        $data   = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd')->first();
+        $dosen  = tb_dosen::where('id', $bap->id_dosen)->first();
+        $form   = tb_form_025::where('id_sidang', $data->id)->first();
 
-        return view('dosen.edit_sd_bap_d', compact('datas', 'bap', 'data', 'dosen', 'mhs'));
+        return view('dosen.edit_sd_bap_d', compact('datas', 'bap', 'data', 'dosen', 'mhs', 'form'));
     }
 
     public function sd_bap_ej($id)
@@ -926,8 +1020,9 @@ class DosenController extends Controller
         $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
         $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'sd2')->first();
         $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
+        $form   = tb_form_025::where('id_sidang', $data->id)->first();
 
-        return view('dosen.edit_sd_bap_du', compact('datas', 'bap', 'data', 'dosen', 'mhs'));
+        return view('dosen.edit_sd_bap_du', compact('datas', 'bap', 'data', 'dosen', 'mhs', 'form'));
     }
 
     public function sd_bap_eju($id)
@@ -1088,26 +1183,18 @@ class DosenController extends Controller
         $bap->nilai2    = $request->input('nilai2');
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
-
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
-        return redirect()->route('sidang-d')->with('success', 'Sukses Edit Nilai BAP');
+        $daftar = tb_daftar::where('ket', 'sd')->where('id_mhs', $bap->id_mhs)->where('id_dosen', $bap->id_dosen)->first();
+
+        $form            = tb_form_025::where('id_sidang', $daftar->id)->first();
+        $form->nilai1    = $request->input('form_nilai1');
+        $form->nilai2    = $request->input('form_nilai2');
+        $form->nilai3    = $request->input('form_nilai3');
+        $form->nilai_jurnal = $request->input('nilai_jurnal');
+        $form->save();
+
+        return redirect()->route('sidang-d')->with('success', 'Sukses Edit Nilai BAP dan FORM 025');
     }
 
     public function sd_bap_uj(Request $request, $id)
@@ -1118,23 +1205,6 @@ class DosenController extends Controller
         $bap->nilai2    = $request->input('nilai2');
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
-
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
         return redirect()->route('sidang-j')->with('success', 'Sukses Edit Nilai BAP');
@@ -1148,26 +1218,18 @@ class DosenController extends Controller
         $bap->nilai2    = $request->input('nilai2');
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
-
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
-        return redirect()->route('sidang-d')->with('success', 'Sukses Edit Nilai BAP');
+        $daftar = tb_daftar::where('ket', 'sd2')->where('id_mhs', $bap->id_mhs)->where('id_dosen', $bap->id_dosen)->first();
+
+        $form            = tb_form_025::where('id_sidang', $daftar->id)->where('ket', 'sd2')->first();
+        $form->nilai1    = $request->input('form_nilai1');
+        $form->nilai2    = $request->input('form_nilai2');
+        $form->nilai3    = $request->input('form_nilai3');
+        $form->nilai_jurnal = $request->input('nilai_jurnal');
+        $form->save();
+
+        return redirect()->route('sidang-d')->with('success', 'Sukses Edit Nilai BAP dan FORM 025');
     }
 
     public function sd_bap_uju(Request $request, $id)
@@ -1178,23 +1240,6 @@ class DosenController extends Controller
         $bap->nilai2    = $request->input('nilai2');
         $bap->nilai3    = $request->input('nilai3');
         $bap->tgl       = $request->input('tgl');
-
-        if ($request->hasFile('gambar')) {
-            $dir      = Storage::disk('local')->put('file_form/bap/', $request->gambar);
-            $bap->ttd = $dir;
-        } else {
-            $folderPath     = 'file_form/bap/'; // upload/
-            $image_parts    = explode(";base64,", $request->signed); // image/png, sdfghjcnm
-            $image_type_aux = explode("image/", $image_parts[0]); // "", png
-            $image_type     = $image_type_aux[1]; // png
-            $image_base64   = base64_decode($image_parts[1]); // agshgd
-            $file           = $folderPath . uniqid() . '.' . $image_type; // upload/12.png
-
-            file_put_contents($file, $image_base64);
-
-            $bap->ttd       = $file;
-        }
-
         $bap->save();
 
         return redirect()->route('sidang-j')->with('success', 'Sukses Edit Nilai BAP');
@@ -1442,6 +1487,65 @@ class DosenController extends Controller
         return view('dosen.jurnal_harian', compact('datas', 'getmhs', 'file'));
     }
 
+    public function sortDate($a, $b) 
+    {
+        if (strtotime($a[3]) == strtotime($b[3])) return 0;
+        return (strtotime($a[3]) > strtotime($b[3])) ?1:-1;
+    }
+
+    public function laporan_periodik()
+    {
+        $user = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $dosen = tb_dosen::where('id', $user->id_user)->first();
+        $mhs1 = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+        $getlist = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
+        $getmhs = [];
+        $file = [];
+        $list = [];
+        $periodik = [];
+        $periode = [];
+
+        if (count($mhs1) != 0) {
+            foreach ($mhs1 as $mahasiswa1) {
+                $listmhs1 = $getlist->where('id_mhs', $mahasiswa1->id);
+                foreach($listmhs1 as $ls1){
+                    $list[] = array($ls1->id_mhs, $ls1->tgl_awal, $ls1->tgl_selesai);
+                }
+                $getmhs1 = $getlist->where('id_mhs', $mahasiswa1->id)->first();
+                if ($getmhs1 != null) {
+                    $getmhs[] = array(1, $getmhs1->id_mhs, $mahasiswa1->nama, $mahasiswa1->nim);
+                }
+            }
+        }
+
+        $mhs2 = tb_mahasiswa::where('id_dospem2', $user->id_user)->get();
+        if (count($mhs2) != 0) {
+            foreach ($mhs2 as $mahasiswa2) {
+                $listmhs2 = $getlist->where('id_mhs', $mahasiswa2->id);
+                foreach($listmhs2 as $ls2){
+                    $list[] = array($ls2->id_mhs, $ls2->tgl_awal, $ls2->tgl_selesai);
+                }
+                $getmhs2 = $getlist->where('id_mhs', $mahasiswa2->id)->first();
+                if ($getmhs1 != null) {
+                    $getmhs[] = array(2, $getmhs2->id_mhs, $mahasiswa2->nama, $mahasiswa2->nim);
+                }
+            }
+        }
+
+        for ($i = 0; $i < count($list); $i++) {
+            $lists = tb_periodik::where('id_mhs', $list[$i][0])->where('tgl_awal', $list[$i][1])->where('tgl_selesai', $list[$i][2])->get();
+
+            foreach ($lists as $ls) {
+                $periodik[] = array($ls->id, $ls->id_mhs, $ls->id_prodi, $ls->tanggal, $ls->informasi, $ls->kendala, $ls->catatan, $ls->tgl_awal, $ls->tgl_selesai);
+            }
+            usort($periodik, array($this, 'sortDate'));
+            $periode[] = array($list[$i][0], $list[$i][1], $list[$i][2]);
+        }
+
+        return view('dosen.laporan_periodik', compact('datas', 'getmhs', 'periode', 'periodik'));
+    }
+
     public function kartu_bimbingan()
     {
         $user = Auth::user();
@@ -1515,7 +1619,6 @@ class DosenController extends Controller
                 }
                 $file[] = array($get->id_mhs, $list);
             }
-
         }
 
         // dd($getmhs);

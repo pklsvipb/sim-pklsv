@@ -14,6 +14,7 @@ use App\Models\tb_masterform;
 use App\Models\tb_panitia;
 use App\Models\tb_periodik;
 use App\Models\tb_nilai_bap;
+use App\Models\tb_nilai_pembahas;
 use App\Models\tb_supervisi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -198,7 +199,7 @@ class MahasiswaController extends Controller
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
-        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->orWhere('ket', 'sm')->orWhere('ket', 'sm2')->orWhere('ket', 'sd')->get();
+        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->orWhere('ket', 'sm')->orWhere('ket', 'sm2')->orWhere('ket', 'sd')->orWhere('ket', 'sd2')->get();
         $kolos = tb_masterform::where('ket', 'kl')->get();
         $semis = tb_masterform::where('ket', 'sm')->get();
         $sidas = tb_masterform::where('ket', 'sd')->get();
@@ -263,14 +264,35 @@ class MahasiswaController extends Controller
         return view('mahasiswa.jurnal_harian', compact('datas', 'forms', 'jurnals', 'mhs'));
     }
 
+    public function sortDate($a, $b) 
+    {
+        if (strtotime($a[3]) == strtotime($b[3])) return 0;
+        return (strtotime($a[3]) > strtotime($b[3])) ?1:-1;
+    }
+
     public function periodik()
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
         $forms = tb_masterform::all();
-        $periodiks = tb_periodik::where('id_mhs', $user->id_user)->get();
+        $getper = tb_periodik::select('id_mhs', 'tgl_awal', 'tgl_selesai')->distinct()->get();
+        $gets = $getper->where('id_mhs', $mhs->id);
+        $periodik = [];
+        $periode = [];
 
-        return view('mahasiswa.laporan_periodik', compact('datas', 'forms', 'periodiks'));
+        if ($gets != '') {
+            foreach ($gets as $get) {
+                $lists = tb_periodik::where('id_mhs', $get->id_mhs)->where('tgl_awal', $get->tgl_awal)->where('tgl_selesai', $get->tgl_selesai)->get();
+                foreach ($lists as $list) {
+                    $periodik[] = array($list->id, $list->id_mhs, $list->id_prodi, $list->tanggal, $list->informasi, $list->kendala, $list->catatan, $list->tgl_awal, $list->tgl_selesai);
+                }
+                usort($periodik, array($this, 'sortDate'));
+                $periode[] = array($get->id_mhs, $get->tgl_awal, $get->tgl_selesai);
+            }               
+        }
+
+        return view('mahasiswa.laporan_periodik', compact('datas', 'forms', 'periodik', 'periode', 'mhs'));
     }
 
     public function k_bimbingan()
@@ -648,47 +670,28 @@ class MahasiswaController extends Controller
         $forms  = tb_masterform::where('ket', 'sd')->get();
         $set    = 0;
 
-        foreach ($forms as $form) {
-            $files   = tb_form::where('id_form', $form->id)->where('id_mhs', $user->id_user)->get();
-            if (count($files) == 0) {
-                $set  = 1;
-            }
-        }
+        $pembahas = tb_nilai_pembahas::where('id_pembahas', $user->id_user)->first();
+        $form022 = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ttd_dospem', 0)->first();
 
         if (is_null($get2)) {
             if (is_null($get)) {
-                $getname = "";
-                $filename = "";
-                $mode = "";
+                $dosji  = "";
                 $status = [];
             } else {
-                $filename = explode(';', $get->file);
-
-                for ($i = 0; $i < count($filename) - 1; $i++) {
-                    $getname[] = explode('/', $filename[$i]);
-                }
-
-                $mode   = tb_dosen::where('id', $get->id_moderator)->first();
+                $dosji  = tb_dosen::where('id', $get->id_dosji)->first();
                 $status = array($get->set_verif);
             }
         } else {
-            $filename = explode(';', $get2->file);
-
-            for ($i = 0; $i < count($filename) - 1; $i++) {
-                $getname[] = explode('/', $filename[$i]);
-            }
-
-            $mode   = tb_dosen::where('id', $get2->id_moderator)->first();
+            $dosji  = tb_dosen::where('id', $get2->id_dosji)->first();
             $status = array($get2->set_verif);
         }
-        return view('mahasiswa.daftar_sidang', compact('datas', 'dosens', 'get', 'set', 'get2', 'filename', 'getname', 'mode', 'status'));
+
+        return view('mahasiswa.daftar_sidang', compact('datas', 'dosens', 'get', 'set', 'get2', 'dosji', 'status', 'pembahas', 'form022'));
     }
 
     public function s_sidang(Request $request)
     {
         $this->validate($request, [
-            'dospem' => 'required',
-            'dosji'  => 'required',
             'judul'  => 'required',
             'tgl'    => 'required',
             'waktu'  => 'required',
@@ -699,11 +702,8 @@ class MahasiswaController extends Controller
         $mhs    = tb_mahasiswa::where('id', $user->id_user)->first();
         $daftar = tb_daftar::where('id_mhs', $user->id_user)->where('ket', 'sd')->get();
 
-        $namaDir = "";
-
         $upload = new tb_daftar;
-        $upload->id_dosen  = $request->input('dospem');
-        $upload->id_dosji  = $request->input('dosji');
+        $upload->id_dosen  = $mhs->id_dospem1;
         $upload->id_mhs    = $user->id_user;
         $upload->id_prodi  = $mhs->id_prodi;
         $upload->judul     = $request->input('judul');
@@ -715,21 +715,6 @@ class MahasiswaController extends Controller
         } else {
             $upload->ket   = 'sd2';
         }
-
-        for ($i = 0; $i < count($request->file); $i++) {
-            // Check File Exist
-            $file  = Storage::disk('local')->exists('file_form/upload_persyaratan/' . $mhs->nim . '/' . $request->file[$i]->getClientOriginalName());
-
-            if ($file) {
-                Storage::disk('local')->delete('file_form/upload_persyaratan/' . $mhs->nim . '/' . $request->file[$i]->getClientOriginalName());
-            }
-
-            $dir      = Storage::disk('local')->putFileAs('file_form/upload_persyaratan/' . $mhs->nim, $request->file[$i], $request->file[$i]->getClientOriginalName());
-
-            $namaDir  = $namaDir . $dir . ';';
-        }
-
-        $upload->file   = $namaDir;
 
         $upload->save();
 
@@ -797,6 +782,7 @@ class MahasiswaController extends Controller
         $forms = tb_masterform::where('ket', 'laporan_pkl')->get();
 
         $form018  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 16)->where('ket', 'sm')->first();
+        $form022  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ket', 'sd')->first();
 
         $form027  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 27)->where('ket', 'sd')->where('set_verif', 1)->first();
 
@@ -845,9 +831,9 @@ class MahasiswaController extends Controller
         } elseif ($id == "22") {
             return view('mahasiswa.form_input.input_017', compact('datas', 'id', 'dosens'));
         } elseif ($id == "23") {
-            return view('mahasiswa.form_input.input_022', compact('datas', 'id'));
+            return view('mahasiswa.form_input.input_022', compact('datas', 'id', 'form022'));
         } elseif ($id == "24") {
-            return view('mahasiswa.form_input.input_023_d', compact('datas', 'id'));
+            return view('mahasiswa.form_input.syarat_sidang', compact('datas', 'id', 'link'));
         } elseif ($id == "25") {
             return view('mahasiswa.form_input.input_023_p', compact('datas', 'id'));
         } elseif ($id == "26") {
@@ -911,7 +897,8 @@ class MahasiswaController extends Controller
 
         $input = new tb_periodik;
         $input->id_mhs = $user->id_user;
-        $input->periode = $request->input('periode');
+        $input->tgl_awal = $request->input('awal');
+        $input->tgl_selesai = $request->input('selesai');
         $input->tanggal = $request->input('tanggal');
         $input->informasi = $request->input('info');
         $input->kendala = $request->input('kendala');
@@ -921,6 +908,46 @@ class MahasiswaController extends Controller
         $input->save();
 
         return Redirect::Back()->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function edit_periode(Request $request)
+    {
+        $all = tb_periodik::where('tgl_awal', $request->input('id'))->get();
+        foreach ($all as $get) {
+            $update = tb_periodik::findOrFail($get->id);
+            $update->tgl_awal = $request->input('tgl_awal');
+            $update->tgl_selesai = $request->input('tgl_selesai');
+            $update->save();
+        }
+        return redirect()->route('periodik')->with('success', 'Berhasil Edit Periode');
+    }
+
+    public function edit_periodik(Request $request)
+    {
+        $mhs = tb_periodik::findOrFail($request->input('id'));
+        $mhs->tanggal = $request->input('tanggal');
+        $mhs->informasi = $request->input('informasi');
+        $mhs->kendala = $request->input('kendala');
+        $mhs->catatan = $request->input('catatan');
+        $mhs->save();
+
+        return redirect()->route('periodik')->with('success', 'Berhasil Edit Laporan Periodik');
+    }
+
+    public function upload_periodik(Request $request)
+    {
+        $usr = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $usr->id_user)->first();
+        // Check File Exist
+        $file = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_laporan_periodik.pdf');
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_laporan_periodik.pdf');
+        }
+        //save to directory
+        Storage::disk('local')->putFileAs('pdf/' . $mhs->nim, $request->upload, 'pdf_laporan_periodik.pdf');
+
+        return redirect()->route('periodik')->with('success', 'Berhasil Upload');
     }
 
     public function bimbingan_submit(Request $request)
