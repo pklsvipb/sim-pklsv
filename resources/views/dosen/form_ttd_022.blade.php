@@ -3,7 +3,7 @@
 @section('page-header')
 <div class="row mb-2">
   <div class="col-sm-6">
-    <h4 class="judul ml-2" style="font-weight: 600;">Request Tanda Tangan Form Persetujuan Ujian Akhir <small style="font-size: 12px; color: #777;"></small></h3>
+    <h4 class="judul ml-2" style="font-weight: 600;">Request Tanda Tangan Form 022 <small style="font-size: 12px; color: #777;"></small></h3>
   </div>
 </div>
 @endsection
