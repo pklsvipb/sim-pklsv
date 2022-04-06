@@ -198,7 +198,7 @@ class MahasiswaController extends Controller
     {
         $user  = Auth::user();
         $datas = tb_mahasiswa::where('id', $user->id_user)->get();
-        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->orWhere('ket', 'sm')->orWhere('ket', 'sm2')->get();
+        $forms = tb_masterform::where('ket', 'kl')->orWhere('ket', 'sv')->orWhere('ket', 'sm')->orWhere('ket', 'sm2')->orWhere('ket', 'sd')->get();
         $kolos = tb_masterform::where('ket', 'kl')->get();
         $semis = tb_masterform::where('ket', 'sm')->get();
         $sidas = tb_masterform::where('ket', 'sd')->get();
@@ -798,6 +798,7 @@ class MahasiswaController extends Controller
 
         $form018  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 16)->where('ket', 'sm')->first();
 
+        $form027  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 27)->where('ket', 'sd')->where('set_verif', 1)->first();
 
         if ($id == "1") {
             return view('mahasiswa.form_input.input_001', compact('datas', 'id'));
@@ -851,6 +852,8 @@ class MahasiswaController extends Controller
             return view('mahasiswa.form_input.input_023_p', compact('datas', 'id'));
         } elseif ($id == "26") {
             return view('mahasiswa.form_input.input_025', compact('datas', 'id'));
+        } elseif ($id == "29") {
+            return view('mahasiswa.form_input.input_027', compact('datas', 'id', 'form027'));
         }
     }
 

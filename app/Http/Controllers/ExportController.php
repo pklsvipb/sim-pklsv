@@ -1292,11 +1292,70 @@ class ExportController extends Controller
         $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
 
         //delete file pdf from public
-        Storage::disk('local')->delete('file_form/file.pdf');
+        Storage::disk('local')->delete('file_form/file3.pdf');
 
         //load pdf again with passing var total page
         $pdf   = PDF::loadview('mahasiswa.pdf_kartu_seminar', compact('totalPages', 'kartu', 'mahasiswa'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
 
         return $pdf->stream('Kartu Seminar.pdf');
+    }
+
+    public function form027_pdf(Request $request, $id)
+    {
+        $user   = Auth::user();
+        $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
+        $k_penguji = $request->input('koreksi_penguji');
+
+        for ($i = 0; $i < count($k_penguji); $i++) {
+            $koreksi_penguji[] = $k_penguji[$i];
+        }
+
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'kl')->first();
+
+        if ($cek == null) {
+            $form             = new tb_form;
+            $form->id_mhs     = $user->id_user;
+            $form->id_form    = $id;
+            $form->ket        = 'sd';
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_027.pdf';
+            $form->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027.pdf', $pdf->output());
+
+            $form->save();
+        } else {
+            $update = tb_form::findOrFail($cek->id);
+            $update->set_failed = 0;
+
+            // Check File Exist
+            $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+
+            // Delete File
+            if ($file) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            }
+
+            $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_027.pdf';
+            $update->file   = $namadir;
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027.pdf', $pdf->output());
+
+            $update->save();
+        }
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Upload');
     }
 }

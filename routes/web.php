@@ -336,6 +336,8 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/form013/{id}', [App\Http\C
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/delete/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf_delete'])->name('form018-pdf-delete');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf'])->name('form018-pdf');
 
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form027/{id}', [App\Http\Controllers\ExportController::class, 'form027_pdf'])->name('form027-pdf');
+
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/save/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_save'])->name('penggunaan-produk-pdf-save');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/delete', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_delete'])->name('penggunaan-produk-pdf-delete');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf'])->name('penggunaan-produk-pdf');
