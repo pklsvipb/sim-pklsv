@@ -768,7 +768,7 @@ class PanitiaController extends Controller
 
                 if ($getmhs != null) {
                     if (count($getlist) == 0) {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver), ' - ');
                     } else {
                         $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu);
                     }
