@@ -37,9 +37,9 @@
                       <tr>
                         <th width="2%">No</th>
                         <th width="27%">Nama Mahasiswa</th>
-                        <th width="10%">NIM</th>
-                        <th width="10%">Tanggal Sidang</th>
-                        <th width="10%">Waktu Sidang</th>
+                        <th width="10%" style="text-align: center;">NIM</th>
+                        <th width="10%" style="text-align: center;">Tanggal Sidang</th>
+                        <th width="10%" style="text-align: center;">Waktu Sidang</th>
                         <th width="20%">Dosen Penguji</th>
                         <th width="10%">FRM Upload</th>
                         <th width="10%">FRM Belum Verif</th>
@@ -50,9 +50,9 @@
                       @for($i=0; $i < count($sidang); $i++) <tr>
                         <td style="text-align: center;">{{$i + 1}}</td>
                         <td>{{$sidang[$i][2]}}</td>
-                        <td>{{$sidang[$i][3]}}</td>
-                        <td>{{$sidang[$i][4]}}</td>
-                        <td>{{$sidang[$i][8]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][3]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][4]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][8]}}</td>
                         <td>{{$sidang[$i][5]}}</td>
                         <th style="text-align: center;">{{$sidang[$i][6]}}</th>
                         <th style="text-align: center;">{{$sidang[$i][7]}}</th>
