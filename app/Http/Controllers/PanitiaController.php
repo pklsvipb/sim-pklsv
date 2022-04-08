@@ -761,6 +761,8 @@ class PanitiaController extends Controller
                 foreach ($getlist as $get2) {
                     if ($get2->id_mhs == $get->id_mhs) {
                         $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
+                        $ujian    = $get2->tgl;
+                        $waktu    = $get2->waktu;
                     }
                 }
 
@@ -768,7 +770,7 @@ class PanitiaController extends Controller
                     if (count($getlist) == 0) {
                         $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
                     } else {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get2->tgl, $penguji->nama ?? ' - ', count($getfrm), count($getver));
+                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu);
                     }
                 }
             }
