@@ -762,7 +762,7 @@ class PanitiaController extends Controller
                     if ($get2->id_mhs == $get->id_mhs) {
                         $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
                         $ujian    = $get2->tgl;
-                        $waktu    = $get2->waktu;
+                        $waktu    = substr($get2->waktu,0,5);
                     }
                 }
 
