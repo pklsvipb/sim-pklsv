@@ -758,20 +758,33 @@ class PanitiaController extends Controller
                 $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
                 $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
 
-                foreach ($getlist as $get2) {
-                    if ($get2->id_mhs == $get->id_mhs) {
-                        $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
-                        $ujian    = $get2->tgl;
-                        $waktu    = substr($get2->waktu,0,5);
-                    }
-                }
+                // foreach ($getlist as $get2) {
+                //     if ($get2->id_mhs == $get->id_mhs) {
+                //         $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
+                //         $ujian    = $get2->tgl;
+                //         $waktu    = substr($get2->waktu, 0, 5);
+                //     }
+                // }
 
                 if ($getmhs != null) {
-                    if (count($getlist) == 0) {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver), ' - ');
+
+                    $daftar_sidang = tb_daftar::where('id_mhs', $getmhs->id)->where('ket', 'sd')->where('id_prodi', $prodiuser->id)->first();
+
+                    if ($daftar_sidang != null) {
+                        $penguji    = tb_dosen::where('id', $daftar_sidang->id_dosji)->first();
+                        $ujian      = $daftar_sidang->tgl;
+                        $waktu      = substr($daftar_sidang->waktu, 0, 5);
                     } else {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu);
+                        $penguji    = '-';
+                        $ujian      = 'belum daftar';
+                        $waktu      = '-';
                     }
+
+                    // if (count($getlist) == 0) {
+                    //     $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver), ' - ');
+                    // } else {
+                    $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu);
+                    // }
                 }
             }
         }
