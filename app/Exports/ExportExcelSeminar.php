@@ -35,13 +35,13 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
                 $mode   = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_moderator)->where('ket', 'sm')->where('status', 'moderator')->first();
 
                 if ($dospem != null) {
-                    $bap_dospem = ($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3;
+                    $bap_dospem = round(($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3, 2);
                 } else {
                     $bap_dospem = '0';
                 }
 
                 if ($mode != null) {
-                    $bap_mode = ($mode->nilai1 + $mode->nilai2 + $mode->nilai3) / 3;
+                    $bap_mode = round(($mode->nilai1 + $mode->nilai2 + $mode->nilai3) / 3, 2);
                 } else {
                     $bap_mode = '0';
                 }
@@ -61,7 +61,8 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
             if (count($forums) == 0) {
                 $nilai_forum = '0';
             } else {
-                $nilai_forum = tb_nilai_forum::where('id_mhs', $mhs->id)->avg('nilai');
+                $fm = tb_nilai_forum::where('id_mhs', $mhs->id)->avg('nilai');
+                $nilai_forum = round($fm, 2);
             }
 
             $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_mode, $nilai_pembahas, $nilai_forum);

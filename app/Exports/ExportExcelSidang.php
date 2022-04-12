@@ -34,13 +34,13 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
                 $dosji  = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosji)->where('ket', 'sd')->where('status', 'moderator')->first();
 
                 if ($dospem != null) {
-                    $bap_dospem = ($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3;
+                    $bap_dospem = round(($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3, 2);
                 } else {
                     $bap_dospem = '0';
                 }
 
                 if ($dosji != null) {
-                    $bap_dosji = ($dosji->nilai1 + $dosji->nilai2 + $dosji->nilai3) / 3;
+                    $bap_dosji = round(($dosji->nilai1 + $dosji->nilai2 + $dosji->nilai3) / 3, 2);
                 } else {
                     $bap_dosji = '0';
                 }
@@ -48,7 +48,7 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
                 $ta   = tb_form_025::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosen)->first();
 
                 if ($ta != null) {
-                    $nilai_ta = ($ta->nilai1 + $ta->nilai2 + $ta->nilai3) / 3;
+                    $nilai_ta = round(($ta->nilai1 + $ta->nilai2 + $ta->nilai3) / 3, 2);
                     $nilai_jurnal = $ta->nilai_jurnal;
                 } else {
                     $nilai_ta = '0';
