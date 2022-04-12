@@ -78,6 +78,8 @@ Route::middleware('role:panitia')->get('/panitia/reset-password', [App\Http\Cont
 Route::middleware('role:panitia')->post('/panitia/reset-password/submit', [App\Http\Controllers\PanitiaController::class, 'resetPwd'])->name('reset-pwd');
 
 Route::middleware('role:panitia')->get('/panitia/rekap-export', [App\Http\Controllers\PanitiaController::class, 'export_kolokium'])->name('export-kolokium');
+Route::middleware('role:panitia')->get('/panitia/rekap-export/seminar', [App\Http\Controllers\PanitiaController::class, 'export_seminar'])->name('export-seminar');
+Route::middleware('role:panitia')->get('/panitia/rekap-export/sidang', [App\Http\Controllers\PanitiaController::class, 'export_sidang'])->name('export-sidang');
 
 Route::middleware('role:panitia')->get('/panitia/set/kelompok-mahasiswa', [App\Http\Controllers\PanitiaController::class, 'set_kelompok'])->name('set-kelompok');
 Route::middleware('role:panitia')->post('/panitia/set/kelompok-mahasiswa/submit', [App\Http\Controllers\PanitiaController::class, 'set_kelompok_s'])->name('set-kelompok-s');

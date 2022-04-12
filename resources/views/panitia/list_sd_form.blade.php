@@ -5,6 +5,11 @@
   <div class="col-sm-6">
     <h4 class="judul ml-2" style="font-weight: 600;">Verifikasi <small style="font-size: 12px; color: #777;">Sidang</small></h3>
   </div>
+  <div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+      <li class="breadcrumb-item"><a href="{{ route('export-sidang') }}" type="button" title="export-data" class="btn btn-sm btn-success m-b-10 mr-2" style="margin-left:4px;"><i class="fa fa-file-export fa-sm"></i>&nbsp; Export Nilai Sidang</a></li>
+    </ol>
+  </div>
 </div>
 @endsection
 

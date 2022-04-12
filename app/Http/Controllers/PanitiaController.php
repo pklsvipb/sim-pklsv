@@ -21,6 +21,8 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportExcelKolokium;
+use App\Exports\ExportExcelSeminar;
+use App\Exports\ExportExcelSidang;
 use App\Models\tb_bimbingan;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
@@ -44,10 +46,12 @@ class PanitiaController extends Controller
             $info  = tb_info::where('id_prodi', $data->id_prodi)->first();
         }
 
-        $get_mh = tb_mahasiswa::all();
-        $get_kl = tb_daftar::where('ket', 'kl')->where('set_verif', 1)->get();
-        $get_sm = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->get();
-        $get_sd = tb_daftar::where('ket', 'sd')->where('set_verif', 1)->get();
+        $prodiuser = tb_panitia::where('id', $user->id_user)->first();
+
+        $get_mh = tb_mahasiswa::where('id_prodi', $prodiuser->id_prodi)->get();
+        $get_kl = tb_daftar::where('ket', 'kl')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
+        $get_sm = tb_daftar::where('ket', 'sm')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
+        $get_sd = tb_daftar::where('ket', 'sd')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
 
         return view('panitia.dashboard', compact('datas', 'get_mh', 'get_kl', 'get_sm', 'get_sd', 'info'));
     }
@@ -1348,6 +1352,16 @@ class PanitiaController extends Controller
     public function export_kolokium()
     {
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
+    }
+
+    public function export_seminar()
+    {
+        return Excel::download(new ExportExcelSeminar, 'Rekap_Seminar.xlsx');
+    }
+
+    public function export_sidang()
+    {
+        return Excel::download(new ExportExcelSidang, 'Rekap_Sidang.xlsx');
     }
 
     public function management_user()
