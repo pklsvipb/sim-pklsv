@@ -743,11 +743,11 @@ class PanitiaController extends Controller
         $user       = Auth::user();
         $prodiuser  = tb_panitia::where('id', $user->id_user)->first();
         $datas      = tb_panitia::where('id', $user->id_user)->get();
-        $getlist    = tb_daftar::where('ket', 'sd')->where('id_prodi', $prodiuser->id)->orderBy('set_verif', 'asc')->get();
-        $getulang   = tb_daftar::where('ket', 'sd2')->where('id_prodi', $prodiuser->id)->orderBy('set_verif', 'asc')->get();
+        $getlist    = tb_daftar::where('ket', 'sd')->where('id_prodi', $prodiuser->id)->get();
+        $getulang   = tb_daftar::where('ket', 'sd2')->where('id_prodi', $prodiuser->id)->get();
         // $history    = tb_daftar::where('ket', 'sd')->where('set_verif', 1)->orWhere('ket', 'sd2')->get();
 
-        $getlist2   = tb_form::select('id_mhs', 'ket', 'ttd_dospem')->distinct()->orderBy('set_verif', 'asc')->get();
+        $getlist2   = tb_form::select('id_mhs', 'ket', 'ttd_dospem')->distinct()->get();
         $setlist    = $getlist2->where('ket', 'sd')->where('ttd_dospem', 0);
 
         $sidang     = [];
