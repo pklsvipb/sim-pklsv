@@ -738,6 +738,12 @@ class PanitiaController extends Controller
         }
     }
 
+    public function sortSidang($a, $b)
+    {
+        if ($a[9] == $b[9]) return 0;
+        return ($a[9] > $b[9]) ? 1 : -1;
+    }
+
     public function list_sd_form()
     {
         $user       = Auth::user();
@@ -778,20 +784,24 @@ class PanitiaController extends Controller
                         $penguji    = tb_dosen::where('id', $daftar_sidang->id_dosji)->first();
                         $ujian      = $daftar_sidang->tgl;
                         $waktu      = substr($daftar_sidang->waktu, 0, 5);
+                        $verif      = $daftar_sidang->set_verif;
                     } else {
                         $penguji    = '-';
                         $ujian      = 'belum daftar';
                         $waktu      = '-';
+                        $verif      = 2;
                     }
 
                     // if (count($getlist) == 0) {
                     //     $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver), ' - ');
                     // } else {
-                    $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu);
+                    $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu, $verif);
                     // }
                 }
             }
         }
+
+        usort($sidang, array($this, 'sortSidang'));
 
 
         if (count($getulang) == 0) {
