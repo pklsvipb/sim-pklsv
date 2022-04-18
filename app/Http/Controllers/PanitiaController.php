@@ -784,12 +784,12 @@ class PanitiaController extends Controller
                         $penguji    = tb_dosen::where('id', $daftar_sidang->id_dosji)->first();
                         $ujian      = $daftar_sidang->tgl;
                         $waktu      = substr($daftar_sidang->waktu, 0, 5);
-                        $verif      = $daftar_sidang->set_verif;
+                        $verif      = ($daftar_sidang->set_verif) * 2;
                     } else {
                         $penguji    = '-';
                         $ujian      = 'belum daftar';
                         $waktu      = '-';
-                        $verif      = 2;
+                        $verif      = 1;
                     }
 
                     // if (count($getlist) == 0) {
