@@ -5,6 +5,11 @@
   <div class="col-sm-6">
     <h4 class="judul ml-2" style="font-weight: 600;">Verifikasi <small style="font-size: 12px; color: #777;">Sidang</small></h3>
   </div>
+  <div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+      <li class="breadcrumb-item"><a href="{{ route('export-sidang') }}" type="button" title="export-data" class="btn btn-sm btn-success m-b-10 mr-2" style="margin-left:4px;"><i class="fa fa-file-export fa-sm"></i>&nbsp; Export Nilai Sidang</a></li>
+    </ol>
+  </div>
 </div>
 @endsection
 
@@ -36,12 +41,13 @@
                     <thead>
                       <tr>
                         <th width="2%">No</th>
-                        <th width="27%">Nama Mahasiswa</th>
-                        <th width="10%">NIM</th>
-                        <th width="10%">Tanggal Sidang</th>
+                        <th width="20%">Nama Mahasiswa</th>
+                        <th width="5%" style="text-align: center;">NIM</th>
+                        <th width="5%" style="text-align: center;">Tanggal Sidang</th>
+                        <th width="5%" style="text-align: center;">Waktu Sidang</th>
                         <th width="20%">Dosen Penguji</th>
-                        <th width="10%">FRM Upload</th>
                         <th width="10%">FRM Belum Verif</th>
+                        <th width="10%">FRM Upload</th>
                         <th width="10%" style="text-align: center;">Action</th>
                       </tr>
                     </thead>
@@ -49,11 +55,12 @@
                       @for($i=0; $i < count($sidang); $i++) <tr>
                         <td style="text-align: center;">{{$i + 1}}</td>
                         <td>{{$sidang[$i][2]}}</td>
-                        <td>{{$sidang[$i][3]}}</td>
-                        <td>{{$sidang[$i][4]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][3]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][4]}}</td>
+                        <td style="text-align: center;">{{$sidang[$i][8]}}</td>
                         <td>{{$sidang[$i][5]}}</td>
-                        <th style="text-align: center;">{{$sidang[$i][6]}}</th>
                         <th style="text-align: center;">{{$sidang[$i][7]}}</th>
+                        <th style="text-align: center;">{{$sidang[$i][6]}}</th>
                         <td><a href="{{route('sidang-vf', $sidang[$i][1])}}" title="Verifikasi Form" type="button" class="btn btn-success btn-sm">Verif</a></td>
                         </tr>
                       @endfor

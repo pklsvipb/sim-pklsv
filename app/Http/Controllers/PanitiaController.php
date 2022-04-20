@@ -21,6 +21,8 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportExcelKolokium;
+use App\Exports\ExportExcelSeminar;
+use App\Exports\ExportExcelSidang;
 use App\Models\tb_bimbingan;
 use App\Models\tb_form_004;
 use App\Models\tb_form_015;
@@ -44,10 +46,12 @@ class PanitiaController extends Controller
             $info  = tb_info::where('id_prodi', $data->id_prodi)->first();
         }
 
-        $get_mh = tb_mahasiswa::all();
-        $get_kl = tb_daftar::where('ket', 'kl')->where('set_verif', 1)->get();
-        $get_sm = tb_daftar::where('ket', 'sm')->where('set_verif', 1)->get();
-        $get_sd = tb_daftar::where('ket', 'sd')->where('set_verif', 1)->get();
+        $prodiuser = tb_panitia::where('id', $user->id_user)->first();
+
+        $get_mh = tb_mahasiswa::where('id_prodi', $prodiuser->id_prodi)->get();
+        $get_kl = tb_daftar::where('ket', 'kl')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
+        $get_sm = tb_daftar::where('ket', 'sm')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
+        $get_sd = tb_daftar::where('ket', 'sd')->where('id_prodi', $prodiuser->id_prodi)->where('set_verif', 1)->get();
 
         return view('panitia.dashboard', compact('datas', 'get_mh', 'get_kl', 'get_sm', 'get_sd', 'info'));
     }
@@ -734,6 +738,12 @@ class PanitiaController extends Controller
         }
     }
 
+    public function sortSidang($a, $b)
+    {
+        if ($a[9] == $b[9]) return 0;
+        return ($a[9] > $b[9]) ? 1 : -1;
+    }
+
     public function list_sd_form()
     {
         $user       = Auth::user();
@@ -758,21 +768,40 @@ class PanitiaController extends Controller
                 $getfrm   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('ttd_dospem', 0)->get();
                 $getver   = tb_form::where('id_mhs', $get->id_mhs)->where('ket', 'sd')->where('set_verif', 0)->where('set_failed', 0)->get();
 
-                foreach ($getlist as $get2) {
-                    if ($get2->id_mhs == $get->id_mhs) {
-                        $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
-                    }
-                }
+                // foreach ($getlist as $get2) {
+                //     if ($get2->id_mhs == $get->id_mhs) {
+                //         $penguji  = tb_dosen::where('id', $get2->id_dosji)->first();
+                //         $ujian    = $get2->tgl;
+                //         $waktu    = substr($get2->waktu, 0, 5);
+                //     }
+                // }
 
                 if ($getmhs != null) {
-                    if (count($getlist) == 0) {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver));
+
+                    $daftar_sidang = tb_daftar::where('id_mhs', $getmhs->id)->where('ket', 'sd')->where('id_prodi', $prodiuser->id)->first();
+
+                    if ($daftar_sidang != null) {
+                        $penguji    = tb_dosen::where('id', $daftar_sidang->id_dosji)->first();
+                        $ujian      = $daftar_sidang->tgl;
+                        $waktu      = substr($daftar_sidang->waktu, 0, 5);
+                        $verif      = ($daftar_sidang->set_verif) * 2;
                     } else {
-                        $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $get2->tgl, $penguji->nama ?? ' - ', count($getfrm), count($getver));
+                        $penguji    = '-';
+                        $ujian      = 'belum daftar';
+                        $waktu      = '-';
+                        $verif      = 1;
                     }
+
+                    // if (count($getlist) == 0) {
+                    //     $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, 'belum daftar', ' - ', count($getfrm), count($getver), ' - ');
+                    // } else {
+                    $sidang[] = array($get->id, $get->id_mhs, $getmhs->nama, $getmhs->nim, $ujian, $penguji->nama ?? ' - ', count($getfrm), count($getver), $waktu, $verif);
+                    // }
                 }
             }
         }
+
+        usort($sidang, array($this, 'sortSidang'));
 
 
         if (count($getulang) == 0) {
@@ -1333,6 +1362,16 @@ class PanitiaController extends Controller
     public function export_kolokium()
     {
         return Excel::download(new ExportExcelKolokium, 'Rekap_Kolokium.xlsx');
+    }
+
+    public function export_seminar()
+    {
+        return Excel::download(new ExportExcelSeminar, 'Rekap_Seminar.xlsx');
+    }
+
+    public function export_sidang()
+    {
+        return Excel::download(new ExportExcelSidang, 'Rekap_Sidang.xlsx');
     }
 
     public function management_user()

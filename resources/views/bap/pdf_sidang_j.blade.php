@@ -84,7 +84,7 @@
           <hr style="height:1px; margin-bottom:-15px; margin-top: 8px; border-width:0; background-color:black">
           <hr style="height:3px; border-width:0; background-color:black; margin-bottom: 2px;">
 
-          <p style="margin-bottom: -7px;"><b>BERITA ACARA SEMINAR TUGAS AKHIR</b></p>
+          <p style="margin-bottom: -7px;"><b>BERITA ACARA DAN NILAI UJIAN TUGAS AKHIR</b></p>
           <p style="margin-bottom: -7px;"><b>PROGRAM STUDI {{strtoupper($mhs->getProdi->nama)}}</b></p>
           <p style="margin-bottom: -7px;"><b>TAHUN AKADEMIK 2021/2022</b></p>
 

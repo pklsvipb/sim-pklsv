@@ -23,26 +23,49 @@ class AkademikController extends Controller
         $user  = Auth::user();
         $datas = tb_akademik::where('id', $user->id_user)->get();
 
-        $daftar_inf = tb_daftar::where('ket', 'kl')->where('id_prodi', 1)->count();
-        $daftar_tek = tb_daftar::where('ket', 'kl')->where('id_prodi', 2)->count();
+        $kl_daftar_inf = tb_daftar::where('ket', 'kl')->where('id_prodi', 1)->count();
+        $kl_daftar_tek = tb_daftar::where('ket', 'kl')->where('id_prodi', 2)->count();
+
+        $sm_daftar_inf = tb_daftar::where('ket', 'sm')->where('id_prodi', 1)->count();
+        $sm_daftar_tek = tb_daftar::where('ket', 'sm')->where('id_prodi', 2)->count();
+
+        $sd_daftar_inf = tb_daftar::where('ket', 'sd')->where('id_prodi', 1)->count();
+        $sd_daftar_tek = tb_daftar::where('ket', 'sd')->where('id_prodi', 2)->count();
 
         $kolos_inf = tb_daftar::where('ket', 'kl')->where('id_prodi', 1)->get();
         $kolos_tek = tb_daftar::where('ket', 'kl')->where('id_prodi', 2)->get();
 
-        $sudah1 = [];
-        $belum1 = [];
-        $sudah2 = [];
-        $belum2 = [];
+        $semis_inf = tb_daftar::where('ket', 'sm')->where('id_prodi', 1)->get();
+        $semis_tek = tb_daftar::where('ket', 'sm')->where('id_prodi', 2)->get();
 
+        $sidas_inf = tb_daftar::where('ket', 'sd')->where('id_prodi', 1)->get();
+        $sidas_tek = tb_daftar::where('ket', 'sd')->where('id_prodi', 2)->get();
+
+        $kl_sudah1 = [];
+        $kl_belum1 = [];
+        $kl_sudah2 = [];
+        $kl_belum2 = [];
+
+        $sm_sudah1 = [];
+        $sm_belum1 = [];
+        $sm_sudah2 = [];
+        $sm_belum2 = [];
+
+        $sd_sudah1 = [];
+        $sd_belum1 = [];
+        $sd_sudah2 = [];
+        $sd_belum2 = [];
+
+        // KOLO
         if (count($kolos_inf) > 0) {
             foreach ($kolos_inf as $inf) {
                 $tgl = $inf->tgl . ' ' . $inf->waktu;
                 $date = Carbon::parse($tgl);
 
                 if ($date->isPast()) {
-                    $sudah1[] = array($inf->id);
+                    $kl_sudah1[] = array($inf->id);
                 } else {
-                    $belum1[] = array($inf->id);
+                    $kl_belum1[] = array($inf->id);
                 }
             }
         }
@@ -53,20 +76,105 @@ class AkademikController extends Controller
                 $date2 = Carbon::parse($tgl2);
 
                 if ($date2->isPast()) {
-                    $sudah2[] = array($tek->id);
+                    $kl_sudah2[] = array($tek->id);
                 } else {
-                    $belum2[] = array($tek->id);
+                    $kl_belum2[] = array($tek->id);
                 }
             }
         }
 
-        $sudah_inf = count($sudah1);
-        $belum_inf = count($belum1);
-        $sudah_tek = count($sudah2);
-        $belum_tek = count($belum2);
+        // SEMI
+        if (count($semis_inf) > 0) {
+            foreach ($semis_inf as $inf) {
+                $tgl = $inf->tgl . ' ' . $inf->waktu;
+                $date = Carbon::parse($tgl);
 
-        return view('akademik.dashboard', compact('datas', 'daftar_inf', 'sudah_inf', 'belum_inf', 'daftar_tek', 'sudah_tek', 'belum_tek'));
-    
+                if ($date->isPast()) {
+                    $sm_sudah1[] = array($inf->id);
+                } else {
+                    $sm_belum1[] = array($inf->id);
+                }
+            }
+        }
+
+        if (count($semis_tek) > 0) {
+            foreach ($semis_tek as $tek) {
+                $tgl2 = $tek->tgl . ' ' . $tek->waktu;
+                $date2 = Carbon::parse($tgl2);
+
+                if ($date2->isPast()) {
+                    $sm_sudah2[] = array($tek->id);
+                } else {
+                    $sm_belum2[] = array($tek->id);
+                }
+            }
+        }
+
+        // SIDA
+        if (count($sidas_inf) > 0) {
+            foreach ($sidas_inf as $inf) {
+                $tgl = $inf->tgl . ' ' . $inf->waktu;
+                $date = Carbon::parse($tgl);
+
+                if ($date->isPast()) {
+                    $sd_sudah1[] = array($inf->id);
+                } else {
+                    $sd_belum1[] = array($inf->id);
+                }
+            }
+        }
+
+        if (count($sidas_tek) > 0) {
+            foreach ($sidas_tek as $tek) {
+                $tgl2 = $tek->tgl . ' ' . $tek->waktu;
+                $date2 = Carbon::parse($tgl2);
+
+                if ($date2->isPast()) {
+                    $sd_sudah2[] = array($tek->id);
+                } else {
+                    $sd_belum2[] = array($tek->id);
+                }
+            }
+        }
+
+        $kl_sudah_inf = count($kl_sudah1);
+        $kl_belum_inf = count($kl_belum1);
+        $kl_sudah_tek = count($kl_sudah2);
+        $kl_belum_tek = count($kl_belum2);
+
+        $sm_sudah_inf = count($sm_sudah1);
+        $sm_belum_inf = count($sm_belum1);
+        $sm_sudah_tek = count($sm_sudah2);
+        $sm_belum_tek = count($sm_belum2);
+
+        $sd_sudah_inf = count($sd_sudah1);
+        $sd_belum_inf = count($sd_belum1);
+        $sd_sudah_tek = count($sd_sudah2);
+        $sd_belum_tek = count($sd_belum2);
+
+        return view('akademik.dashboard', compact(
+            'datas',
+            'kl_daftar_inf',
+            'kl_sudah_inf',
+            'kl_belum_inf',
+            'kl_daftar_tek',
+            'kl_sudah_tek',
+            'kl_belum_tek',
+
+            'sm_daftar_inf',
+            'sm_sudah_inf',
+            'sm_belum_inf',
+            'sm_daftar_tek',
+            'sm_sudah_tek',
+            'sm_belum_tek',
+
+            'sd_daftar_inf',
+            'sd_sudah_inf',
+            'sd_belum_inf',
+            'sd_daftar_tek',
+            'sd_sudah_tek',
+            'sd_belum_tek',
+        ));
     }
 
     public function reset_a()
@@ -76,7 +184,7 @@ class AkademikController extends Controller
 
         return view('akademik.reset_pwd', compact('datas'));
     }
-    
+
     public function resetPwd(Request $request)
     {
         $this->validate($request, [
@@ -445,7 +553,7 @@ class AkademikController extends Controller
 
         return $pdf->download('BAP Sidang Penguji ' . $mhs->nim . '.pdf');
     }
-    
+
     public function download_zip_a(Request $request) //for now kolokium
     {
         $nilai = tb_nilai_bap::where('id_mhs', $request->input('id'))->where('ket', 'kl')->get();
@@ -464,24 +572,24 @@ class AkademikController extends Controller
                     $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'kl')->first();
                     $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
                     $pdf   = PDF::loadview('bap.pdf_kolokium_d', compact('bap', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
-                    Storage::disk('local')->put('file_form/bap/' . $mhs->nim .'/BAP_Kolokium_Pembimbing.pdf', $pdf->output());
+                    Storage::disk('local')->put('file_form/bap/' . $mhs->nim . '/BAP_Kolokium_Pembimbing.pdf', $pdf->output());
 
-                    $zip->addFile('file_form/bap/' . $mhs->nim .'/BAP_Kolokium_Pembimbing.pdf', 'BAP_Pembimbing_'.$mhs->nim.'_'.$mhs->nama.'.pdf');
+                    $zip->addFile('file_form/bap/' . $mhs->nim . '/BAP_Kolokium_Pembimbing.pdf', 'BAP_Pembimbing_' . $mhs->nim . '_' . $mhs->nama . '.pdf');
                 } else {
                     $bap   = tb_nilai_bap::where('id', $nilai_mhs->id)->first();
                     $mhs   = tb_mahasiswa::where('id', $bap->id_mhs)->first();
                     $data  = tb_daftar::where('id_mhs', $mhs->id)->where('ket', 'kl')->first();
                     $dosen = tb_dosen::where('id', $bap->id_dosen)->first();
                     $pdf   = PDF::loadview('bap.pdf_kolokium_m', compact('bap', 'data', 'dosen', 'mhs'))->setPaper('A4', 'portrait');
-                    Storage::disk('local')->put('file_form/bap/' . $mhs->nim .'/BAP_Kolokium_Moderator.pdf', $pdf->output());
+                    Storage::disk('local')->put('file_form/bap/' . $mhs->nim . '/BAP_Kolokium_Moderator.pdf', $pdf->output());
 
-                    $zip->addFile('file_form/bap/' . $mhs->nim .'/BAP_Kolokium_Moderator.pdf', 'BAP_Moderator_'.$mhs->nim.'_'.$mhs->nama.'.pdf');
+                    $zip->addFile('file_form/bap/' . $mhs->nim . '/BAP_Kolokium_Moderator.pdf', 'BAP_Moderator_' . $mhs->nim . '_' . $mhs->nama . '.pdf');
                 }
             }
             $zip->close();
         }
 
-        \File::deleteDirectory('file_form/bap/'. $mhs->nim);
+        \File::deleteDirectory('file_form/bap/' . $mhs->nim);
 
         // Set Header 
         $headers = array(

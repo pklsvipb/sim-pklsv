@@ -7,7 +7,7 @@
   </div>
   <div class="col-sm-6">
     <ol class="breadcrumb float-sm-right">
-      <li class="breadcrumb-item"><a href="{{ route('export-kolokium') }}" type="button" title="import-data" class="btn btn-sm btn-success m-b-10 mr-2" style="margin-left:4px;"><i class="fa fa-file-export fa-sm"></i>&nbsp; Rekaptulasi Kolokium</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('export-kolokium') }}" type="button" title="export-data" class="btn btn-sm btn-success m-b-10 mr-2" style="margin-left:4px;"><i class="fa fa-file-export fa-sm"></i>&nbsp; Rekaptulasi Kolokium</a></li>
     </ol>
   </div>
 </div>
