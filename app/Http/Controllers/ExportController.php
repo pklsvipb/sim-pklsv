@@ -1511,32 +1511,98 @@ class ExportController extends Controller
         return $pdf->download('Form 025 ' . $mhs->nim . '.pdf', compact('bap', 'form', 'data', 'dosen', 'mhs'));
     }
 
+    public function form027_pdf_delete($id)
+    {
+        $user = Auth::user();
+        $mhs  = tb_mahasiswa::where('id', $user->id_user)->first();
+
+        // Check File Exist
+        $file    = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+        $file_1  = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+        $file_2  = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+        }
+
+        if ($file_1) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+        }
+
+        if ($file_2) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
+        }
+
+        $update = tb_form::findOrFail($cek->id);
+        $update->delete();
+
+        return redirect()->route('form-m')->with('success', 'Berhasil Hapus Form 027');
+    }
+
     public function form027_pdf(Request $request, $id)
     {
         $user   = Auth::user();
         $mhs = tb_mahasiswa::where('id', $user->id_user)->first();
+        $data = tb_daftar::where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
 
-        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
         $k_penguji = $request->input('koreksi_penguji');
+        $p_penguji = $request->input('perbaikan_penguji');
+        $k_pembimbing = $request->input('koreksi_pembimbing');
+        $p_pembimbing = $request->input('perbaikan_pembimbing');
 
-        for ($i = 0; $i < count($k_penguji); $i++) {
-            $koreksi_penguji[] = $k_penguji[$i];
-        }
+        $totalPages = 0;
+        //load pdf
+        $pdf_num   = PDF::loadview('form_pdf.pdf_form_027', compact('mhs', 'data', 'totalPages', 'k_penguji', 'p_penguji', 'k_pembimbing', 'p_pembimbing'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+        //path save file pdf
+        $path = 'file_form/file11.pdf';
+        //save pdf
+        Storage::disk('local')->put('file_form/file11.pdf', $pdf_num->output());
 
-        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'kl')->first();
+        //variabel for get total page
+        $pdftext = file_get_contents($path);
+        $totalPages  = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+
+        //delete file pdf from public
+        Storage::disk('local')->delete('file_form/file11.pdf');
+
+        //load pdf again with passing var total page
+        $pdf   = PDF::loadview('form_pdf.pdf_form_027', compact('mhs', 'data', 'totalPages', 'k_penguji', 'p_penguji', 'k_pembimbing', 'p_pembimbing'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+
+        //load pdf again with passing var total page
+        $pdf_1   = PDF::loadview('form_pdf.pdf_form_027_d', compact('mhs', 'data', 'totalPages', 'k_penguji', 'p_penguji', 'k_pembimbing', 'p_pembimbing'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+
+        //load pdf again with passing var total page
+        $pdf_2   = PDF::loadview('form_pdf.pdf_form_027_p', compact('mhs', 'data', 'totalPages', 'k_penguji', 'p_penguji', 'k_pembimbing', 'p_pembimbing'))->setPaper([0, 0, 595.276, 841.8898], 'portrait');
+        
+        $cek = tb_form::where('id_form', $id)->where('id_mhs', $user->id_user)->where('ket', 'sd')->first();
 
         if ($cek == null) {
             $form             = new tb_form;
             $form->id_mhs     = $user->id_user;
             $form->id_form    = $id;
             $form->ket        = 'sd';
+            $form->set_verif  = 2;
+            $form->ttd_dospem = 1;
+            $form->ttd_dosji  = 1;
 
             // Check File Exist
             $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            $file_1           = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+            $file_2           = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
 
             // Delete File
             if ($file) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            }
+
+            if ($file_1) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+            }
+
+            if ($file_2) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
             }
 
             $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_027.pdf';
@@ -1545,17 +1611,36 @@ class ExportController extends Controller
             //save to directory
             Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027.pdf', $pdf->output());
 
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf', $pdf_1->output());
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf', $pdf_2->output());
+
             $form->save();
         } else {
             $update = tb_form::findOrFail($cek->id);
+            $update->set_verif  = 2;
+            $update->ttd_dospem = 1;
+            $update->ttd_dosji  = 1;
             $update->set_failed = 0;
 
             // Check File Exist
             $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            $file_1           = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+            $file_2           = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
 
             // Delete File
             if ($file) {
                 Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            }
+
+            if ($file_1) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+            }
+
+            if ($file_2) {
+                Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
             }
 
             $namadir        = 'pdf/' . $mhs->nim . '/pdf_form_027.pdf';
@@ -1563,6 +1648,12 @@ class ExportController extends Controller
 
             //save to directory
             Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027.pdf', $pdf->output());
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf', $pdf_1->output());
+
+            //save to directory
+            Storage::disk('local')->put('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf', $pdf_2->output());
 
             $update->save();
         }

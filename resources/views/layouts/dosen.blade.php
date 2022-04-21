@@ -110,7 +110,7 @@
             </a>
             </li> --}}
 
-            <li class="nav-item @if(Route::currentRouteNamed('form-ttd')) menu-open @elseif(Route::currentRouteNamed('form-ttd-022')) menu-open @else '' @endif">
+            <li class="nav-item @if(Route::currentRouteNamed('form-ttd')) menu-open @elseif(Route::currentRouteNamed('form-ttd-022')) menu-open @elseif(Route::currentRouteNamed('form-ttd-027')) menu-open @else '' @endif">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-pen" style="border-radius: 4px;"></i>
                 <p style="padding-left: 7px;">
@@ -129,6 +129,12 @@
                   <a href="{{ route('form-ttd-022')}}" class="nav-link @if(Route::currentRouteNamed('form-ttd-022')) active @else '' @endif">
                     <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
                     <p>Form 022</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('form-ttd-027')}}" class="nav-link @if(Route::currentRouteNamed('form-ttd-027')) active @else '' @endif">
+                    <i class="far fa-circle ml-4 nav-icon" style="font-size: small;"></i>
+                    <p>Form 027</p>
                   </a>
                 </li>
               </ul>

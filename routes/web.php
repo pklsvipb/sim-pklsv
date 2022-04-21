@@ -260,6 +260,10 @@ Route::middleware('role:dosen')->get('/dosen/ttd-kaprodi/submit/{id}', [App\Http
 Route::middleware('role:dosen')->get('/dosen/form/tanda-tangan/022', [App\Http\Controllers\DosenController::class, 'form_ttd_022'])->name('form-ttd-022');
 Route::middleware('role:dosen')->post('/dosen/form/tanda-tangan/022/submit/{id}', [App\Http\Controllers\DosenController::class, 'form_ttd_022_submit'])->name('form-ttd-022-submit');
 
+Route::middleware('role:dosen')->get('/dosen/form/tanda-tangan/027', [App\Http\Controllers\DosenController::class, 'form_ttd_027'])->name('form-ttd-027');
+Route::middleware('role:dosen')->post('/dosen/form/tanda-tangan/027/dosbim/{id}', [App\Http\Controllers\DosenController::class, 'form_ttd_027_submit_dosbim'])->name('form-ttd-027-submit-dosbim');
+Route::middleware('role:dosen')->post('/dosen/form/tanda-tangan/027/dosji/{id}', [App\Http\Controllers\DosenController::class, 'form_ttd_027_submit_dosji'])->name('form-ttd-027-submit-dosji');
+
 Route::middleware('role:dosen')->get('/dosen/sd-form025/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sd_form025'])->name('sd-form025');
 Route::middleware('role:dosen')->get('/dosen/sdu-form025/view-pdf/{id}', [App\Http\Controllers\ExportController::class, 'sdu_form025'])->name('sdu-form025');
 
@@ -351,6 +355,7 @@ Route::middleware('role:mahasiswa')->post('/mahasiswa/form013/{id}', [App\Http\C
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/delete/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf_delete'])->name('form018-pdf-delete');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form018/{id}', [App\Http\Controllers\ExportController::class, 'form018_pdf'])->name('form018-pdf');
 
+Route::middleware('role:mahasiswa')->post('/mahasiswa/form027/delete/{id}', [App\Http\Controllers\ExportController::class, 'form027_pdf_delete'])->name('form027-pdf-delete');
 Route::middleware('role:mahasiswa')->post('/mahasiswa/form027/{id}', [App\Http\Controllers\ExportController::class, 'form027_pdf'])->name('form027-pdf');
 
 Route::middleware('role:mahasiswa')->post('/mahasiswa/penggunaan_produk/save/{id}', [App\Http\Controllers\ExportController::class, 'penggunaan_produk_pdf_save'])->name('penggunaan-produk-pdf-save');

@@ -784,7 +784,8 @@ class MahasiswaController extends Controller
         $form018  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 16)->where('ket', 'sm')->first();
         $form022  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 23)->where('ket', 'sd')->first();
 
-        $form027  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 27)->where('ket', 'sd')->where('set_verif', 1)->first();
+        $form027  = tb_form::where('id_mhs', $user->id_user)->where('id_form', 29)->where('ket', 'sd')->first();
+        $cek = tb_daftar::where('id_mhs', $user->id_user)->where('ket', 'sd')->where('set_verif', 1)->first();
 
         if ($id == "1") {
             return view('mahasiswa.form_input.input_001', compact('datas', 'id'));
@@ -839,7 +840,7 @@ class MahasiswaController extends Controller
         } elseif ($id == "26") {
             return view('mahasiswa.form_input.input_025', compact('datas', 'id'));
         } elseif ($id == "29") {
-            return view('mahasiswa.form_input.input_027', compact('datas', 'id', 'form027'));
+            return view('mahasiswa.form_input.input_027', compact('datas', 'id', 'form027', 'cek'));
         }
     }
 

@@ -329,6 +329,94 @@ class DosenController extends Controller
         return redirect()->route('biodata-d')->with('success', 'Sukses Menyimpan Data');
     }
 
+    public function form_ttd_027()
+    {
+        $user  = Auth::user();
+        $datas = tb_dosen::where('id', $user->id_user)->get();
+        $mahas2 = tb_daftar::where('id_dosji', $user->id_user)->where('ket', 'sd')->get();
+        $mahas = tb_mahasiswa::where('id_dospem1', $user->id_user)->get();
+
+        if (count($mahas) == 0) {
+            $form = [];
+        } else {
+            $form = [];
+            foreach ($mahas as $mhs) {
+                $get = tb_form::where('id_mhs', $mhs->id)->where('id_form', 29)->where('ttd_dospem', 1)->get();
+                if (count($get) != 0) {
+                    foreach ($get as $fr) {
+                        $form[] = array($fr->id, $fr->id_mhs, $fr->id_form, $fr->file, $fr->ket, $mhs->getProdi->nama, $mhs->nama, $mhs->nim);
+                    }
+                }
+            }
+        }
+
+        if (count($mahas2) == 0) {
+            $form2 = [];
+        } else {
+            $form2 = [];
+            foreach ($mahas2 as $mhs2) {
+                $get2 = tb_form::where('id_mhs', $mhs2->id_mhs)->where('id_form', 29)->where('ttd_dospem', 0)->where('ttd_dosji', 1)->get();
+                if (count($get2) != 0) {
+                    foreach ($get2 as $fr2) {
+                        $form2[] = array($fr2->id, $fr2->id_mhs2, $fr2->id_form, $fr2->file, $fr2->ket, $mhs2->getProdi->nama, $mhs2->nama, $mhs2->nim);
+                    }
+                }
+            }
+        }
+
+        return view('dosen.form_ttd_027', compact('datas', 'user', 'form', 'form2'));
+    }
+
+    public function form_ttd_027_submit_dosbim(Request $request, $id)
+    {
+        $form  = tb_form::where('id', $id)->first();
+        $form->set_failed = 0;
+        $form->ttd_dospem = 0;
+
+        $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
+
+        // Check File Exist
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+        }
+
+        $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_027_d.pdf';
+        $form->file   = $namadir;
+
+        $form->save();
+
+        return redirect()->route('form-ttd-027')->with('success', 'Berhasil Tanda Tangan Form');
+    }
+
+    public function form_ttd_027_submit_dosji(Request $request, $id)
+    {
+        $form  = tb_form::where('id', $id)->first();
+        $form->set_failed = 0;
+        $form->set_verif  = 1;
+        $form->ttd_dospem = 0;
+        $form->ttd_dosji  = 0;
+
+        $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
+
+        // Check File Exist
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+
+        // Delete File
+        if ($file) {
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+        }
+
+        $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_027_p.pdf';
+        $form->file   = $namadir;
+
+        $form->save();
+
+        return redirect()->route('form-ttd-027')->with('success', 'Berhasil Tanda Tangan Form');
+    }
+
     public function kolokium_d()
     {
         $user    = Auth::user();
