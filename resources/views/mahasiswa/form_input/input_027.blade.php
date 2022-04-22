@@ -35,7 +35,7 @@
                       </tbody>
                     </table>   
 
-                    @elseif ($form022->set_failed == 1)
+                    @elseif ($form027->set_failed == 1)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
                       @csrf
                         <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
