@@ -80,8 +80,8 @@
                               <th style="font-size: 13px; padding: 5px; text-align: center;  background: #FFC107;">Aksi</th>
                             </tr>
                             <tr>
-                              <td><textarea class="form-control" name="koreksi_penguji[]" id="" cols="30" rows="4"></textarea></td>
-                              <td><textarea class="form-control" name="perbaikan_penguji[]" id="" cols="30" rows="4"></textarea></td>
+                              <td><textarea class="form-control" name="koreksi_penguji[]" id="" cols="30" rows="4" required></textarea></td>
+                              <td><textarea class="form-control" name="perbaikan_penguji[]" id="" cols="30" rows="4" required></textarea></td>
                               <td style="text-align: center; vertical-align: middle;"><a type="button" id="add" class="btn btn-primary btn-sm mt-1"><i class="fas fa-plus"></i></a></td>
                             </tr>
                           </tbody>
@@ -97,8 +97,8 @@
                               <th style="font-size: 13px; padding: 5px; text-align: center; background: #FFC107;">Aksi</th>
                             </tr>
                             <tr>
-                              <td><textarea class="form-control" name="koreksi_pembimbing[]" id="" cols="30" rows="4"></textarea></td>
-                              <td><textarea class="form-control" name="perbaikan_pembimbing[]" id="" cols="30" rows="4"></textarea></td>
+                              <td><textarea class="form-control" name="koreksi_pembimbing[]" id="" cols="30" rows="4" required></textarea></td>
+                              <td><textarea class="form-control" name="perbaikan_pembimbing[]" id="" cols="30" rows="4" required></textarea></td>
                               <td style="text-align: center; vertical-align: middle;"><a type="button" id="add2" class="btn btn-primary btn-sm mt-1"><i class="fas fa-plus"></i></a></td>
                             </tr>
                           </tbody>
@@ -142,7 +142,7 @@
     var i = 1;
     $('#add').click(function() {
       i++;
-      $('#penguji').append('<tr id="group' + i + '"><td><textarea class="form-control" name="koreksi_penguji[]" id="" cols="30" rows="4"></textarea></td><td><textarea class="form-control" name="perbaikan_penguji[]" id="" cols="30" rows="4"></textarea></td><td style="text-align: center; vertical-align: middle;"><a type="button" id="' + i + '" class="btn btn-danger btn-sm mt-1"><i class="fas fa-times"></i></a></td></tr>');
+      $('#penguji').append('<tr id="group' + i + '"><td><textarea class="form-control" name="koreksi_penguji[]" id="" cols="30" rows="4" required></textarea></td><td><textarea class="form-control" name="perbaikan_penguji[]" id="" cols="30" rows="4" required></textarea></td><td style="text-align: center; vertical-align: middle;"><a type="button" id="' + i + '" class="btn btn-danger btn-sm mt-1"><i class="fas fa-times"></i></a></td></tr>');
     });
 
     $(document).on('click', '.btn', function() {
@@ -158,7 +158,7 @@
     var i = 1;
     $('#add2').click(function() {
       i++;
-      $('#pembimbing').append('<tr id="groupget' + i + '"><td><textarea class="form-control" name="koreksi_penguji[]" id="" cols="30" rows="4"></textarea></td><td><textarea class="form-control" name="perbaikan_penguji[]" id="" cols="30" rows="4"></textarea></td><td style="text-align: center; vertical-align: middle;"><a type="button" id="get' + i + '" class="btn btn-danger btn-sm mt-1"><i class="fas fa-times"></i></a></td></tr>');
+      $('#pembimbing').append('<tr id="groupget' + i + '"><td><textarea class="form-control" name="koreksi_pembimbing[]" id="" cols="30" rows="4" required></textarea></td><td><textarea class="form-control" name="perbaikan_pembimbing[]" id="" cols="30" rows="4" required></textarea></td><td style="text-align: center; vertical-align: middle;"><a type="button" id="get' + i + '" class="btn btn-danger btn-sm mt-1"><i class="fas fa-times"></i></a></td></tr>');
     });
 
     $(document).on('click', '.btn', function() {
