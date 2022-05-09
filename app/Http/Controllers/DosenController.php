@@ -372,15 +372,17 @@ class DosenController extends Controller
         $form  = tb_form::where('id', $id)->first();
         $form->set_failed = 0;
         $form->ttd_dospem = 0;
+        $form->ttd_dosji  = 0;
+        $form->set_verif  = 1;
 
         $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
 
         // Check File Exist
-        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
 
         // Delete File
         if ($file) {
-            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_p.pdf');
         }
 
         $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_027_d.pdf';
@@ -395,18 +397,16 @@ class DosenController extends Controller
     {
         $form  = tb_form::where('id', $id)->first();
         $form->set_failed = 0;
-        $form->set_verif  = 1;
-        $form->ttd_dospem = 0;
         $form->ttd_dosji  = 0;
 
         $mhs   = tb_mahasiswa::where('id', $form->id_mhs)->first();
 
         // Check File Exist
-        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+        $file             = Storage::disk('local')->exists('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
 
         // Delete File
         if ($file) {
-            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027_d.pdf');
+            Storage::disk('local')->delete('pdf/' . $mhs->nim . '/pdf_form_027.pdf');
         }
 
         $namadir      = 'pdf/' . $mhs->nim . '/pdf_form_027_p.pdf';

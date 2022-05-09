@@ -285,7 +285,7 @@
             <td></td>
             <td style="padding: 5px; float: right;">
               <p style="margin-bottom: -.10em; font-size: 11pt;">Dosen Penguji</p>
-              <p style="height: 1.2cm;"></p>
+              <p style="margin-bottom: -.10em; margin-top: 2px; margin-left: 30px;"><img src="{{public_path($data->getDosji->ttd)}}" style="height: 1.5cm; width: 2cm;;"></p>
               <p style="margin-bottom: -.10em; font-size: 11pt;">{{$data->getDosji->nama}}</p>
               <p style="margin-bottom: -.10em; font-size: 11pt;">NIP. {{$data->getDosji->nip}}</p>
             </td>

@@ -278,7 +278,7 @@
           <tr>
             <td style="padding: 5px;">
               <p style="margin-bottom: -.10em; font-size: 11pt;">Dosen Pembimbing</p>
-              <p style="margin-bottom: -.10em; margin-top: 2px; margin-left: 30px;"><img src="{{public_path($data->getDosen->ttd)}}" style="height: 1.5cm; width: 2cm;;"></p>
+              <p style="height: 1.2cm;"></p>
               <p style="margin-bottom: -.10em; font-size: 11pt;">{{$data->getDosen->nama}}</p>
               <p style="margin-bottom: -.10em; font-size: 11pt;">NIP. {{$data->getDosen->nip}}</p>
             </td>
