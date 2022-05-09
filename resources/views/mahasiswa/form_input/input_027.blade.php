@@ -29,7 +29,7 @@
                       <tbody>
                         <tr>
                           <td width="100%">
-                            Form 027 Belum Ditanda Tangan Oleh Dosen Pembimbing
+                            Form 027 Belum Ditanda Tangan Oleh Dosen Penguji
                           </td>
                         </tr>
                       </tbody>
