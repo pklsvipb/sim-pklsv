@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class tb_daftar extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     public function getProdi()
     {

@@ -46,6 +46,7 @@
                         <th width="5%" style="text-align: center;">Tanggal Sidang</th>
                         <th width="5%" style="text-align: center;">Waktu Sidang</th>
                         <th width="20%">Dosen Penguji</th>
+                        <th width="5%" style="text-align: center;">Tgl Daftar</th>
                         <th width="10%">FRM Belum Verif</th>
                         <th width="10%">FRM Upload</th>
                         <th width="10%" style="text-align: center;">Action</th>
@@ -59,6 +60,7 @@
                         <td style="text-align: center;">{{$sidang[$i][4]}}</td>
                         <td style="text-align: center;">{{$sidang[$i][8]}}</td>
                         <td>{{$sidang[$i][5]}}</td>
+                        <td style="text-align: center;">{{substr($sidang[$i][10],0,10)}}</td>
                         <th style="text-align: center;">{{$sidang[$i][7]}}</th>
                         <th style="text-align: center;">{{$sidang[$i][6]}}</th>
                         <td><a href="{{route('sidang-vf', $sidang[$i][1])}}" title="Verifikasi Form" type="button" class="btn btn-success btn-sm">Verif</a></td>
