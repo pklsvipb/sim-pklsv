@@ -264,6 +264,7 @@
   <script src="{{ asset('upload_asset/themes/explorer-fas/theme.js')}}"></script>
   <!-- Signature -->
   <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+  <script src="{{asset('js/jquery.ui.touch-punch.min.js')}}"></script>
   <script src="{{asset('js/jquery.signature.js')}}"></script>
 
   <!-- AdminLTE for demo purposes -->
