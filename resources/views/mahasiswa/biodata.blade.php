@@ -292,7 +292,6 @@
     });
   }
 </script>
-<script>$('#sig').draggable();</script>
 <script type="text/javascript">
   document.getElementById('upload').addEventListener('click', openDialog);
 
