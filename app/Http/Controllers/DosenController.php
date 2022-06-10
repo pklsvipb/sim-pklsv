@@ -906,25 +906,27 @@ class DosenController extends Controller
             $pembahas->save();
 
             $id_hadir = $request->input('id_hadir');
-            for ($i = 0; $i < count($id_hadir); $i++) {
-                $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
+            if ($id_hadir != null) {
+                for ($i = 0; $i < count($id_hadir); $i++) {
+                    $hadir2   = tb_kartu_seminar::findOrFail($id_hadir[$i]);
 
-                if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
-                    $hadir2->hadir = 1;
-                    $hadir2->paraf = 1;
-                    $hadir2->save();
+                    if ($request->input('hadir' . ($id_hadir[$i])) == 1) {
+                        $hadir2->hadir = 1;
+                        $hadir2->paraf = 1;
+                        $hadir2->save();
 
-                    if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
-                        $forum = new tb_nilai_forum;
-                        $forum->id_seminar = $id;
-                        $forum->id_mhs = $hadir2->id_mhs;
-                        $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
-                        $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
-                        $forum->save();
+                        if ($request->input('nilai_forum' . ($id_hadir[$i])) != null) {
+                            $forum = new tb_nilai_forum;
+                            $forum->id_seminar = $id;
+                            $forum->id_mhs = $hadir2->id_mhs;
+                            $forum->nilai = $request->input('nilai_forum' . ($id_hadir[$i]) . '');
+                            $forum->keterangan = $request->input('ket_forum' . ($id_hadir[$i]) . '');
+                            $forum->save();
+                        }
+                    } else {
+                        $hadir2->hadir = 0;
+                        $hadir2->save();
                     }
-                } else {
-                    $hadir2->hadir = 0;
-                    $hadir2->save();
                 }
             }
 
@@ -1575,10 +1577,10 @@ class DosenController extends Controller
         return view('dosen.jurnal_harian', compact('datas', 'getmhs', 'file'));
     }
 
-    public function sortDate($a, $b) 
+    public function sortDate($a, $b)
     {
         if (strtotime($a[3]) == strtotime($b[3])) return 0;
-        return (strtotime($a[3]) > strtotime($b[3])) ?1:-1;
+        return (strtotime($a[3]) > strtotime($b[3])) ? 1 : -1;
     }
 
     public function laporan_periodik()
@@ -1597,7 +1599,7 @@ class DosenController extends Controller
         if (count($mhs1) != 0) {
             foreach ($mhs1 as $mahasiswa1) {
                 $listmhs1 = $getlist->where('id_mhs', $mahasiswa1->id);
-                foreach($listmhs1 as $ls1){
+                foreach ($listmhs1 as $ls1) {
                     $list[] = array($ls1->id_mhs, $ls1->tgl_awal, $ls1->tgl_selesai);
                 }
                 $getmhs1 = $getlist->where('id_mhs', $mahasiswa1->id)->first();
@@ -1611,7 +1613,7 @@ class DosenController extends Controller
         if (count($mhs2) != 0) {
             foreach ($mhs2 as $mahasiswa2) {
                 $listmhs2 = $getlist->where('id_mhs', $mahasiswa2->id);
-                foreach($listmhs2 as $ls2){
+                foreach ($listmhs2 as $ls2) {
                     $list[] = array($ls2->id_mhs, $ls2->tgl_awal, $ls2->tgl_selesai);
                 }
                 $getmhs2 = $getlist->where('id_mhs', $mahasiswa2->id)->first();
