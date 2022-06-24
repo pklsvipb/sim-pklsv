@@ -44,7 +44,7 @@
                         <td style="text-align: center;">
                           @if ($getmhs[$i][4] == 1)
                           <span class="badge badge-warning">disetujui</span>
-                          @elseif($getmhs[$i][4] == "")
+                          @elseif($getmhs[$i][4] == 3)
                           <span></span>
                           @else
                           <form action="{{route('d-paraf-bimbingan', $getmhs[$i][0])}}" method="GET" class="form-horizontal" enctype="multipart/form-data">

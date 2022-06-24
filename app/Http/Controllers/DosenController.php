@@ -1649,13 +1649,15 @@ class DosenController extends Controller
             foreach ($mhs1 as $mahasiswa) {
                 $cek = tb_bimbingan::where('id_mhs', $mahasiswa->id)->first();
                 if ($cek == null) {
-                    $paraf = "";
+                    // $paraf = "";
+                    $paraf = 3;
                 } else {
                     $cek2 = tb_bimbingan::where('id_mhs', $mahasiswa->id)->get();
                     if (count($cek2) == 8) {
                         $paraf = $cek->paraf;
                     } else {
-                        $paraf = "";
+                        // $paraf = "";
+                        $paraf = 3;
                     }
                 }
                 $getmhs[] = array($mahasiswa->id, $mahasiswa->nama, $mahasiswa->nim, $mahasiswa->getProdi->nama, $paraf);
@@ -1671,7 +1673,9 @@ class DosenController extends Controller
             $file[] = array($getmhs[$i][0], $list);
         }
 
-        // dd($getmhs);
+        usort($getmhs, function($a, $b) {
+            return $a[4] <=> $b[4];
+        });
 
         return view('dosen.kartu_bimbingan', compact('datas', 'getmhs', 'file'));
     }
