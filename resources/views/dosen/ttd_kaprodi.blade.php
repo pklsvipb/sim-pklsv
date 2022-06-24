@@ -32,29 +32,27 @@
                       <th width="10%" style="text-align: center;">TTD Form</th>
                     </thead>
                     <tbody>
-                      <?php $no = 1; ?>
-                      @foreach ($getmhs as $data)
+                      @for ($i=0; $i < count($data); $i++)
                         <tr>
-                          <td style="text-align: center;">{{ $no }}</td>
-                          <td>{{ $data->getMahasiswa->nama }}</td>
-                          <td>{{ $data->getMahasiswa->nim }}</td>
-                          <td>{{ $data->getMahasiswa->getProdi->nama }}</td>
+                          <td style="text-align: center;">{{ $i + 1 }}</td>
+                          <td>{{ $data[$i][1] }}</td>
+                          <td>{{ $data[$i][2] }}</td>
+                          <td>{{ $data[$i][3] }}</td>
                           <td style="text-align: center;">
-                            <a data-toggle="modal" class="btn btn-success btn-sm" data-target="#Status-{{$data->id_mhs}}" title="Status Mahasiswa" type="button"><i class="fas fa-search"></i> Detail</a>
+                            <a data-toggle="modal" class="btn btn-success btn-sm" data-target="#Status-{{$data[$i][0]}}" title="Status Mahasiswa" type="button"><i class="fas fa-search"></i> Detail</a>
                           </td>
                           <td style="text-align: center;">
-                            @if (File::exists(public_path('pdf/'.$data->getMahasiswa->nim.'/pdf_kartu_bimbingan.pdf')))
+                            @if ($data[$i][4] == 1)
                             <span class="badge badge-warning">disetujui</span>
                             @else
-                            <form action="{{route('d-ttd-kaprodi-submit', $data->getMahasiswa->id)}}" method="GET" class="form-horizontal" enctype="multipart/form-data">
+                            <form action="{{route('d-ttd-kaprodi-submit', $data[$i][0])}}" method="GET" class="form-horizontal" enctype="multipart/form-data">
                               {{ csrf_field() }}
                               <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-check fa-sm"></i></button>
                             </form>
                             @endif
                         </td>
                         </tr>
-                        <?php $no += 1; ?>
-                      @endforeach
+                      @endfor
                     </tbody>
                   </table>
                   </form>
@@ -74,10 +72,10 @@
   <!--/. container-fluid -->
 </section>
 <!-- /.content -->
-@if(is_null($getmhs) == 0)
-@foreach($getmhs as $data)
-@include('modal.kartu-bimbingan')
-@endforeach
+@if(is_null($data) == 0)
+@for($k=0; $k < count($data); $k++)
+@include('modal.kartu-bimbingan-k')
+@endfor
 @endif
 
 @endsection

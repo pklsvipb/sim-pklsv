@@ -1699,11 +1699,24 @@ class DosenController extends Controller
         $prodi = tb_prodi::where('id_kaprodi', $dosen->id)->first();
         $getmhs = [];
         $file = [];
+        $data = [];
 
         if ($prodi != null) {
 
             $getlist = tb_bimbingan::select('id_mhs', 'paraf', 'id_prodi')->distinct()->get();
             $getmhs = $getlist->where('paraf', 1)->where('id_prodi', $prodi->id);
+
+
+
+            foreach ($getmhs as $result) {
+                if (Storage::disk('local')->exists('pdf/'.$result->getMahasiswa->nim.'/pdf_kartu_bimbingan.pdf')){
+                    $status = 1;
+                }else{
+                    $status = 0;
+                }
+
+                $data[] = array($result->id_mhs, $result->getMahasiswa->nama, $result->getMahasiswa->nim, $result->getMahasiswa->getProdi->nama, $status);
+            }
 
             foreach ($getmhs as $get) {
                 $kegiatan = tb_bimbingan::where('id_mhs', $get->id_mhs)->get();
@@ -1715,8 +1728,12 @@ class DosenController extends Controller
             }
         }
 
-        // dd($getmhs);
-        return view('dosen.ttd_kaprodi', compact('datas', 'getmhs', 'file'));
+        usort($data, function($a, $b) {
+            return $a[4] <=> $b[4];
+        });
+
+        //dd($data);
+        return view('dosen.ttd_kaprodi', compact('datas', 'data', 'file'));
     }
 
     public function ttd_kaprodi_submit($id)
