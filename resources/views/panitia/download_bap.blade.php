@@ -46,7 +46,7 @@
                         <th width="5%">No</th> 
                         <th width="20%">Nama Lengkap</th> 
                         <th width="5%" style="text-align: center;">NIM</th> 
-                        <th width="20%" style="text-align: center;">Dospem</th> 
+                        <th width="20%" style="text-align: center;">Dosen Pembimbing</th> 
                         <th width="20%" style="text-align: center;">Moderator</th> 
                         <th width="30%" style="text-align: center;">Aksi</th> 
                       </tr> 

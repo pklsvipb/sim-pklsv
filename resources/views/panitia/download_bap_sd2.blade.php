@@ -47,8 +47,8 @@
                         <th width="2%">No</th> 
                         <th width="40%">Nama Lengkap</th> 
                         <th style="text-align: center;">NIM</th> 
-                        <th style="text-align: center;">Dospem</th> 
-                        <th style="text-align: center;">Moderator</th> 
+                        <th style="text-align: center;">Dosen Pembimbing</th> 
+                        <th style="text-align: center;">Dosen Penguji</th> 
                         <th style="text-align: center;">Aksi</th> 
                       </tr> 
                     </thead> 
@@ -69,7 +69,7 @@
                           @endif 
  
                           @if ($data[$i][3] != 0) 
-                          <a href="{{route('download-bap-sdju',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 10.5px;">MODERATOR</a> &nbsp; 
+                          <a href="{{route('download-bap-sdju',$data[$i][3])}}" type="button" class="btn btn-primary btn-sm" style="font-size: 10.5px;">PENGUJI</a> &nbsp; 
                           @else 
                           <span></span> 
                           @endif 
