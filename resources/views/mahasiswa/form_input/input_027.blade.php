@@ -18,7 +18,7 @@
                   @foreach ($datas as $data)
 
                   @if ($form027 != null)
-                    @if ($form027->ttd_dospem == 1)
+                    @if ($form027->ttd_dospem == 1 && $form027->ttd_dosji == 1)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
                     @csrf
                       <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
@@ -29,11 +29,28 @@
                       <tbody>
                         <tr>
                           <td width="100%">
-                            Form 027 Belum Ditanda Tangan Oleh Dosen Penguji
+                            Form 027 Belum Ditanda Tangani Oleh Dosen Penguji
                           </td>
                         </tr>
                       </tbody>
-                    </table>   
+                    </table>  
+                    
+                    @elseif ($form027->ttd_dospem == 1 && $form027->ttd_dosji == 0)
+                    <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
+                    @csrf
+                      <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
+                      <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 027?')"><i class="fa fa-trash"></i></button>
+                    </form>
+
+                    <table cellspacing="0" cellpadding="0" style="font-size: .875rem; font-weight: 600;" width="100%">
+                      <tbody>
+                        <tr>
+                          <td width="100%">
+                            Form 027 Belum Ditanda Tangani Oleh Dosen Pembimbing
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
 
                     @elseif ($form027->set_failed == 1)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
