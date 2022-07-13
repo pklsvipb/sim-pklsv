@@ -21,7 +21,7 @@
                     @if ($form027->ttd_dospem == 1 && $form027->ttd_dosji == 1)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
                     @csrf
-                      <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
+                      <a type="button" class="btn btn-danger" href="{{ asset($form027->file) }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
                       <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 027?')"><i class="fa fa-trash"></i></button>
                     </form>
 
@@ -38,7 +38,7 @@
                     @elseif ($form027->ttd_dospem == 1 && $form027->ttd_dosji == 0)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
                     @csrf
-                      <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
+                      <a type="button" class="btn btn-danger" href="{{ asset($form027->file) }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
                       <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 027?')"><i class="fa fa-trash"></i></button>
                     </form>
 
@@ -55,7 +55,7 @@
                     @elseif ($form027->set_failed == 1)
                     <form action="{{ url('/mahasiswa/form027/delete', $id) }}" method="POST" class="form-horizontal">
                       @csrf
-                        <a type="button" class="btn btn-danger" href="{{ asset('pdf/'.$data->nim.'/pdf_form_027.pdf') }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
+                        <a type="button" class="btn btn-danger" href="{{ asset($form027->file) }}" style="font-size: 13px; margin: 50px 0px 10px 0px;"><i class="fas fa-file-pdf"></i> Form 027 Persetujuan Perbaikan Ujian Tugas Akhir</a>
                         <button type="submit" class="btn btn-danger" style="font-size: 13px; margin: 50px 0px 10px 0px;" onclick="return confirm('Yakin ingin menghapus form 027?')"><i class="fa fa-trash"></i></button>
                       </form>
     
