@@ -185,7 +185,7 @@
         <td><p style="margin-bottom: -10em; font-size: 11pt;">Kelulusan</p></td>
         <td><p style="margin-bottom: -10em; font-size: 11pt;">:</p></td>
         <td colspan="2"><p style="margin-bottom: -10em; font-size: 11pt;">
-          @if ((($bap->nilai1 +  $bap->nilai2 + $bap->nilai3) / 3) > 60)
+          @if ((($bap->nilai1 +  $bap->nilai2 + $bap->nilai3) / 3) >= 65)
             Lulus / <s>Tidak Lulus</s> *)
           @else
             <s>Lulus</s> / Tidak Lulus *)
