@@ -62,7 +62,7 @@
       <tr>
         <td colspan="3">
           <p style="margin-bottom: -50%; text-align: right; font-family: Arial, Helvetica, sans-serif; font-size: 10pt;">FRM/SV/PKL/023</p>
-        </td>   
+        </td>
       </tr>
       <tr>
         <td width="15%">
@@ -98,29 +98,59 @@
   <table class="table table-borderless" style="margin-top: -1em; height: 16%;">
     <tbody>
       <tr>
-        <td width="23%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Nama</p></td>
-        <td width="1%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td width="76%" style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nama }}</p></td>
+        <td width="23%" style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Nama</p>
+        </td>
+        <td width="1%" style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td width="76%" style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nama }}</p>
+        </td>
       </tr>
       <tr>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">NIM</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nim }}</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">NIM</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ $mhs->nim }}</p>
+        </td>
       </tr>
       <tr>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Judul Laporan Akhir</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em; text-align: justify;">{{ $data->judul }}</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Judul Laporan Akhir</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em; text-align: justify;">{{ $data->judul }}</p>
+        </td>
       </tr>
       <tr>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Hari/Tanggal Ujian</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ Carbon\Carbon::parse($data->tgl)->translatedFormat('l/ d F Y'); }}</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Hari/Tanggal Ujian</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ Carbon\Carbon::parse($data->tgl)->translatedFormat('l/ d F Y'); }}</p>
+        </td>
       </tr>
       <tr>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">Waktu Ujian</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td style="padding-top: 1px; padding-bottom: 1px;"><p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ date('H:i', strtotime($data->waktu)) }}</p></td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Waktu Ujian</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td style="padding-top: 1px; padding-bottom: 1px;">
+          <p style="margin-bottom: 0em; font-size: 11pt; margin-left: -1em;">{{ date('H:i', strtotime($data->waktu)) }}</p>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -184,20 +214,32 @@
   <table class="table table-borderless" style="margin-top: -2em;">
     <tbody>
       <tr>
-        <td><p style="margin-bottom: -10em; font-size: 11pt;">Kelulusan</p></td>
-        <td><p style="margin-bottom: -10em; font-size: 11pt;">:</p></td>
-        <td colspan="2"><p style="margin-bottom: -10em; font-size: 11pt;">
-          @if ((($bap->nilai1 +  $bap->nilai2 + $bap->nilai3) / 3) >= 65)
+        <td>
+          <p style="margin-bottom: -10em; font-size: 11pt;">Kelulusan</p>
+        </td>
+        <td>
+          <p style="margin-bottom: -10em; font-size: 11pt;">:</p>
+        </td>
+        <td colspan="2">
+          <p style="margin-bottom: -10em; font-size: 11pt;">
+            @if (number_format((($bap->nilai1 + $bap->nilai2 + $bap->nilai3) / 3),2) >= 65)
             Lulus / <s>Tidak Lulus</s> *)
-          @else
+            @else
             <s>Lulus</s> / Tidak Lulus *)
-          @endif
-        </p></td>
+            @endif
+          </p>
+        </td>
       </tr>
       <tr>
-        <td width="21%"><p style="margin-bottom: 0em; font-size: 11pt;">Standar Kelulusan</p></td>
-        <td width="1%"><p style="margin-bottom: 0em; font-size: 11pt;">:</p></td>
-        <td width="23%"><p style="margin-bottom: 0em; font-size: 11pt;">Nilai > 65</p></td>
+        <td width="21%">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Standar Kelulusan</p>
+        </td>
+        <td width="1%">
+          <p style="margin-bottom: 0em; font-size: 11pt;">:</p>
+        </td>
+        <td width="23%">
+          <p style="margin-bottom: 0em; font-size: 11pt;">Nilai > 65</p>
+        </td>
         <td width="55%">
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">Bogor, {{ Carbon\Carbon::parse($bap->tgl)->translatedFormat('d F Y'); }}</p>
           <p style="margin-bottom: 0em; margin-left: 3.5em; margin-right: 0px; font-size: 11pt;">Dosen Pembimbing</p>
