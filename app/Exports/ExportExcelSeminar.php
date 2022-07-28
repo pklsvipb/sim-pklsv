@@ -31,23 +31,38 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
             $daftar  = tb_daftar::where('ket', 'sm')->where('id_mhs', $mhs->id)->first();
 
             if ($daftar != null) {
+                $dospem2 = $mhs->getDospem2 ? $mhs->getDospem2->nama : '-';
                 $dospem = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosen)->where('ket', 'sm')->where('status', 'dosen')->first();
                 $mode   = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_moderator)->where('ket', 'sm')->where('status', 'moderator')->first();
 
                 if ($dospem != null) {
                     $bap_dospem = round(($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3, 2);
+                    $dospem = $daftar->getDosen->nama;
                 } else {
                     $bap_dospem = '0';
+                    $dospem = '-';
                 }
 
                 if ($mode != null) {
                     $bap_mode = round(($mode->nilai1 + $mode->nilai2 + $mode->nilai3) / 3, 2);
+                    $moderator = $daftar->getModerator->nama;
                 } else {
                     $bap_mode = '0';
+                    $moderator = '-';
                 }
+
+                $tanggal = $daftar->tgl;
+                $waktu = $daftar->waktu;
+                $ruang = $daftar->link? $daftar->link:'-';
             } else {
                 $bap_dospem = '0';
                 $bap_mode   = '0';
+                $dospem = '-';
+                $dospem2 = '-';
+                $moderator = '-';
+                $tanggal = '-';
+                $waktu = '-';
+                $ruang = '-';
             }
 
             $pembahas   = tb_nilai_pembahas::where('id_pembahas', $mhs->id)->first();
@@ -65,7 +80,7 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
                 $nilai_forum = round($fm, 2);
             }
 
-            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_mode, $nilai_pembahas, $nilai_forum);
+            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_mode, $nilai_pembahas, $nilai_forum, $tanggal, $waktu, $ruang, $dospem, $dospem2, $moderator);
             $no += 1;
         }
 
@@ -81,7 +96,13 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
             'BAP Dospem',
             'BAP Moderator',
             'Pembahas',
-            'Forum'
+            'Forum',
+            'Tanggal Seminar',
+            'Waktu Seminar',
+            'Ruangan',
+            'Dosen Pembimbing 1',
+            'Dosen Pembimbing 2',
+            'Dosen Moderator'
         ];
     }
 
@@ -95,6 +116,12 @@ class ExportExcelSeminar implements FromCollection, WithHeadings, ShouldAutoSize
             $final[4],
             $final[5],
             $final[6],
+            $final[7],
+            $final[8],
+            $final[9],
+            $final[10],
+            $final[11],
+            $final[12]
         ];
     }
 }

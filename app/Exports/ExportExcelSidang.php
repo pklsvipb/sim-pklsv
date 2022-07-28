@@ -30,6 +30,7 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
             $daftar  = tb_daftar::where('ket', 'sd')->where('id_mhs', $mhs->id)->first();
 
             if ($daftar != null) {
+                $dospem2 = $mhs->getDospem2 ? $mhs->getDospem2->nama : '-';
                 $dospem = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosen)->where('ket', 'sd')->where('status', 'dosen')->first();
                 $dosji  = tb_nilai_bap::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosji)->where('ket', 'sd')->where('status', 'moderator')->first();
 
@@ -61,18 +62,21 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
 
                 $tanggal = $daftar->tgl;
                 $waktu = $daftar->waktu;
+                $ruang = $daftar->link? $daftar->link:'-';
             } else {
                 $bap_dospem = '0';
                 $bap_dosji   = '0';
                 $nilai_ta = '0';
                 $nilai_jurnal = '0';
                 $dospem = '-';
+                $dospem2 = '-';
                 $dosji = '-';
                 $tanggal = '-';
                 $waktu = '-';
+                $ruang = '-';
             }
 
-            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal, $tanggal, $waktu, $dospem, $dosji);
+            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal, $tanggal, $waktu, $ruang, $dospem, $dospem2, $dosji);
             $no += 1;
         }
 
@@ -91,7 +95,9 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
             'Jurnal Harian',
             'Tanggal Sidang',
             'Waktu Sidang',
-            'Dosen Pembimbing',
+            'Ruangan',
+            'Dosen Pembimbing 1',
+            'Dosen Pembimbing 2',
             'Dosen Penguji'
         ];
     }
@@ -110,6 +116,8 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
             $final[8],
             $final[9],
             $final[10],
+            $final[11],
+            $final[12]
         ];
     }
 }
