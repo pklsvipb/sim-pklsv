@@ -35,14 +35,18 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
 
                 if ($dospem != null) {
                     $bap_dospem = round(($dospem->nilai1 + $dospem->nilai2 + $dospem->nilai3) / 3, 2);
+                    $dospem = $daftar->getDosen->nama;
                 } else {
                     $bap_dospem = '0';
+                    $dospem = '';
                 }
 
                 if ($dosji != null) {
                     $bap_dosji = round(($dosji->nilai1 + $dosji->nilai2 + $dosji->nilai3) / 3, 2);
+                    $dosji = $daftar->getDosji->nama;
                 } else {
                     $bap_dosji = '0';
+                    $dosji = '';
                 }
 
                 $ta   = tb_form_025::where('id_mhs', $mhs->id)->where('id_dosen', $daftar->id_dosen)->first();
@@ -59,9 +63,11 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
                 $bap_dosji   = '0';
                 $nilai_ta = '0';
                 $nilai_jurnal = '0';
+                $dospem = '';
+                $dosji = '';
             }
 
-            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal);
+            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal, $daftar->tgl, $daftar->waktu, $dospem, $dosji);
             $no += 1;
         }
 
@@ -77,7 +83,11 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
             'BAP Dospem',
             'BAP Dosji',
             'Laporan Akhir',
-            'Jurnal Harian'
+            'Jurnal Harian',
+            'Tanggal Sidang',
+            'Waktu Sidang',
+            'Dosen Pembimbing',
+            'Dosen Penguji'
         ];
     }
 
@@ -91,6 +101,10 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
             $final[4],
             $final[5],
             $final[6],
+            $final[7],
+            $final[8],
+            $final[9],
+            $final[10],
         ];
     }
 }
