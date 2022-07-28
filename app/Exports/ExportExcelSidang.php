@@ -58,16 +58,21 @@ class ExportExcelSidang implements FromCollection, WithHeadings, ShouldAutoSize,
                     $nilai_ta = '0';
                     $nilai_jurnal = '0';
                 }
+
+                $tanggal = $daftar->tgl;
+                $waktu = $daftar->waktu;
             } else {
                 $bap_dospem = '0';
                 $bap_dosji   = '0';
                 $nilai_ta = '0';
                 $nilai_jurnal = '0';
-                $dospem = '';
-                $dosji = '';
+                $dospem = '-';
+                $dosji = '-';
+                $tanggal = '-';
+                $waktu = '-';
             }
 
-            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal, $daftar->tgl, $daftar->waktu, $dospem, $dosji);
+            $final[] = array($no, $mhs->nama, $mhs->nim, $bap_dospem, $bap_dosji, $nilai_ta, $nilai_jurnal, $tanggal, $waktu, $dospem, $dosji);
             $no += 1;
         }
 
